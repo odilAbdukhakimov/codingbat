@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
@@ -26,5 +27,31 @@ public class UserService {
         System.out.println(save.getName());
 
         return true;
+    }
+
+    public void update(String name, UserRegisterDTO userRegisterDTO) {
+        Optional<UserEntity> byUsername = userRepository.findByUsername(name);
+        RolePermissionEntity rolePermission=new RolePermissionEntity();
+        if (byUsername.isPresent()){
+            UserEntity oldUserEntity = byUsername.get();
+            if (userRegisterDTO.getName()!=null){
+                oldUserEntity.setName(userRegisterDTO.getName());
+            }
+            if (userRegisterDTO.getPassword()!=null){
+                oldUserEntity.setPassword(userRegisterDTO.getPassword());
+            }
+            if (userRegisterDTO.getPermissions()!=null){
+                rolePermission.setPermissionEnum(userRegisterDTO.getPermissions());
+                oldUserEntity.setRolePermissionEntities(rolePermission);
+            }
+            if (userRegisterDTO.getRole()!=null){
+                rolePermission.setRoleEnum(userRegisterDTO.getRole());
+                oldUserEntity.setRolePermissionEntities(rolePermission);
+            }
+            if (userRegisterDTO.getUsername()!=null){
+                oldUserEntity.setUsername(userRegisterDTO.getUsername());
+            }
+            userRepository.save(oldUserEntity);
+        }
     }
 }
