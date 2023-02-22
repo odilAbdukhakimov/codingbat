@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 public class UserEntity extends BaseEntity implements UserDetails {
 
