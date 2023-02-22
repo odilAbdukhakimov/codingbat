@@ -23,4 +23,12 @@ public class AdminController {
     public String showAdmin(){
         return "CrudAdmin";
     }
+    @PostMapping("/add")
+    public String addUser(
+            @ModelAttribute UserRegisterDTO userRegisterDTO
+    ) {
+
+        userService.addAdmin(userRegisterDTO);
+        return "CrudAdmin";
+    }
 }
