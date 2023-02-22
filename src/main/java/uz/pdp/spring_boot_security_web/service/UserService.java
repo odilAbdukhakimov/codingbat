@@ -30,16 +30,11 @@ public class UserService {
 
         return true;
     }
-    public UserEntity getByUser(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFountException(String.format("user %s not found", username)));
-    }
 
     private void checkByUsername(String username) {
-        UserEntity userEntity = getByUser(username);
-        for (String role : userEntity.getRolePermissionEntities().getRoleEnum()) {
-            if (role.equals("ADMIN")){
-                throw new RecordAlreadyExist(String.format("username %s already exists", username));
-            }
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        if (userEntity.isPresent()){
+            throw new IllegalArgumentException(String.format("username %s already exist", username));
         }
     }
     public void addAdmin(UserRegisterDTO userRegisterDTO){

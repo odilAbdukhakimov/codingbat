@@ -11,7 +11,7 @@ import uz.pdp.spring_boot_security_web.service.UserService;
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
-
+    @ResponseBody
     @PostMapping("/add")
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO
