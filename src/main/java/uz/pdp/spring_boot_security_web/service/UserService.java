@@ -47,6 +47,7 @@ public class UserService {
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         userRepository.save(userEntity);
+
     }
 
     public List<UserEntity> userEntityList(){
