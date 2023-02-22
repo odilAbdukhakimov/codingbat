@@ -15,16 +15,17 @@ import uz.pdp.spring_boot_security_web.service.TopicService;
 @RequestMapping("/")
 public class TopicController {
     private final LanguageService languageService;
-    private final TopicService topicService;
-//    @GetMapping("/{language}/{id}")
-//    public ModelAndView getTaskList(
-//            ModelAndView modelAndView,
-//            @PathVariable String language,
-//            @PathVariable int id
-//    ) {
-//        modelAndView.addObject("subjectList", languageService.languageEntityList());
-//        modelAndView.addObject("taskList", taskService.getTaskList(id));
-//        modelAndView.setViewName("task");
-//        return modelAndView;
-//    }
+    private final TaskService taskService;
+
+    @GetMapping("/{language}/{id}")
+    public ModelAndView getTaskList(
+            ModelAndView modelAndView,
+            @PathVariable String language,
+            @PathVariable int id
+    ) {
+        modelAndView.addObject("subjectList", languageService.languageEntityList());
+        modelAndView.addObject("taskList", taskService.getTaskList(id));
+        modelAndView.setViewName("task");
+        return modelAndView;
+    }
 }

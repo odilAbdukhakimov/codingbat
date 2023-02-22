@@ -18,6 +18,8 @@ public class TopicService {
     private final LanguageRepository languageRepository;
 
     public List<TopicEntity> getList(String languageName) {
+        Optional<LanguageEntity> byTitle = languageRepository.findByTitle(languageName);
+        if (byTitle.isEmpty()) return null;
         return languageRepository.findByTitle(languageName).get().getTopicEntities();
     }
 

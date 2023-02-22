@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @MappedSuperclass
+
 public abstract class BaseEntity {
 
     @Id
