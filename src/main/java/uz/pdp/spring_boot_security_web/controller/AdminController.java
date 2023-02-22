@@ -2,10 +2,7 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
@@ -20,6 +17,10 @@ public class AdminController {
     public String updateAdmin(@PathVariable("name") String name ,@ModelAttribute UserRegisterDTO userRegisterDTO){
 
         userService.update(name, userRegisterDTO);
+        return "CrudAdmin";
+    }
+    @GetMapping("/show")
+    public String showAdmin(){
         return "CrudAdmin";
     }
 }
