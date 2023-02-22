@@ -18,14 +18,13 @@ public class HomeController {
     private final LanguageService languageService;
     private final TopicService topicService;
 
-    @ResponseBody
     @GetMapping("/")
     public ModelAndView home(
            ModelAndView modelAndView
             ){
        modelAndView.addObject("subjectList", languageService.languageEntityList());
        modelAndView.addObject("lang","Java");
-       modelAndView.addObject("topicList", languageService.getSubject("Java").getTopicEntities());
+       modelAndView.addObject("topicList", languageService.getLanguage("Java").getTopicEntities());
        modelAndView.setViewName("index");
        return modelAndView;
     }

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
-import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.LanguageRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.LanguageRepository;
 
@@ -20,7 +19,7 @@ public class LanguageService {
         return languageRepository.findAll();
     }
 
-    public LanguageEntity getSubject(String name) {
+    public LanguageEntity getLanguage(String name) {
         Optional<LanguageEntity> optionalSubjectEntity = languageRepository.findByTitle(name);
         return optionalSubjectEntity.orElse(null);
     }

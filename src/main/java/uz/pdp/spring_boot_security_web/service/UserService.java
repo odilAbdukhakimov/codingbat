@@ -22,7 +22,9 @@ public class UserService {
         }
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        userRepository.save(userEntity);
+        UserEntity save = userRepository.save(userEntity);
+        System.out.println(save.getName());
+
         return true;
     }
 }

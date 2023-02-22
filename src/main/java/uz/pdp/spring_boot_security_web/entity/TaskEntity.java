@@ -10,7 +10,6 @@ import uz.pdp.spring_boot_security_web.config.AuditListener;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EntityListeners(AuditListener.class)
 @Builder
 public class TaskEntity extends BaseEntity {
     private String name;

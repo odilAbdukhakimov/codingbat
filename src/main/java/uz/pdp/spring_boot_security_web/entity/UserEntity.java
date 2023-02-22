@@ -2,6 +2,7 @@ package uz.pdp.spring_boot_security_web.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.pdp.spring_boot_security_web.config.AuditListener;
@@ -17,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@EntityListeners(AuditListener.class)
+
 @Builder
 public class UserEntity extends BaseEntity implements UserDetails {
 

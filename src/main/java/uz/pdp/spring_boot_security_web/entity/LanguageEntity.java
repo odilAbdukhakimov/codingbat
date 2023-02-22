@@ -2,6 +2,7 @@ package uz.pdp.spring_boot_security_web.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import uz.pdp.spring_boot_security_web.config.AuditListener;
 import uz.pdp.spring_boot_security_web.model.dto.LanguageRequestDTO;
 
@@ -12,7 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EntityListeners(AuditListener.class)
 @Builder
 public class LanguageEntity extends BaseEntity {
     @Column(unique = true)

@@ -11,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EntityListeners(AuditListener.class)
 @Builder
 public class TopicEntity extends BaseEntity {
 

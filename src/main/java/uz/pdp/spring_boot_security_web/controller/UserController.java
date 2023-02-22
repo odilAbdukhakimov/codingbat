@@ -16,7 +16,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @ResponseBody
+
     @PostMapping("/add")
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO
