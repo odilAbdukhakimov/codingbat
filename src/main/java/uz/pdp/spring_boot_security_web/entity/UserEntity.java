@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uz.pdp.spring_boot_security_web.config.AuditListener;
 import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
@@ -18,8 +17,8 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class UserEntity extends BaseEntity implements UserDetails {
 
     private String name;
@@ -86,3 +85,4 @@ public class UserEntity extends BaseEntity implements UserDetails {
     }
 
 }
+

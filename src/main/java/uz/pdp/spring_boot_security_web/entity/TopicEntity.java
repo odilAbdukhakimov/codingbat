@@ -2,7 +2,6 @@ package uz.pdp.spring_boot_security_web.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import uz.pdp.spring_boot_security_web.config.AuditListener;
 
 import java.util.List;
 
