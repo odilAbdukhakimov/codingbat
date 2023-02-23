@@ -333,7 +333,7 @@
                     </div>
                     <div class="col-sm-6">
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Add New Subject</span></a>
+                                class="material-icons">&#xE147;</i> <span>Add New Topic</span></a>
                     </div>
                 </div>
             </div>
@@ -372,12 +372,12 @@
                                 <div class="modal-body">
                                     <form id="updateId" method="post">
                                         <div class="form-group">
-                                            <label class="control-label" >Topic Title:</label>
-                                            <input type="text" required name="title"
-                                                   class="form-control" placeholder="Enter topic title" >
+                                            <label class="control-label" >Topic Name:</label>
+                                            <input type="text" required name="name"
+                                                   class="form-control" placeholder="Enter topic new name" >
                                             <label class="control-label" >Topic Content:</label>
-                                            <input type="text" required name="title"
-                                                   class="form-control" placeholder="Enter topic content" >
+                                            <input type="text" required name="content"
+                                                   class="form-control" placeholder="Enter topic new content" >
                                         </div>
                                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                                         <button type="submit" class="btn btn-success">Submit</button>
@@ -393,7 +393,7 @@
                             <div class="modal-content">
                                 <form id="deleteId" method="get">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Delete Subject</h4>
+                                        <h4 class="modal-title">Delete Topic</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
@@ -445,7 +445,7 @@
                         <label class="control-label" >Topic Content:</label>
                         <input type="text" name="content"
                                class="form-control" placeholder="Enter topic content" >
-                        <input type="hidden" name="language" value="hello"
+                        <input type="hidden" name="language" th:value="${language.getTitle()}"
                                class="form-control" placeholder="Enter topic content" >
 <!--                        <select name="language">-->
 <!--                            <option th:text="${language.getTitle()}" ></option>-->

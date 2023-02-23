@@ -2,6 +2,7 @@ package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDTO;
@@ -47,7 +48,15 @@ public class TopicService {
     }
 
     public void delete(int id) {
-        topicRepository.deleteById(id);
+        Optional<TopicEntity> byId = topicRepository.findById(id);
+        if (byId.isPresent()){
+            TopicEntity topicEntity = byId.get();
+            topicRepository.delete(topicEntity);
+            return;
+        }
+        throw new RecordNotFountException("The topic is not found");
+
+//        topicRepository.deleteById(id);
     }
 
     public TopicEntity update(int id, TopicRequestDTO topicRequestDTO) {
