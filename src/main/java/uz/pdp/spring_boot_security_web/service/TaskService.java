@@ -2,6 +2,7 @@ package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
 import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
@@ -21,7 +22,9 @@ public class TaskService {
     private final LanguageRepository languageRepository;
 
     public TaskEntity addTask(TaskRequestDTO taskRequestDTO) {
-        TopicEntity topic = topicRepository.findById(taskRequestDTO.getTopicId()).get();
+        Optional<TopicEntity> byId = topicRepository.findById(taskRequestDTO.getTopicId());
+        if (byId.isEmpty()) return null;
+        TopicEntity topic = byId.get();
         TaskEntity taskEntity = TaskEntity.builder()
                 .name(taskRequestDTO.getName())
                 .title(taskRequestDTO.getTitle())
@@ -40,7 +43,13 @@ public class TaskService {
     }
 
     public void delete(int taskId) {
-        taskRepository.deleteById(taskId);
+        Optional<TaskEntity> byId = taskRepository.findById(taskId);
+        if (byId.isPresent()){
+            TaskEntity taskEntity = byId.get();
+            taskRepository.delete(taskEntity);
+            return;
+        }
+        throw new RecordNotFountException("The task is not found");
     }
     public List<TaskEntity> getTaskList(int topicId){
         Optional<TopicEntity> byId = topicRepository.findById(topicId);
@@ -48,7 +57,10 @@ public class TaskService {
     }
 
     public TaskEntity update(int id, TaskRequestDTO taskRequestDTO) {
-        TaskEntity taskEntity = taskRepository.findById(id).get();
+        Optional<TaskEntity> byId = taskRepository.findById(id);
+        if (byId.isEmpty())
+            return null;
+        TaskEntity taskEntity = byId.get();
         if (taskRequestDTO.getName() != null)
             taskEntity.setName(taskRequestDTO.getName());
         if (taskRequestDTO.getTitle() != null)

@@ -314,18 +314,18 @@
 <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
-            <div class="table-title">
-                <div class="row">
-<!--                    <div class="col-sm-6">-->
-<!--                        <a th:href="@{/admin/allUsers}" class="btn btn-success">-->
-<!--                            <span>User Page</span></a>-->
-<!--                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">-->
-<!--                            <span>Topic Page</span></a>-->
-<!--                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">-->
-<!--                            <span>Question Page</span></a>-->
-<!--                    </div>-->
-                </div>
-            </div>
+<!--            <div class="table-title">-->
+<!--                <div class="row">-->
+<!--&lt;!&ndash;                    <div class="col-sm-6">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{/admin/allUsers}" class="btn btn-success">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>User Page</span></a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>Topic Page</span></a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>Question Page</span></a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
@@ -348,7 +348,7 @@
                 <tbody th:each="topic: ${topicList}">
                 <tr>
                     <td> <a th:text="${topic.getName()}"
-                            th:href="@{/admin/task/{id}(id=${topic.getId()})}"> </a></td>
+                            th:href="@{/admin/{language}/{topic}/{id}(language=${topic.getLanguageEntity().getTitle()},topic=${topic.getName()},id=${topic.getId()})}"> </a></td>
                     <td >
                         <a type="button"  data-toggle="modal"
                            data-target="#myModal" th:attr="onclick=|updateId('${topic.getId()}')|">
@@ -415,15 +415,15 @@
                 </tbody>
 
             </table>
-            <div class="clearfix">
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
-            </div>
+<!--            <div class="clearfix">-->
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item disabled"><a href="#">Previous</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">1</a></li>-->
+<!--                    <li class="page-item active"><a href="#" class="page-link">2</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">3</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
         </div>
     </div>
 </div>
@@ -445,11 +445,8 @@
                         <label class="control-label" >Topic Content:</label>
                         <input type="text" name="content"
                                class="form-control" placeholder="Enter topic content" >
-                        <input type="hidden" name="language" th:value="${language.getTitle()}"
-                               class="form-control" placeholder="Enter topic content" >
-<!--                        <select name="language">-->
-<!--                            <option th:text="${language.getTitle()}" ></option>-->
-<!--                        </select>-->
+                        <input type="hidden" name="language" th:value="${language.getTitle()}">
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -463,14 +460,13 @@
 
 <script>
     function updateId(topicId){
-        console.log(topicId)
         let var2 = document.getElementById("updateId").action="/admin/topic/update/"+topicId;
         // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
         console.log(var2)
     }
-    function deleteId(subjectId){
-        console.log(subjectId)
-        let var2 = document.getElementById("deleteId").action="/admin/topic/del/"+subjectId;
+    function deleteId(topicId){
+        console.log(topicId)
+        let var2 = document.getElementById("deleteId").action="/admin/topic/del/"+topicId;
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
         console.log(var2)
     }

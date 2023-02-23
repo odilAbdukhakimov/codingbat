@@ -317,18 +317,6 @@
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
-                        <a th:href="@{/admin/allUsers}" class="btn btn-success">
-                            <span>User Page</span></a>
-                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">
-                            <span>Topic Page</span></a>
-                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">
-                            <span>Question Page</span></a>
-                    </div>
-                </div>
-            </div>
-            <div class="table-title">
-                <div class="row">
-                    <div class="col-sm-6">
                         <h2>Manage <b>subject</b></h2>
                     </div>
                     <div class="col-sm-6">
@@ -348,7 +336,7 @@
                 <tbody th:each="subject: ${subjectList}">
                 <tr>
                     <td> <a th:text="${subject.getTitle()}"
-                            th:href="@{/admin/topic/{id}(id=${subject.getId()})}"> </a></td>
+                            th:href="@{/admin/{language}/{id}(language=${subject.getTitle()},id=${subject.getId()})}"> </a></td>
                     <td >
                         <a type="button"  data-toggle="modal"
                            data-target="#myModal" th:attr="onclick=|updateId('${subject.getId()}')|">
@@ -412,15 +400,15 @@
                 </tbody>
 
             </table>
-            <div class="clearfix">
-                <ul class="pagination">
-                    <li class="page-item disabled"><a href="#">Previous</a></li>
-                    <li class="page-item"><a href="#" class="page-link">1</a></li>
-                    <li class="page-item active"><a href="#" class="page-link">2</a></li>
-                    <li class="page-item"><a href="#" class="page-link">3</a></li>
-                    <li class="page-item"><a href="#" class="page-link">Next</a></li>
-                </ul>
-            </div>
+<!--            <div class="clearfix">-->
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item disabled"><a href="#">Previous</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">1</a></li>-->
+<!--                    <li class="page-item active"><a href="#" class="page-link">2</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">3</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
         </div>
     </div>
 </div>

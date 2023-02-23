@@ -2,11 +2,9 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
-import uz.pdp.spring_boot_security_web.model.dto.LanguageRequestDTO;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDTO;
 import uz.pdp.spring_boot_security_web.service.LanguageService;
 import uz.pdp.spring_boot_security_web.service.TaskService;
@@ -30,11 +28,11 @@ public class TopicController {
         modelAndView.addObject("taskList", taskService.getTaskListByTopicAndLanguage(
                 language, topic
         ));
-        modelAndView.setViewName("task");
+        modelAndView.setViewName("question");
         return modelAndView;
     }
 
-    @GetMapping("admin/topic/{id}")
+    @GetMapping("admin/{language}/{id}")
         public ModelAndView topicHome( @PathVariable int id, ModelAndView model){
         LanguageEntity byId = languageService.getById(id);
         model.addObject("language", byId);
@@ -65,6 +63,6 @@ public class TopicController {
             @ModelAttribute TopicRequestDTO topicRequestDTO
     ) {
         topicService.update(id, topicRequestDTO);
-        return "redirect: ";
+        return "redirect:/admin/lang";
     }
 }

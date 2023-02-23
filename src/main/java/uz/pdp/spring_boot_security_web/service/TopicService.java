@@ -75,4 +75,8 @@ public class TopicService {
         return topicRepository.save(topic);
     }
 
+    public TopicEntity getById(int id) {
+        Optional<TopicEntity> byId = topicRepository.findById(id);
+        return byId.orElse(null);
+    }
 }
