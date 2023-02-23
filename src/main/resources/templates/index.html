@@ -8,6 +8,7 @@
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
 <div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
 <div class="tabc">
+    <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
     <nav>
         <tr th:each="subject: ${subjectList}">
             <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>

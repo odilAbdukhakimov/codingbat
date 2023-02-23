@@ -16,12 +16,18 @@ import uz.pdp.spring_boot_security_web.service.TopicService;
 public class LanguageController {
     private final LanguageService languageService;
 
+    @GetMapping("")
+    public  String langPage(ModelAndView model){
+        model.addObject("subjectList", languageService.languageEntityList());
+        return "language";
+    }
+
     @PostMapping("/add")
     public String addLanguage(
             @ModelAttribute LanguageRequestDTO languageRequestDTO
     ) {
         languageService.addLanguage(languageRequestDTO);
-        return "redirect:/";
+        return "language";
     }
 
     @DeleteMapping("/del/{id}")

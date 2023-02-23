@@ -42,7 +42,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/*").permitAll()
+                .requestMatchers( "/**").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Java/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Python/**").permitAll()

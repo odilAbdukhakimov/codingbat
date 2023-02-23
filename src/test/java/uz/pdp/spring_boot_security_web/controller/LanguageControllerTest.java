@@ -4,16 +4,18 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.testcontainers.lifecycle.Startables;
 import uz.pdp.spring_boot_security_web.service.LanguageService;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+@WithUserDetails("a")
 class LanguageControllerTest extends BaseTest {
     private static final String PATH_ADD = "/admin/lang/add";
     private static final String PATH_DEL = "/admin/lang/delete";
@@ -27,9 +29,11 @@ class LanguageControllerTest extends BaseTest {
         languageRepository.deleteAll();
     }
 
+
+
     @Test
     void addLanguage() throws Exception {
-        callAdd().andExpect(status().isOk());
+        callAdd().andExpect(authenticated());
     }
     @Test
     void deleteLanguageShouldReturnOKStatus() throws Exception{
