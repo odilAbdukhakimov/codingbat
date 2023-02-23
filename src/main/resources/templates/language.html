@@ -350,11 +350,11 @@
                     <td><br th:text="${subject.getTitle()}"><br></td>
                     <td >
                         <a type="button"  data-toggle="modal"
-                           data-target="#myModal" th:attr="onclick=|updateId('${subject.id}')|">
+                           data-target="#myModal" th:attr="onclick=|updateId('${subject.getId()}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
                         <a type="button"  data-toggle="modal"
-                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${subject.id}')|">
+                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${subject.getId()}')|">
                             <i class="material-icons btn btn-danger">&#xE872;</i>
                         </a>
                     </td>
@@ -452,13 +452,13 @@
 <script>
     function updateId(subjectId){
         console.log(subjectId)
-        let var2 = document.getElementById("updateId").action="/adminSubject/editSubject/"+subjectId;
-        let var21 = document.getElementById("myModal").action="/adminSubject/editSubject/"+subjectId;
+        let var2 = document.getElementById("updateId").action="/admin/lang/update/"+subjectId;
+        // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
         console.log(var2)
     }
     function deleteId(subjectId){
         console.log(subjectId)
-        let var2 = document.getElementById("deleteId").action="/adminSubject/deleteSubject/"+subjectId;
+        let var2 = document.getElementById("deleteId").action="/admin/lang/del/"+subjectId;
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
         console.log(var2)
     }

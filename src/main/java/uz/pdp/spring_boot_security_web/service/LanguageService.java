@@ -44,8 +44,8 @@ public class LanguageService {
         languageRepository.deleteById(id);
     }
 
-    public LanguageEntity update(String name, LanguageRequestDTO newLanguageRequestDTO) {
-        Optional<LanguageEntity> byTitle = languageRepository.findByTitle(name);
+    public LanguageEntity update(int id, LanguageRequestDTO newLanguageRequestDTO) {
+        Optional<LanguageEntity> byTitle = languageRepository.findById(id);
         if (byTitle.isEmpty()) {
             throw new RecordNotFountException("The language is not found");
         }
