@@ -2,6 +2,7 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
@@ -18,6 +19,13 @@ public class AdminController {
     ) {
 
        userService.addAdmin(userRegisterDTO);
+        return "CrudAdmin";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    public String adminList(){
+       userService.adminList();
         return "CrudAdmin";
     }
 }

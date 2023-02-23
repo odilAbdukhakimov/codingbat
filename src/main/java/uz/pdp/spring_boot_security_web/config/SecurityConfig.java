@@ -50,6 +50,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/admin/add").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/admin/list").permitAll()
 //                .requestMatchers(HttpMethod.DELETE, "/admin/lang/delete/*").permitAll()
                 .anyRequest()
                 .authenticated()

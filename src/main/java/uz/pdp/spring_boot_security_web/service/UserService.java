@@ -9,6 +9,7 @@ import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,7 +46,15 @@ public class UserService {
 
     }
 
-    public List<UserEntity> userEntityList(){
-        return userRepository.findAll();
+    public List<UserEntity> adminList(){
+        List<UserEntity> all = userRepository.findAll();
+        List<UserEntity>role=new ArrayList<>();
+        for (UserEntity userEntity:all){
+            if (!userEntity.getRolePermissionEntities().getRoleEnum().equals("USER")){
+                role.add(userEntity);
+            }
+        }
+
+        return role;
     }
 }
