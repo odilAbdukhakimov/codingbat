@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div >
+<form th:method="post" th:action="@{/api/admin/update/{username}(username=${userEntity.getUsername()})}" th:object="${userEntity}" >
+
+    <label for="lusername">New Username:</label><br>
+    <input type="text" id="lusername" name="username"><br>
+
+    <label for="lname">New Name:</label><br>
+    <input type="text" id="lname" name="name"><br>
+
+    <label for="lpassword">New password:</label><br>
+    <input type="text" id="lpassword" name="password"><br>
+
+    <label for="lrole">New Roles:</label><br>
+    <input type="text" id="lrole" name="role"><br>
+
+    <label for="lpermission">New Username:</label><br>
+    <input type="text" id="lpermission" name="permissions"><br><br>
+    <input type="submit" value="Submit">
+
+</form>
+</div>
+</body>
+</html>

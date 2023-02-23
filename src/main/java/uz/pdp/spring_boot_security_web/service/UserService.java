@@ -10,6 +10,7 @@ import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,7 +42,7 @@ public class UserService {
                 oldUserEntity.setName(userRegisterDTO.getName());
             }
             if (userRegisterDTO.getPassword()!=null){
-                oldUserEntity.setPassword(userRegisterDTO.getPassword());
+                oldUserEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
             }
             if (userRegisterDTO.getPermissions()!=null){
                 rolePermission.setPermissionEnum(userRegisterDTO.getPermissions());
@@ -79,5 +80,22 @@ public class UserService {
 
     public List<UserEntity> userEntityList(){
         return userRepository.findAll();
+    }
+
+    public List<UserEntity> getALlAdmins() {
+        List<UserEntity> all = userRepository.findAll();
+        List<UserEntity> admins= new ArrayList<>();
+        for (UserEntity userEntity :all){
+            if(userEntity.getRolePermissionEntities() !=null){
+                List<String> roleEnum = userEntity.getRolePermissionEntities().getRoleEnum();
+                for (String role:roleEnum){
+                    if (role.equals("ADMIN")) {
+                        admins.add(userEntity);
+                        break;
+                    }
+                }
+            }
+        }
+        return admins;
     }
 }

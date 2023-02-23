@@ -42,6 +42,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
+                .requestMatchers( "/api/admin/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/*").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Java/**").permitAll()
@@ -49,7 +50,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/admin/add").permitAll()
 //                .requestMatchers(HttpMethod.DELETE, "/admin/lang/delete/*").permitAll()
                 .anyRequest()
                 .authenticated()
