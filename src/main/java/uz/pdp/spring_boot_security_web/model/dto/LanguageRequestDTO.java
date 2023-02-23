@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class LanguageRequestDTO {
+
    private String title;
 }
