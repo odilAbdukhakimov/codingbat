@@ -24,11 +24,14 @@ public class TopicService {
     }
 
     public TopicEntity add(TopicRequestDTO topicRequestDTO) {
-        LanguageEntity language = languageRepository.findByTitle(topicRequestDTO.getLanguageName()).get();
+        Optional<LanguageEntity> languageOptional = languageRepository.findByTitle(topicRequestDTO.getLanguage());
+        if (languageOptional.isEmpty()) {
+            return null;
+        }
         TopicEntity topic = TopicEntity.builder()
                 .name(topicRequestDTO.getName())
                 .content(topicRequestDTO.getContent())
-                .languageEntity(language)
+                .languageEntity(languageOptional.get())
                 .build();
 //        if (language.getTopicEntities() == null) {
 //            language.setTopicEntities(List.of(
@@ -52,10 +55,10 @@ public class TopicService {
         if (byId.isEmpty())
             return null;
         TopicEntity topic = byId.get();
-        if (topicRequestDTO.getLanguageName() != null) {
-            LanguageEntity language = languageRepository.findByTitle(topicRequestDTO.getLanguageName()).get();
-            topic.setLanguageEntity(language);
-        }
+//        if (topicRequestDTO.getLanguageId() != null) {
+//            Optional<LanguageEntity> byId1 = languageRepository.findById(topicRequestDTO.getLanguageId());
+//            byId1.ifPresent(topic::setLanguageEntity);
+//        }
         if (topicRequestDTO.getContent() != null)
             topic.setContent(topicRequestDTO.getContent());
         if (topicRequestDTO.getName() != null)

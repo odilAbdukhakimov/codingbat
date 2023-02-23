@@ -53,4 +53,9 @@ public class LanguageService {
         language.setTitle(newLanguageRequestDTO.getTitle());
         return languageRepository.save(language);
     }
+
+    public LanguageEntity getById(int id) {
+        Optional<LanguageEntity> byId = languageRepository.findById(id);
+        return byId.orElse(null);
+    }
 }
