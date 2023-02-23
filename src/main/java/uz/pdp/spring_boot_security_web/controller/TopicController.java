@@ -17,14 +17,16 @@ public class TopicController {
     private final LanguageService languageService;
     private final TaskService taskService;
 
-    @GetMapping("/{language}/{id}")
+    @GetMapping("/{language}/{topic}")
     public ModelAndView getTaskList(
             ModelAndView modelAndView,
             @PathVariable String language,
-            @PathVariable int id
+            @PathVariable String topic
     ) {
         modelAndView.addObject("subjectList", languageService.languageEntityList());
-        modelAndView.addObject("taskList", taskService.getTaskList(id));
+        modelAndView.addObject("taskList", taskService.getTaskListByTopicAndLanguage(
+                language, topic
+        ));
         modelAndView.setViewName("task");
         return modelAndView;
     }

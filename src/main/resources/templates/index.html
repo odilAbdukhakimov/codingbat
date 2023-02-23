@@ -14,39 +14,39 @@
         </tr>
 
 
-
     </nav>
 
 
     <div class="alls">
-                <div  th:each="topic: ${topicList}">
+        <div th:each="topic: ${topicList}">
 
-                    <div class="content-main">
-                        <h4>
-                            <a th:text="${topic.getName()}"
-                                             th:href="@{/{name}/{id}(name=${lang}, id=${topic.getId()})}"></a>
-                    </h4>
-                        <img
-                            src="../static/s.jpg"><img src="../static/s.jpg"><img src="../static/s.jpg"><img src="../static/s.jpg"><img
-                            src="../static/s.jpg"><img src="../static/s.jpg"><img src="../static/s.jpg"><img src="../static/s.jpg"><br>
-                        <h4 th:text="${topic.getContent()}"></h4>
-                        <br><img src="../static/c.jpg"></div>
-                    </div>
-                </div>
-
-
-
-
+            <div class="content-main">
+                <h4>
+                    <a th:text="${topic.getName()}"
+                       th:href="@{/{name}/{topic}(name=${lang}, topic=${topic.getName()})}"></a>
+                </h4>
+                <img
+                        src="../static/s.jpg"><img src="../static/s.jpg"><img src="../static/s.jpg"><img
+                    src="../static/s.jpg"><img
+                    src="../static/s.jpg"><img src="../static/s.jpg"><img src="../static/s.jpg"><img
+                    src="../static/s.jpg"><br>
+                <h4 th:text="${topic.getContent()}"></h4>
+                <br><img src="../static/c.jpg"></div>
+        </div>
     </div>
 
+
+</div>
+
 <style>
-    .alls{
+    .alls {
         width: 1400px !important;
         display: flex !important;
-flex-wrap: wrap;
+        flex-wrap: wrap;
         gap: 30px;
     }
-    .content-main{
+
+    .content-main {
         width: 250px;
 
         max-width: 300px;
@@ -54,6 +54,7 @@ flex-wrap: wrap;
         border: 1px solid gray;
         border-radius: 1em;
     }
+
     html, body {
         font-size: small;
         font-family: verdana, arial, helvetica, sans-serif;
@@ -141,12 +142,10 @@ flex-wrap: wrap;
     /* These are more normal names, tied to div */
 
 
-
     /* div class to reset the floats to normal */
 
 
     /* The little box that summarizes a section. Margin is box vs. outside, padding is within the box */
-
 
 
     /* used to indent the Challenge content similarly to div.summ */
@@ -289,9 +288,8 @@ flex-wrap: wrap;
     26px here works with a line of text */
 
 
-
     /* container around tab, forcing it below login widget. clear:both is required */
-  
+
 
     /* nav/tab stuff here */
     nav ul {
@@ -320,7 +318,6 @@ flex-wrap: wrap;
         margin: 0 5px 0 0;
     }
     */
-
 
 
     #content {
