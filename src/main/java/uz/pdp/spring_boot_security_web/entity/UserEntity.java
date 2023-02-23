@@ -24,6 +24,8 @@ public class UserEntity extends BaseEntity implements UserDetails {
     private String name;
     private String username;
     private String password;
+    private String email;
+    private String emailCode;
 
     @Column(name = "logo_url")
     private String logoUrl;
@@ -73,6 +75,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
             return UserEntity.builder()
                     .username(userRegisterDTO.getUsername())
                     .name(userRegisterDTO.getName())
+                    .email(userRegisterDTO.getEmail())
                     .rolePermissionEntities(rolePermission)
                     .build();
         }
@@ -80,6 +83,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
         return UserEntity.builder()
                 .username(userRegisterDTO.getUsername())
                 .name(userRegisterDTO.getName())
+                .email(userRegisterDTO.getEmail())
                 .rolePermissionEntities(new RolePermissionEntity(userRegisterDTO.getRole(),userRegisterDTO.getPermissions()))
                 .build();
     }

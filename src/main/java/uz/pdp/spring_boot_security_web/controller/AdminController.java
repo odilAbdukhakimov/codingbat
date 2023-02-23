@@ -7,17 +7,18 @@ import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
-    @ResponseBody
+   // @ResponseBody
     @PostMapping("/add")
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO
     ) {
-
        userService.addAdmin(userRegisterDTO);
         return "CrudAdmin";
     }
