@@ -4,9 +4,47 @@
     <link rel="stylesheet" type="text/css" href="codingbat.css">
 
     <title>CodingBat Java</title></head>
+
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
 <div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
+<div style="float:right;  margin:0px; border: 1px solid lightgray;">
+    <table>
+        <div class="box">
+            <div class="form-box">
+                <form action="/adduser" method="post">
+                    <ul>
+                        <li>
+                            <input type="file" name="file" placeholder="Enter file ...">
+                        </li>
+                    </ul>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    </center>
+                </form>
+            </div>
+        </div>
+
+        <form method="post" action="/login"></form>
+        <tbody>
+        <tr>
+            <td>id/email</td>
+            <td><input type="text" name="uname" size="20"></td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td><input type="password" name="pw" size="20"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" name="dologin" value="log in"></td>
+        </tr>
+        <input type="hidden" name="fromurl" value="/java">
+        <tr>
+            <td colspan="2"><a href="/reset">forgot password</a> | <a href="/pref?docreate=1">create account</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <div class="tabc">
     <nav>
         <tr th:each="subject: ${subjectList}">
@@ -16,12 +54,14 @@
 
         </tr>
     </nav>
+
     <div class="tabin">
         <div class="floatleft">
             <table>
                 <tbody>
                 <tr th:each="task: ${taskList}">
-                    <td width="200">&nbsp;<img src="/c.jpg"><a th:text="${task.getName()}" th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font
+                    <td width="200">&nbsp;<img src="/c.jpg"><a th:text="${task.getName()}"
+                                                               th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font
                             color="gray">H</font></td>
                 </tr>
                 </tbody>

@@ -65,7 +65,7 @@ public class UserService {
            simpleMailMessage.setFrom("bekzod@gaiml.com");
            simpleMailMessage.setTo(email);
            simpleMailMessage.setSubject("Keldi kod");
-           simpleMailMessage.setText("Assalomu alaykum");
+           simpleMailMessage.setText("Assalomu alaykum "+email+" siz ruyxatdan utiz ");
            javaMailSender.send(simpleMailMessage);
            return true;
        }catch (Exception e){
