@@ -63,11 +63,9 @@ public class UserService {
     }
 
     private void checkByUsername(String username) {
-        UserEntity userEntity = getByUser(username);
-        for (String role : userEntity.getRolePermissionEntities().getRoleEnum()) {
-            if (role.equals("ADMIN")){
-                throw new RecordAlreadyExist(String.format("username %s already exists", username));
-            }
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        if (userEntity.isPresent()){
+            throw new IllegalArgumentException(String.format("username %s already exist", username));
         }
     }
     public void addAdmin(UserRegisterDTO userRegisterDTO){
@@ -78,8 +76,16 @@ public class UserService {
 
     }
 
-    public List<UserEntity> userEntityList(){
-        return userRepository.findAll();
+    public List<UserEntity> adminList(){
+        List<UserEntity> all = userRepository.findAll();
+        List<UserEntity>role=new ArrayList<>();
+        for (UserEntity userEntity:all){
+            if (!userEntity.getRolePermissionEntities().getRoleEnum().equals("USER")){
+                role.add(userEntity);
+            }
+        }
+
+        return role;
     }
 
     public List<UserEntity> getALlAdmins() {

@@ -9,10 +9,9 @@ import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 @Controller
-@RequestMapping("/api/admin/")
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
-
     private final UserService userService;
 
     @PostMapping("/update/{username}")
@@ -40,10 +39,17 @@ public class AdminController {
     }
     @PostMapping("/add")
     public String addUser(
-           @ModelAttribute UserRegisterDTO userRegisterDTO
+            @ModelAttribute UserRegisterDTO userRegisterDTO
     ) {
 
-        userService.addAdmin(userRegisterDTO);
+       userService.addAdmin(userRegisterDTO);
+        return "CrudAdmin";
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    public String adminList(){
+       userService.adminList();
         return "CrudAdmin";
     }
 }
