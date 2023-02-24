@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
+import uz.pdp.spring_boot_security_web.entity.role.PermissionEnum;
+import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 
 import java.util.List;
