@@ -1,0 +1,50 @@
+<!doctype html>
+<head>
+    <meta charset=utf-8/>
+    <link rel=stylesheet type=text/css href=css/createAccount.css>
+    <title>CodingBat Prefs</title>
+</head>
+<body>
+<br><a href=/><span style='font-size:200%;'>CodingBat</span></a> code practice<p>
+<h2>Create Account</h2>
+<p style='max-width:800px'>Please enter information to create a new account. We use your email address as your id just
+    so it's memorable and for password reset, not for spamming. New accounts automatically pick up any saved or done
+    problems of the current session. The name field is not required, but with the Teacher Share feature, it can help the
+    teacher see who is who. The password should have at least 6 characters.
+<p>
+<form name=pform action='/api/user/add' method=post>
+    <table>
+        <tr>
+            <td width=200><label>Name</label></td>
+            <td><input type=text name="name" value=""></td>
+        </tr>
+        <tr>
+            <td width=200><label>Username</label></td>
+            <td><input type=text name="username" value=""></td>
+        </tr>
+        <tr>
+            <td width=200><label>Email (used as account id)</label></td>
+            <td><input type=text size=42 name="email" value=""></td>
+        </tr>
+        <tr>
+            <td width=200><label>Password</label></td>
+            <td><input type=password size=42 name="password" value=""></td>
+            <td>
+                <button onclick='var pw=document.pform.pw1.type=="password"; document.pform.pw1.type=pw?"text":"password"; return false;'>
+                    show/hide
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td width=200><label>Photo</label></td>
+            <td><input type=file name="file" value=""></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type=submit name=dosavecreate value='Create Account'></td>
+        </tr>
+    </table>
+</form>
+<p><a href=/privacy.html>privacy statement</a>
+</body></html>
+

@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AuthController {
     @GetMapping("/register")
     public String register(){
-        return "register";
+        return "createAccount";
+    }
+    @GetMapping("/forget-password")
+    public String forgetPassword(){
+        return "forgetPassword";
     }
 
 }
