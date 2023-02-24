@@ -42,7 +42,8 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers( "/api/admin/**").permitAll()
+                .requestMatchers( "/api/**").permitAll()
+                .requestMatchers( "/static/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/*").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Java/**").permitAll()

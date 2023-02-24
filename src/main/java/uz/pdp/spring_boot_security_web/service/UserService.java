@@ -38,8 +38,9 @@ public class UserService {
         RolePermissionEntity rolePermission=new RolePermissionEntity();
         if (byUsername.isPresent()){
             UserEntity oldUserEntity = byUsername.get();
-            if (userRegisterDTO.getName()!=null){
+            if (userRegisterDTO.getName()!=null && !userRegisterDTO.getName().equals("")){
                 oldUserEntity.setName(userRegisterDTO.getName());
+                System.out.println("Name : -> "+userRegisterDTO.getName());
             }
             if (userRegisterDTO.getPassword()!=null){
                 oldUserEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
@@ -52,7 +53,7 @@ public class UserService {
                 rolePermission.setRoleEnum(userRegisterDTO.getRole());
                 oldUserEntity.setRolePermissionEntities(rolePermission);
             }
-            if (userRegisterDTO.getUsername()!=null){
+            if (userRegisterDTO.getUsername()!=null && !userRegisterDTO.getUsername().equals("")){
                 oldUserEntity.setUsername(userRegisterDTO.getUsername());
             }
             userRepository.save(oldUserEntity);
@@ -103,5 +104,14 @@ public class UserService {
             }
         }
         return admins;
+    }
+
+    public void delete(String username) {
+        Optional<UserEntity> byUsername = userRepository.findByUsername(username);
+        if (byUsername.isPresent()){
+            userRepository.delete(byUsername.get());
+        }else {
+            throw new RecordNotFountException(String.format("username %s not found in  database",username));
+        }
     }
 }

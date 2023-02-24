@@ -15,9 +15,10 @@ public class AdminController {
     private final UserService userService;
 
     @PostMapping("/update/{username}")
-    public String updateAdmin(@PathVariable("username") String username ,@ModelAttribute UserRegisterDTO userRegisterDTO){
+    public String updateAdmin(@PathVariable("username") String username ,@ModelAttribute UserRegisterDTO userRegisterDTO , Model model){
 
         userService.update(username, userRegisterDTO);
+        model.addAttribute("adminList", userService.getALlAdmins());
         return "CrudAdmin";
     }
     @GetMapping("/update/{username}")
@@ -39,17 +40,17 @@ public class AdminController {
     }
     @PostMapping("/add")
     public String addUser(
-            @ModelAttribute UserRegisterDTO userRegisterDTO
+            @ModelAttribute UserRegisterDTO userRegisterDTO ,Model model
     ) {
 
        userService.addAdmin(userRegisterDTO);
+       model.addAttribute("adminList",userService.getALlAdmins());
         return "CrudAdmin";
     }
-
-    @ResponseBody
-    @GetMapping("/list")
-    public String adminList(){
-       userService.adminList();
+    @DeleteMapping("/delete/{username}")
+    public String delete(@PathVariable("username") String username, Model model){
+        userService.delete(username);
+        model.addAttribute("adminList",userService.getALlAdmins());
         return "CrudAdmin";
     }
 }
