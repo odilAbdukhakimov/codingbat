@@ -345,16 +345,17 @@
                     <th>ACTIONS</th>
                 </tr>
                 </thead>
-                <tbody th:each="task: ${taskList}">
+                <tbody th:each="topic: ${topicList}">
                 <tr>
-                    <td> <a th:text="${task.getName()}"> </a></td>
+                    <td> <a th:text="${topic.getName()}"
+                            th:href="@{/admin/{language}/{topic}/{id}(language=${topic.getLanguageEntity().getTitle()},topic=${topic.getName()},id=${topic.getId()})}"> </a></td>
                     <td >
                         <a type="button"  data-toggle="modal"
-                           data-target="#myModal" th:attr="onclick=|updateId('${task.getId()}')|">
+                           data-target="#myModal" th:attr="onclick=|updateId('${topic.getId()}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
                         <a type="button"  data-toggle="modal"
-                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${task.getId()}')|">
+                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${topic.getId()}')|">
                             <i class="material-icons btn btn-danger">&#xE872;</i>
                         </a>
                     </td>
@@ -363,7 +364,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Task Update</h5>
+                                    <h5 class="modal-title">Topic Update</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -371,12 +372,12 @@
                                 <div class="modal-body">
                                     <form id="updateId" method="post">
                                         <div class="form-group">
-                                            <label class="control-label" >Task Name:</label>
-                                            <input type="text"  name="name"
-                                                   class="form-control" placeholder="Enter task new name" >
-                                            <label class="control-label" >Task Title:</label>
-                                            <input type="text" name="title"
-                                                   class="form-control" placeholder="Enter task new title" >
+                                            <label class="control-label" >Topic Name:</label>
+                                            <input type="text" required name="name"
+                                                   class="form-control" placeholder="Enter topic new name" >
+                                            <label class="control-label" >Topic Content:</label>
+                                            <input type="text" required name="content"
+                                                   class="form-control" placeholder="Enter topic new content" >
                                         </div>
                                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                                         <button type="submit" class="btn btn-success">Submit</button>
@@ -392,7 +393,7 @@
                             <div class="modal-content">
                                 <form id="deleteId" method="get">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Delete Task</h4>
+                                        <h4 class="modal-title">Delete Topic</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
@@ -431,19 +432,20 @@
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/admin/task/add}" method="post">
+            <form th:action="@{/admin/topic/add}" method="post">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Task</h4>
+                    <!--                                                                              Userni add qilish page-->
+                    <h4 class="modal-title">Add Topic</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Task Name</label>
-                        <input type="text" class="form-control" placeholder="Enter task Name" name="name">
-                        <label class="control-label" >Task title :</label>
-                        <input type="text" name="title"
-                               class="form-control" placeholder="Enter task title" >
-                        <input type="hidden" name="topicId" th:value="${topic.getId()}">
+                        <label>Title</label>
+                        <input type="text" class="form-control" name="name">
+                        <label class="control-label" >Topic Content:</label>
+                        <input type="text" name="content"
+                               class="form-control" placeholder="Enter topic content" >
+                        <input type="hidden" name="language" th:value="${language.getTitle()}">
 
                     </div>
                 </div>
@@ -457,13 +459,14 @@
 </div>
 
 <script>
-    function updateId(taskId){
-        let var2 = document.getElementById("updateId").action="/admin/task/update/"+taskId;
+    function updateId(topicId){
+        let var2 = document.getElementById("updateId").action="/admin/topic/update/"+topicId;
         // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
         console.log(var2)
     }
-    function deleteId(taskId){
-        let var2 = document.getElementById("deleteId").action="/admin/task/del/"+taskId
+    function deleteId(topicId){
+        console.log(topicId)
+        let var2 = document.getElementById("deleteId").action="/admin/topic/del/"+topicId;
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
         console.log(var2)
     }

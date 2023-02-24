@@ -314,18 +314,6 @@
 <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
-<!--            <div class="table-title">-->
-<!--                <div class="row">-->
-<!--&lt;!&ndash;                    <div class="col-sm-6">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a th:href="@{/admin/allUsers}" class="btn btn-success">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <span>User Page</span></a>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <span>Topic Page</span></a>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <span>Question Page</span></a>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
@@ -333,7 +321,7 @@
                     </div>
                     <div class="col-sm-6">
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Add New Topic</span></a>
+                                class="material-icons">&#xE147;</i> <span>Add New Subject</span></a>
                     </div>
                 </div>
             </div>
@@ -345,16 +333,17 @@
                     <th>ACTIONS</th>
                 </tr>
                 </thead>
-                <tbody th:each="task: ${taskList}">
+                <tbody th:each="subject: ${subjectList}">
                 <tr>
-                    <td> <a th:text="${task.getName()}"> </a></td>
+                    <td> <a th:text="${subject.getTitle()}"
+                            th:href="@{/admin/{language}/{id}(language=${subject.getTitle()},id=${subject.getId()})}"> </a></td>
                     <td >
                         <a type="button"  data-toggle="modal"
-                           data-target="#myModal" th:attr="onclick=|updateId('${task.getId()}')|">
+                           data-target="#myModal" th:attr="onclick=|updateId('${subject.getId()}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
                         <a type="button"  data-toggle="modal"
-                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${task.getId()}')|">
+                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${subject.getId()}')|">
                             <i class="material-icons btn btn-danger">&#xE872;</i>
                         </a>
                     </td>
@@ -363,7 +352,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Task Update</h5>
+                                    <h5 class="modal-title">Subject Update</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -371,12 +360,9 @@
                                 <div class="modal-body">
                                     <form id="updateId" method="post">
                                         <div class="form-group">
-                                            <label class="control-label" >Task Name:</label>
-                                            <input type="text"  name="name"
-                                                   class="form-control" placeholder="Enter task new name" >
-                                            <label class="control-label" >Task Title:</label>
-                                            <input type="text" name="title"
-                                                   class="form-control" placeholder="Enter task new title" >
+                                            <label class="control-label" >Subject Title:</label>
+                                            <input type="text" required name="title"
+                                                   class="form-control" placeholder="Enter subject title" >
                                         </div>
                                         <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                                         <button type="submit" class="btn btn-success">Submit</button>
@@ -392,7 +378,7 @@
                             <div class="modal-content">
                                 <form id="deleteId" method="get">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Delete Task</h4>
+                                        <h4 class="modal-title">Delete Subject</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
@@ -431,20 +417,16 @@
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/admin/task/add}" method="post">
+            <form th:action="@{/admin/lang/add}" method="post">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Task</h4>
+                    <!--                                                                              Userni add qilish page-->
+                    <h4 class="modal-title">Add Subject</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Task Name</label>
-                        <input type="text" class="form-control" placeholder="Enter task Name" name="name">
-                        <label class="control-label" >Task title :</label>
-                        <input type="text" name="title"
-                               class="form-control" placeholder="Enter task title" >
-                        <input type="hidden" name="topicId" th:value="${topic.getId()}">
-
+                        <label>Title</label>
+                        <input type="text" class="form-control" name="title">
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -457,13 +439,15 @@
 </div>
 
 <script>
-    function updateId(taskId){
-        let var2 = document.getElementById("updateId").action="/admin/task/update/"+taskId;
+    function updateId(subjectId){
+        console.log(subjectId)
+        let var2 = document.getElementById("updateId").action="/admin/lang/update/"+subjectId;
         // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
         console.log(var2)
     }
-    function deleteId(taskId){
-        let var2 = document.getElementById("deleteId").action="/admin/task/del/"+taskId
+    function deleteId(subjectId){
+        console.log(subjectId)
+        let var2 = document.getElementById("deleteId").action="/admin/lang/del/"+subjectId;
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
         console.log(var2)
     }

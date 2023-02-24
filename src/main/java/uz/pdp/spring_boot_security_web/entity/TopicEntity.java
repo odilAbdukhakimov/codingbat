@@ -15,7 +15,7 @@ public class TopicEntity extends BaseEntity {
 
     private String name;
     private String content;
-    @ManyToOne
+    @ManyToOne()
     private LanguageEntity languageEntity;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<TaskEntity> taskEntityList;

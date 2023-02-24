@@ -6,5 +6,5 @@ import lombok.Data;
 public class TopicRequestDTO {
     private String name;
     private String content;
-    private String languageName;
+    private String language;
 }
