@@ -1,10 +1,45 @@
 <!doctype html>
+<html lang="en"  xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="codingbat.css">
 
     <title>CodingBat Java</title></head>
 <body>
+<!--User login part -->
+<div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+    <table>
+        <form method=post action=/login th:object="${currentUser}">
+            <tr>
+                <td>id/email</td>
+                <td><input type=text th:field="*{username}" name=uname size=20 ></td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td><input type=password name=pw size=20 th:field="*{password}"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type=submit name=dologin value='log in'></td>
+            </tr><input type=hidden name=fromurl value='/java'>
+        </form>
+        <tr>
+            <td colspan=2><a href=/reset>forgot password</a> | <a href='/pref?docreate=1'>create account</a></td>
+        </tr>
+            <tr>
+<!--           -->
+                <td><a href="/api/picture/show">image</a> </td>
+            </tr>
+
+
+<!--</td>-->
+<!--</tr>-->
+</table>
+</div>
+
+
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
 <div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
 <a href="/api/admin/show"> show admin</a>

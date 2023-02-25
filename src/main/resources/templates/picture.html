@@ -9,14 +9,21 @@
 <body>
 <a href="/">home</a><br>
 <div>
-<form action="/api/picture/upload" method="post" enctype="multipart/form-data">
+    <form th:action="@{/api/picture/upload/{username}(username=${currentUser.getUsername()})}" th:object="${currentUser}" method="post" enctype="multipart/form-data">
+        <tr>
+            <label for="myfile">image:</label>
+            <input type="file" id="myfile" name="file">
+            <input type="submit" value="Submit">
+        </tr>
+    </form>
+<!--<form action="/api/picture/upload" method="post" enctype="multipart/form-data">-->
 
-<label for="myfile">Select a file:</label>
-<input type="file" id="myfile" name="file">
-    <br>
-    <input type="submit" value="Submit">
+<!--<label for="myfile">Select a file:</label>-->
+<!--<input type="file" id="myfile" name="file">-->
+<!--    <br>-->
+<!--<input type="submit" value="Submit">-->
 
-</form>
+<!--</form>-->
     <br>
     <table>
         <tr>

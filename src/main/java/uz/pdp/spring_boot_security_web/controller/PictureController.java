@@ -6,6 +6,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -13,8 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import uz.pdp.spring_boot_security_web.entity.AttachmentEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.repository.AttachmentRepository;
 import uz.pdp.spring_boot_security_web.service.ImageService;
+import uz.pdp.spring_boot_security_web.service.UserService;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,6 +35,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PictureController {
     private final ImageService imageService;
+    private final UserService userService;
     private static final String uploadPath = "downloadPictures";
     private static final String getPath = "../static/";
     private static final String uploadPath2 = "D:/Spring-framwork/codingbat/src/main/resources/static";
@@ -41,15 +47,20 @@ public class PictureController {
     }
 
     //    @RequestParam("file") MultipartFile file
-    @PostMapping("/upload")
-    public String uploadFileSystem(MultipartHttpServletRequest request) throws IOException {
+    @PostMapping("/upload/{username}")
+    public String uploadFileSystem( @PathVariable("username") String username,
+                                    MultipartHttpServletRequest request,
+                                    Model model) throws IOException {
+
         Iterator<String> fileName = request.getFileNames();
-        imageService.uploadImage(request.getFile(fileName.next()));
-        return "CrudAdmin";
+        imageService.uploadImage(request.getFile(fileName.next()),username);
+        model.addAttribute("currentUser",userService.getCurrentUser());
+        return "index";
     }
 
     @GetMapping("/show")
-    public String showAddPicture() {
+    public String showAddPicture( Model model) {
+        model.addAttribute("currentUser",userService.getCurrentUser());
         return "picture";
     }
 
