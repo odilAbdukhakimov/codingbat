@@ -6,7 +6,9 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.spring_boot_security_web.entity.AttachmentEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.repository.AttachmentRepository;
+import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,13 +23,14 @@ import java.util.UUID;
 public class ImageService {
 
     private final AttachmentRepository attachmentRepository;
+    private final UserService userService;
 
     private static final String uploadPath = "downloadPictures";
     private static final String getPath = "../static/";
     private static final String uploadPath2 = "D:/Spring-framwork/codingbat/src/main/resources/static";
 
 
-    public void uploadImage(MultipartFile file) throws IOException {
+    public void uploadImage(MultipartFile file ,String username) throws IOException {
 
         if (file != null) {
             String originalFileName = file.getOriginalFilename();
@@ -44,7 +47,9 @@ public class ImageService {
 
             attachment.setName(randomName);
             attachmentRepository.save(attachment);
-
+            UserEntity byUser = userService.getByUser(username);
+            byUser.setLogoUrl(randomName);
+            userService.update(byUser);
             Path path = Paths.get(uploadPath2 + "/" + randomName);
             Files.copy(file.getInputStream(), path);
         }

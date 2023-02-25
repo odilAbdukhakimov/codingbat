@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.service.LanguageService;
 import uz.pdp.spring_boot_security_web.service.TopicService;
+import uz.pdp.spring_boot_security_web.service.UserService;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping()
 public class HomeController {
 
+    private final UserService userService;
     private final LanguageService languageService;
     private final TopicService topicService;
 
@@ -25,6 +27,7 @@ public class HomeController {
        modelAndView.addObject("subjectList", languageService.languageEntityList());
        modelAndView.addObject("lang","Java");
        modelAndView.addObject("topicList", languageService.getLanguage("Java").getTopicEntities());
+       modelAndView.addObject("currentUser",userService.getCurrentUser());
        modelAndView.setViewName("index");
        return modelAndView;
     }
@@ -37,6 +40,7 @@ public class HomeController {
         model.addObject("subjectList", languageService.languageEntityList());
         model.addObject("lang", language);
         model.addObject("topicList", topicService.getList(language));
+        model.addObject("currentUser",userService.getCurrentUser());
         model.setViewName("index");
         return model;
     }
