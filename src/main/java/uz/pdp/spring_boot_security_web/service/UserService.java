@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordAlreadyExist;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,10 +44,16 @@ public class UserService {
             }
         }
     }
-    public void addAdmin(UserRegisterDTO userRegisterDTO){
-        checkByUsername(userRegisterDTO.getUsername());
+    public void addAdmin(AdminRequestDto adminRequestDto){
+        UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
+                .name(adminRequestDto.getName())
+                        .username(adminRequestDto.getUsername())
+                                .permissions(Arrays.stream(adminRequestDto.getPermission().split(",")).toList())
+                                        .role(Arrays.stream(adminRequestDto.getRoles().split(",")).toList())
+                                                .build();
+        //checkByUsername(adminRequestDto.getUsername());
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
-        userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+        userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
         userRepository.save(userEntity);
 
     }
