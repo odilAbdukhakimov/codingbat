@@ -38,7 +38,7 @@ public class UserController {
         if (currentUser!=null){
             model.addAttribute("currentUser",currentUser);
         }
-        return "updateUser";
+        return "updateUser2";
     }
 
     @PostMapping("/update/{username}")
@@ -54,7 +54,7 @@ public class UserController {
             if (serviceCurrentUser!=null){
                 model.addAttribute("currentUser",serviceCurrentUser);
             }
-            return "index";
+            return "redirect:/";
         }else {
             return "register";
         }

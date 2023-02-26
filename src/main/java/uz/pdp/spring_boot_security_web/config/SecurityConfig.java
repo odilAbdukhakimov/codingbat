@@ -75,7 +75,7 @@ public class SecurityConfig {
         JavaMailSenderImpl javaMailSender=new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(587);
-        javaMailSender.setUsername("bekzodsadriddinov92@gmail.com");
+        javaMailSender.setUsername("bekzod@gmail.com");
         javaMailSender.setPassword("jodjyjphsxfckksi");
         Properties properties=javaMailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol","smtp");
@@ -83,7 +83,6 @@ public class SecurityConfig {
         properties.put("mail.smtp.starttls.enable","true");
         properties.put("mail.debug","true");
         return javaMailSender;
-
     }
 
 

@@ -23,6 +23,7 @@ import uz.pdp.spring_boot_security_web.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -48,9 +49,9 @@ public class UserService {
 
         return true;
     }
-    public UserEntity getByUser(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFountException(String.format("user %s not found", username)));
-    }
+//    public UserEntity getByUser(String username) {
+//        return userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFountException(String.format("user %s not found", username)));
+//    }
 
     public void update(String name, UserRegisterDTO userRegisterDTO) {
         Optional<UserEntity> byUsername = userRepository.findByUsername(name);
@@ -98,7 +99,7 @@ public class UserService {
     public boolean sendEmail(String email, String emailCode){
        try {
            SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
-           simpleMailMessage.setFrom("bekzod@gaiml.com");
+           simpleMailMessage.setFrom("bekzod@gmail.com");
            simpleMailMessage.setTo(email);
            simpleMailMessage.setSubject("Keldi kod");
            simpleMailMessage.setText("Assalomu alaykum "+email+" siz ruyxatdan utiz ");
@@ -207,11 +208,16 @@ public class UserService {
         RolePermissionEntity rolePermission = new RolePermissionEntity();
         rolePermission.setRoleEnum(List.of(RoleEnum.USER.name()));
         currentUser.setRolePermissionEntities(rolePermission);
-        UsernamePasswordAuthenticationToken authToken=
+//        UsernamePasswordAuthenticationToken authToken=
+//                new UsernamePasswordAuthenticationToken(
+//                        currentUser,SecurityContextHolder.getContext().getAuthentication().getCredentials(),currentUser.getAuthorities());
+//        Authentication authenticate = authenticationManager.authenticate(authToken);
+//        SecurityContext context = SecurityContextHolder.getContext();
+//        context.setAuthentication(authenticate);
+
+       Authentication authToken=
                 new UsernamePasswordAuthenticationToken(
                         currentUser,SecurityContextHolder.getContext().getAuthentication().getCredentials(),currentUser.getAuthorities());
-        Authentication authenticate = authenticationManager.authenticate(authToken);
-        SecurityContext context = SecurityContextHolder.getContext();
-        context.setAuthentication(authenticate);
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 }
