@@ -27,7 +27,7 @@ public class HomeController {
             ){
        modelAndView.addObject("subjectList", languageService.languageEntityList());
        modelAndView.addObject("lang","Java");
-       modelAndView.addObject("topicList", languageService.getLanguage("C++").getTopicEntities());
+       modelAndView.addObject("topicList", languageService.getLanguage("Java").getTopicEntities());
        modelAndView.setViewName("index");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = null;
@@ -53,6 +53,16 @@ public class HomeController {
         model.addObject("lang", language);
         model.addObject("topicList", topicService.getList(language));
         model.setViewName("index");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = null;
+        if(!(authentication.getPrincipal() + "").equals("anonymousUser")){
+            userEntity = (UserEntity) authentication.getPrincipal();
+            model.addObject("isUser", "yes");
+            model.addObject("user", userEntity);
+        }
+        else {
+            model.addObject("isUser","not");
+        }
         return model;
     }
 

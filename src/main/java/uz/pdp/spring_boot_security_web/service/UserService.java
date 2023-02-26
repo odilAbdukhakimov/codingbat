@@ -82,7 +82,6 @@ public class UserService {
                 role.add(userEntity);
             }
         }
-
         return role;
     }
 

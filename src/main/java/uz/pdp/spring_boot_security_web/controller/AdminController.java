@@ -14,7 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
-   // @ResponseBody
     @PostMapping("/add")
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO
