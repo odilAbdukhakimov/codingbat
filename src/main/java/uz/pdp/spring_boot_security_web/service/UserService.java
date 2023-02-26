@@ -2,6 +2,9 @@ package uz.pdp.spring_boot_security_web.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -9,6 +12,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import uz.pdp.spring_boot_security_web.common.exception.RecordAlreadyExist;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
@@ -27,15 +31,20 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private final JavaMailSender javaMailSender;
+
     public boolean addUser(UserRegisterDTO userRegisterDTO) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userRegisterDTO.getUsername());
         if (optionalUserEntity.isPresent()) {
-            throw new IllegalArgumentException(String.format("username %s already exist", userRegisterDTO.getUsername()));
+            throw new IllegalArgumentException(String.format("username %s already exist", userRegisterDTO.getEmail()));
         }
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
+        userEntity.setEmailCode(UUID.randomUUID().toString().substring(0,4));
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        UserEntity save = userRepository.save(userEntity);
-        System.out.println(save.getName());
+         userRepository.save(userEntity);
+        sendEmail(userEntity.getEmail(), userEntity.getEmailCode());
 
         return true;
     }
@@ -83,6 +92,21 @@ public class UserService {
 
     }
 
+    public boolean sendEmail(String email, String emailCode){
+       try {
+           SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
+           simpleMailMessage.setFrom("bekzod@gaiml.com");
+           simpleMailMessage.setTo(email);
+           simpleMailMessage.setSubject("Keldi kod");
+           simpleMailMessage.setText("Assalomu alaykum "+email+" siz ruyxatdan utiz ");
+           javaMailSender.send(simpleMailMessage);
+           return true;
+       }catch (Exception e){
+           return false;
+       }
+    }
+
+
     public List<UserEntity> adminList(){
         List<UserEntity> all = userRepository.findAll();
         List<UserEntity>role=new ArrayList<>();
@@ -93,6 +117,17 @@ public class UserService {
         }
 
         return role;
+    }
+
+    public boolean verifyEmail(String email, String emailCode) {
+        Optional<UserEntity> byEmailAndEmailCode = userRepository.findByEmailAndEmailCode(email, emailCode);
+        if (byEmailAndEmailCode.isPresent()){
+            return true;
+        }
+        else {
+            return false;
+        }
+
     }
 
     public List<UserEntity> getALlAdmins() {

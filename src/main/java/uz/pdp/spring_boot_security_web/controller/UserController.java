@@ -2,7 +2,9 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
@@ -24,7 +26,7 @@ public class UserController {
 
         boolean isSuccess = userService.addUser(userRegisterDTO);
         if (isSuccess) {
-            return "redirect:/login";
+            return "redirect:/";
         } else {
             return "redirect:/register";
         }
@@ -57,4 +59,15 @@ public class UserController {
             return "register";
         }
     }
+    @GetMapping("/verifyEmail/{email}/{emailCode}")
+    public String verifyEmail(@PathVariable String email,@PathVariable String emailCode){
+        boolean isSuccess = userService.verifyEmail(email, emailCode);
+        if(isSuccess){
+            return "";
+        }
+        return "";
+    }
+
+
+
 }

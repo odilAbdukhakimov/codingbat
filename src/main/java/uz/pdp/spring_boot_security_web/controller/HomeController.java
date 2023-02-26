@@ -1,6 +1,8 @@
 package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,7 +35,19 @@ public class HomeController {
             modelAndView.addObject("currentUser",currentUser);
         }
        modelAndView.setViewName("index");
-       return modelAndView;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = null;
+        if(!(authentication.getPrincipal() + "").equals("anonymousUser")){
+         userEntity = (UserEntity) authentication.getPrincipal();
+         modelAndView.addObject("isUser", "yes");
+         modelAndView.addObject("user", userEntity);
+        }
+        else {
+        modelAndView.addObject("isUser","not");
+        }
+
+        return modelAndView;
+
     }
 
     @GetMapping("/{language}")
@@ -49,6 +63,20 @@ public class HomeController {
             model.addObject("currentUser",currentUser);
         }
         model.setViewName("index");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = null;
+        if(!(authentication.getPrincipal() + "").equals("anonymousUser")){
+            userEntity = (UserEntity) authentication.getPrincipal();
+            model.addObject("isUser", "yes");
+            model.addObject("user", userEntity);
+        }
+        else {
+            model.addObject("isUser","not");
+        }
         return model;
     }
+
+
+
+
 }
