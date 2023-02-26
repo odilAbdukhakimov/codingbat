@@ -1,12 +1,17 @@
 package uz.pdp.spring_boot_security_web.service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.pdp.spring_boot_security_web.common.exception.RecordAlreadyExist;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
@@ -19,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final AuthenticationManager authenticationManager;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     public boolean addUser(UserRegisterDTO userRegisterDTO) {
@@ -41,7 +47,6 @@ public class UserService {
             UserEntity oldUserEntity = byUsername.get();
             if (userRegisterDTO.getName()!=null && !userRegisterDTO.getName().equals("")){
                 oldUserEntity.setName(userRegisterDTO.getName());
-                System.out.println("Name : -> "+userRegisterDTO.getName());
             }
             if (userRegisterDTO.getPassword()!=null){
                 oldUserEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
@@ -119,14 +124,56 @@ public class UserService {
     public UserEntity getCurrentUser() {
         Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (currentUser !=null){
-           UserEntity user= (UserEntity) currentUser;
-            System.out.println(user.getUsername());
-            return user;
+            try {
+                UserEntity user= (UserEntity) currentUser;
+                System.out.println(user.getUsername());
+                return user;
+            }catch (Exception e){
+               return new UserEntity("","","","",null);
+            }
         }
         return null;
     }
 
     public void update(UserEntity byUser) {
         userRepository.save(byUser);
+    }
+
+    public UserEntity updateUser(String username, UserRegisterDTO userRegisterDTO) {
+        UserEntity byUsername = getByUser(username);
+        RolePermissionEntity rolePermission=new RolePermissionEntity();
+
+            if (userRegisterDTO.getName()!=null && !userRegisterDTO.getName().equals("")){
+                byUsername.setName(userRegisterDTO.getName());
+            }
+            if (userRegisterDTO.getPassword()!=null){
+                byUsername.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+            }
+            if (userRegisterDTO.getPermissions()!=null){
+                rolePermission.setPermissionEnum(userRegisterDTO.getPermissions());
+                byUsername.setRolePermissionEntities(rolePermission);
+            }
+            if (userRegisterDTO.getRole()!=null){
+                rolePermission.setRoleEnum(userRegisterDTO.getRole());
+                byUsername.setRolePermissionEntities(rolePermission);
+            }else {
+                rolePermission.setRoleEnum(List.of(RoleEnum.USER.name()));
+            }
+            if (userRegisterDTO.getUsername()!=null && !userRegisterDTO.getUsername().equals("")){
+                byUsername.setUsername(userRegisterDTO.getUsername());
+            }
+        return userRepository.save(byUsername);
+    }
+
+    public void updateUserContextHolder(UserEntity currentUser, HttpServletRequest request) {
+        RolePermissionEntity rolePermission = new RolePermissionEntity();
+        rolePermission.setRoleEnum(List.of(RoleEnum.USER.name()));
+        currentUser.setRolePermissionEntities(rolePermission);
+        UsernamePasswordAuthenticationToken authToken=
+                new UsernamePasswordAuthenticationToken(
+                        currentUser,SecurityContextHolder.getContext().getAuthentication().getCredentials(),currentUser.getAuthorities());
+        Authentication authenticate = authenticationManager.authenticate(authToken);
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(authenticate);
     }
 }

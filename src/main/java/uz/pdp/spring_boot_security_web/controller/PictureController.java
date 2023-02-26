@@ -54,13 +54,19 @@ public class PictureController {
 
         Iterator<String> fileName = request.getFileNames();
         imageService.uploadImage(request.getFile(fileName.next()),username);
-        model.addAttribute("currentUser",userService.getCurrentUser());
+        UserEntity currentUser = userService.getCurrentUser();
+        if (currentUser!=null){
+            model.addAttribute("currentUser",currentUser);
+        }
         return "index";
     }
 
     @GetMapping("/show")
     public String showAddPicture( Model model) {
-        model.addAttribute("currentUser",userService.getCurrentUser());
+        UserEntity currentUser = userService.getCurrentUser();
+        if (currentUser!=null){
+            model.addAttribute("currentUser",currentUser);
+        }
         return "picture";
     }
 

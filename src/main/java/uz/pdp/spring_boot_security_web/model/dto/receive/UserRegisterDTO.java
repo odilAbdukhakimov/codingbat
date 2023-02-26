@@ -8,6 +8,7 @@ import uz.pdp.spring_boot_security_web.entity.role.PermissionEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 
+import java.io.File;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ public class UserRegisterDTO {
     private String username;
     private String password;
     private String name;
-
+    private File image;
     private List<String> role;
     private List<String> permissions;
 

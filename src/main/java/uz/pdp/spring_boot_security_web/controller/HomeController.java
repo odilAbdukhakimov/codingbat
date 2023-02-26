@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.service.LanguageService;
 import uz.pdp.spring_boot_security_web.service.TopicService;
 import uz.pdp.spring_boot_security_web.service.UserService;
@@ -27,7 +28,10 @@ public class HomeController {
        modelAndView.addObject("subjectList", languageService.languageEntityList());
        modelAndView.addObject("lang","Java");
        modelAndView.addObject("topicList", languageService.getLanguage("Java").getTopicEntities());
-       modelAndView.addObject("currentUser",userService.getCurrentUser());
+        UserEntity currentUser = userService.getCurrentUser();
+        if(currentUser!=null){
+            modelAndView.addObject("currentUser",currentUser);
+        }
        modelAndView.setViewName("index");
        return modelAndView;
     }
@@ -40,7 +44,10 @@ public class HomeController {
         model.addObject("subjectList", languageService.languageEntityList());
         model.addObject("lang", language);
         model.addObject("topicList", topicService.getList(language));
-        model.addObject("currentUser",userService.getCurrentUser());
+        UserEntity currentUser = userService.getCurrentUser();
+        if(currentUser!=null){
+            model.addObject("currentUser",currentUser);
+        }
         model.setViewName("index");
         return model;
     }

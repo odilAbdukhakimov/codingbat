@@ -1,11 +1,11 @@
 package uz.pdp.spring_boot_security_web.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
@@ -27,6 +27,34 @@ public class UserController {
             return "redirect:/login";
         } else {
             return "redirect:/register";
+        }
+    }
+
+    @GetMapping("/update")
+    public String updateUser( Model model) {
+        UserEntity currentUser = userService.getCurrentUser();
+        if (currentUser!=null){
+            model.addAttribute("currentUser",currentUser);
+        }
+        return "updateUser";
+    }
+
+    @PostMapping("/update/{username}")
+    public String updateUser(@PathVariable("username") String username,
+                             UserRegisterDTO userRegisterDTO,
+                             Model model,
+                             HttpServletRequest request) {
+        UserEntity userEntity = userService.updateUser(username, userRegisterDTO);
+        UserEntity currentUser = userService.getCurrentUser();
+        if (currentUser!=null){
+            userService.updateUserContextHolder(userEntity,request);
+            UserEntity serviceCurrentUser = userService.getCurrentUser();
+            if (serviceCurrentUser!=null){
+                model.addAttribute("currentUser",serviceCurrentUser);
+            }
+            return "index";
+        }else {
+            return "register";
         }
     }
 }

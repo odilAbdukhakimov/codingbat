@@ -10,8 +10,26 @@
 <body>
 <!--User login part -->
 <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+<!--    <table>-->
+<!--        <tr>-->
+<!--            <td>-->
+<!--                <img src="22.jpg" width="60" height="60">-->
+<!--            </td>-->
+<!--        </tr>-->
+<!--    </table>-->
+</div>
+<div style='float:right;  margin:0px; border: 1px solid lightgray;' th:object="${currentUser}">
+    <table style='float: right'>
+        <tr>
+            <td>
+<!--                <img th:src="@{../static/}"/>-->
+                <img class="image" th:src="@{'/static/'+${currentUser.logoUrl}}" alt="Avatar">
+<!--                <img src="22.jpg" width="60" height="60"   >-->
+            </td>
+        </tr>
+    </table>
     <table>
-        <form method=post action=/login th:object="${currentUser}">
+        <form method=post action=/login >
             <tr>
                 <td>id/email</td>
                 <td><input type=text th:field="*{username}" name=uname size=20 ></td>
@@ -29,8 +47,7 @@
             <td colspan=2><a href=/reset>forgot password</a> | <a href='/pref?docreate=1'>create account</a></td>
         </tr>
             <tr>
-<!--           -->
-                <td><a href="/api/picture/show">image</a> </td>
+                <td><a href="/api/picture/show">image</a> | <a href="/api/user/update" methods="get">update</a></td>
             </tr>
 
 
