@@ -35,12 +35,16 @@ public class RolePermissionEntity{
     @JsonIgnore
     public List<SimpleGrantedAuthority> getAuthority() {
         List<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
-        for (String role : roleEnum) {
-            simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+        if (roleEnum!=null) {
+            for (String role : roleEnum) {
+                simpleGrantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+            }
         }
-        for (String permission : permissionEnum) {
-            simpleGrantedAuthorities.add(new SimpleGrantedAuthority(permission));
+        if (permissionEnum != null) {
+            for (String permission : permissionEnum) {
+                simpleGrantedAuthorities.add(new SimpleGrantedAuthority(permission));
+            }
         }
-        return simpleGrantedAuthorities;
+            return simpleGrantedAuthorities;
     }
 }

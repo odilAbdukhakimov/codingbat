@@ -4,8 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
+import uz.pdp.spring_boot_security_web.entity.role.PermissionEnum;
+import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 
+import java.io.File;
 import java.util.List;
 
 @Data
@@ -17,11 +20,12 @@ public class UserRegisterDTO {
     private String name;
     private String email;
 
+    private File image;
     private List<String> role;
     private List<String> permissions;
 
     @JsonIgnore
-    public boolean  isUser(){
+    public boolean isUser(){
         return role == null && permissions == null;
     }
 

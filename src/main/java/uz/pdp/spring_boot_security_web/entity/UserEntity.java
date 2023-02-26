@@ -33,6 +33,14 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
 
+    public UserEntity(String name, String username,String password, String logoUrl, RolePermissionEntity rolePermissionEntities) {
+        this.name = name;
+        this.username = username;
+        this.logoUrl = logoUrl;
+        this.password=password;
+        this.rolePermissionEntities = rolePermissionEntities;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return rolePermissionEntities.getAuthority();
