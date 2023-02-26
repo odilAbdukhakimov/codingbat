@@ -162,5 +162,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:postgresql:1.17.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:jdbc:1.17.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:database-commons:1.17.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:6.0.4" level="project" />
   </component>
 </module>
