@@ -18,15 +18,28 @@
     </nav>
     <div class="tabin">
         <div class="floatleft">
-            <table>
-                <tbody>
-                <tr th:each="task: ${taskList}">
-                    <td width="200">&nbsp;<img src="/c.jpg"><a th:text="${task.getName()}" th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font
-                            color="gray">H</font></td>
-                </tr>
-                </tbody>
-            </table>
+            <!--            <table>-->
+            <!--                <tbody>-->
+            <!--                <tr th:each="task: ${taskList}">-->
+            <!--                    <td width="200">&nbsp;<img src="/.././c.jpg"><a th:text="${task.getName()}" th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font-->
+            <!--                            color="gray">H</font></td>-->
+            <!--                </tr>-->
+            <!--                </tbody>-->
+            <!--            </table>-->
 
+            <table>
+    <span th:each="task : ${taskList}">
+        <td>
+            <tr th:each="userTask: ${userTasksList}">
+                <span th:if="${}" class="btn btn-primary">
+                    <td width="200">&nbsp;<b>done</b><a th:text="${task.getName()}" th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;
+                        <font>color="gray">H</font>
+                    </td>
+                </span>
+            </tr>
+        <td>
+    </span>
+            </table>
         </div>
 
     </div>

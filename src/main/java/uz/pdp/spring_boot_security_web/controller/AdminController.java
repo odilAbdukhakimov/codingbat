@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
+import uz.pdp.spring_boot_security_web.service.AuthService;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 @Controller
@@ -16,8 +17,7 @@ public class AdminController {
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO
     ) {
-
-       userService.addAdmin(userRegisterDTO);
+        userService.addAdmin(userRegisterDTO);
         return "CrudAdmin";
     }
 }

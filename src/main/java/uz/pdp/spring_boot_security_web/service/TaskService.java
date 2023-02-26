@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TaskRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.TaskRepository;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
+import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TopicRepository topicRepository;
+    private final UserRepository userRepository;
 
     public TaskEntity addTask(TaskRequestDTO taskRequestDTO) {
         TopicEntity topic = topicRepository.findById(taskRequestDTO.getTopicId()).get();
@@ -57,5 +60,10 @@ public class TaskService {
     public TaskEntity getById(int id){
         Optional<TaskEntity> byId = taskRepository.findById(id);
         return byId.orElse(null);
+    }
+
+    public List<TaskEntity> userTaskEntityList(String username) {
+        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
+        return userEntity.get().getTaskEntityList();
     }
 }

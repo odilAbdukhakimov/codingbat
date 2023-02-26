@@ -30,6 +30,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<TaskEntity> taskEntityList;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return rolePermissionEntities.getAuthority();
