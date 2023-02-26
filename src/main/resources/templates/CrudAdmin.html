@@ -280,32 +280,40 @@ $(document).ready(function(){
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th>
 
-						</th>
 						<th>Name</th>
 						<th>Username</th>
-						<th>Password</th>
 						<th>Permissions</th>
 						<th>Roles</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
+					<tr th:each="admin: ${adminList}">
 
 
-						<td>Thomas Hardy</td>
-						<td>thomashardy@mail.com</td>
-						<td>89hiaroscuro Rd, Portland, USA C</td>
+						<td th:text = "${admin.name}"> </td>
+
+						<td th:text = "${admin.username}"></td>
+
 						<td>
-							<select>
-								<optional>Read</optional>
+							<select >
+								<option th:each="permission : ${admin.getRolePermissionEntities().getPermissionEnum()}"
+										th:value="${permission}" th:text="${permission}"></option>
+
+
+
+
+
+
+
 							</select>
 						</td>
 						<td>
 
 							<select>
-								<optional>Read</optional>
+								<option th:each="roles : ${admin.getRolePermissionEntities().getRoleEnum()}"
+										th:value="${roles}" th:text="${roles}"></option>
+
 							</select>
 						</td>
 						<td>
@@ -324,7 +332,7 @@ $(document).ready(function(){
 <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form action="/api/admin/add" method="post">
 				<div class="modal-header">
 					<h4 class="modal-title">Edit Admin</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -343,44 +351,38 @@ $(document).ready(function(){
 						<input type = "password" name="password" class="form-control" required>
 					</div>
 					<div class="form-group">
+
 						<label>Permission</label>
 						<br/>
-						<label>Read</label>
-						<input  type="checkbox" name="permission" value ="READ">
-						<br>
-						<label>Delete</label>
+							<input type="checkbox" name="permission" value="ADD" /> Add
+							<br>
 
-						<input  type="checkbox" name="permission" value ="DELETE">
+							<input type="checkbox" name="permission" value="READ" /> Read
 						<br>
-						<label>Update</label>
 
-						<input  type="checkbox" name="permission" value ="UPDATE">
+							<input type="checkbox" name="permission" value="UPDATE" /> Update
 						<br>
-						<label>Add</label>
 
-						<input  type="checkbox" name="permission" value ="ADD">
+							<input type="checkbox"  name="permission" value="DELETE" /> Delete
+
 					</div>
 
 					<div class="form-group">
 						<label>Roles</label>
 						<br/>
-						<label>Admin</label>
 
-						<input  type="checkbox" name="roles" value ="ADMIN">
+
+						<input type="checkbox" name="roles" value="ADMIN" /> Admin
 						<br/>
-						<label>Super Admin</label>
 
-						<input  type="checkbox" name="roles" value ="SUPER_ADMIN">
-						<br/>
-						<label>Admin</label>
+						<input type="checkbox" name="roles" value="USER" /> User
 
-						<input  type="checkbox" name="roles" value ="USER">
 					</div>
 				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-info" value="Save">
-				</div>
+
+
+			<button type="submit">Submit</button>
+
 			</form>
 		</div>
 	</div>
@@ -389,7 +391,7 @@ $(document).ready(function(){
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form action="/api/admin/update/{id}" method="post">
 				<div class="modal-header">
 					<h4 class="modal-title">Edit Admin</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -433,10 +435,10 @@ $(document).ready(function(){
 
 						<input  type="checkbox" name="roles" value ="ADMIN">
 						<br/>
-						<label>Super Admin</label>
+<!--						<label>Super Admin</label>-->
 
-						<input  type="checkbox" name="roles" value ="SUPER_ADMIN">
-						<br/>
+<!--						<input  type="checkbox" name="roles" value ="SUPER_ADMIN">-->
+<!--						<br/>-->
 						<label>Admin</label>
 
 						<input  type="checkbox" name="roles" value ="USER">

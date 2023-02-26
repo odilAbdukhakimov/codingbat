@@ -10,18 +10,18 @@
 <div style="float:right;  margin:0px; border: 1px solid lightgray;">
     <table th:if="${isUser == 'not'}">
         <form method="post" action="/login">
-        <tbody>
-        <tr>
-            <td>username</td>
-            <td><input type="text" name="username" size="20"></td>
-        </tr>
-        <tr>
-            <td>password</td>
-            <td><input type="password" name="password" size="20"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" name="login"></td>
-        </tr>
+            <tbody>
+            <tr>
+                <td>email</td>
+                <td><input type="text" name="email" size="20"></td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td><input type="password" name="password" size="20"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="login" value="log in"></td>
+            </tr>
         </form>
         <tr>
             <td colspan="2"><a href='/forget-password'>forget password</a> | <a href=/register>create account</a></td>
@@ -30,67 +30,46 @@
     </table>
     <table th:if="${isUser == 'yes'}">
 
-<h1 th:text = "${user.email}"></h1>
+        <h1 th:text = "${user.email}"></h1>
         <a href="/logout">Log out</a>
     </table>
 </div>
 <div class="tabc">
-    <h1 th:text = "${isUser}"></h1>
-    <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
     <nav>
         <tr th:each="subject: ${subjectList}">
             <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
         </tr>
 
 
+        </tr>
     </nav>
+    <div class="tabin">
+        <div class="floatleft">
+            <table>
+                <tbody>
+                <tr th:each="task: ${taskList}">
+                    <td width="200">&nbsp;<img src="/c.jpg"><a th:text="${task.getName()}"
+                                                               th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font
+                            color="gray">H</font></td>
+                </tr>
+                </tbody>
+            </table>
 
-
-    <div class="alls">
-        <div th:each="topic: ${topicList}">
-
-            <div class="content-main">
-                <h4>
-                    <a th:text="${topic.getName()}"
-                       th:href="@{/{name}/{topic}(name=${lang}, topic=${topic.getName()})}"></a>
-                </h4>
-                <img
-                        src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img
-                    src="https://codingbat.com/s1.jpg"><img
-                    src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img
-                    src="https://codingbat.com/s1.jpg"><br>
-                <h4 th:text="${topic.getContent()}"></h4>
-                <br><img src="https://codingbat.com/c1.jpg"></div>
         </div>
+
     </div>
-
-
 </div>
-
 <style>
-    .alls {
-        width: 1400px !important;
-        display: flex !important;
-        flex-wrap: wrap;
-        gap: 30px;
-    }
-
-    .content-main {
-        width: 250px;
-
-        max-width: 300px;
-        padding: 10px;
-        border: 1px solid gray;
-        border-radius: 1em;
-    }
-
     html, body {
         font-size: small;
         font-family: verdana, arial, helvetica, sans-serif;
     }
 
     /* MOBILE-CSS prevents crazy shrinking of font in table e.g. on section page */
-
+    html, body {
+        -webkit-text-size-adjust: none;
+        text-size-adjust: none;
+    }
 
     /* someday maybe a bigger font */
 
@@ -169,16 +148,32 @@
     }
 
     /* These are more normal names, tied to div */
+    div.floatleft {
+        float: left;
+    }
 
+    div.floatclear {
+        clear: both;
+    }
 
     /* div class to reset the floats to normal */
 
 
     /* The little box that summarizes a section. Margin is box vs. outside, padding is within the box */
+    div.summ {
+        max-width: 300px;
+        margin: 15px;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 1em;
+    }
 
 
     /* used to indent the Challenge content similarly to div.summ */
-
+    div.indent {
+        margin-left: 15px;
+        margin-top: 15px;
+    }
 
     /* padding:5px; */
 
@@ -311,14 +306,22 @@
 
 
     /* challenge docs in here, so UI does not jump around too much for short docs. */
-
+    div.minh {
+        min-height: 32px;
+    }
 
     /* div of text above the tabs. Min-height here so the key muscle-memory bits don't jump around too much.
     26px here works with a line of text */
 
+    div.pretab {
+        min-height: 9px;
+    }
 
     /* container around tab, forcing it below login widget. clear:both is required */
-
+    div.tabc {
+        min-width: 100vw;
+        clear: both;
+    }
 
     /* nav/tab stuff here */
     nav ul {
@@ -348,6 +351,10 @@
     }
     */
 
+    div.tabin {
+        border-top: 1px solid;
+        clear: both;
+    }
 
     #content {
         border-top: 1px solid;

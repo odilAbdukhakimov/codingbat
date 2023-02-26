@@ -9,6 +9,9 @@ public class SpringBootSecurityWebApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SpringBootSecurityWebApplication.class, args);
+
+
+
     }
 
 }

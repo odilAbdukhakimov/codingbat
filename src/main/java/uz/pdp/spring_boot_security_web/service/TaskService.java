@@ -6,12 +6,10 @@ import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
 import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
-import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TaskRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.LanguageRepository;
 import uz.pdp.spring_boot_security_web.repository.TaskRepository;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
-import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,8 +19,7 @@ import java.util.Optional;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TopicRepository topicRepository;
-    private final UserRepository userRepository;
-
+    private final LanguageRepository languageRepository;
 
     public TaskEntity addTask(TaskRequestDTO taskRequestDTO) {
         Optional<TopicEntity> byId = topicRepository.findById(taskRequestDTO.getTopicId());
@@ -82,18 +79,5 @@ public class TaskService {
         List<TopicEntity> topicEntities = byTitle.get().getTopicEntities();
         Optional<TopicEntity> first = topicEntities.stream().filter((s) -> s.getName().equals(topic)).findFirst();
         return first.map(TopicEntity::getTaskEntityList).orElse(null);
-    }
-
-    public List<TaskEntity> userTaskEntityList(String username) {
-        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
-        return userEntity.get().getTaskEntityList();
-    }
-
-    public List<TaskEntity> getUserTaskEntityList(String username) {
-        Optional<UserEntity> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent()) {
-            return userOptional.get().getTaskEntityList();
-        }
-        return null;
     }
 }
