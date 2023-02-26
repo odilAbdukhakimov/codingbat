@@ -38,7 +38,7 @@ public class UserService {
         userEntity.setEmailCode(UUID.randomUUID().toString().substring(0,4));
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
          userRepository.save(userEntity);
-        sendEmail(userEntity.getEmail(), userEntity.getEmailCode());
+        sendEmail(userEntity.getEmail(),userEntity.getUsername(),userRegisterDTO.getPassword());
 
         return true;
     }
@@ -53,19 +53,16 @@ public class UserService {
         checkByUsername(userRegisterDTO.getUsername());
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-
         userRepository.save(userEntity);
-
-
     }
 
-    public boolean sendEmail(String email, String emailCode){
+    public boolean sendEmail(String email,String username,String password){
        try {
            SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
            simpleMailMessage.setFrom("bekzod@gaiml.com");
            simpleMailMessage.setTo(email);
            simpleMailMessage.setSubject("Keldi kod");
-           simpleMailMessage.setText("Assalomu alaykum "+email+" siz ruyxatdan utiz ");
+           simpleMailMessage.setText("Assalomu alaykum "+email+" siz ruyxatdan utiz "+"\nUsername : "+username +"\nPassword : "+password );
            javaMailSender.send(simpleMailMessage);
            return true;
        }catch (Exception e){
