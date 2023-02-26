@@ -1,22 +1,18 @@
 package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordAlreadyExist;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
-import uz.pdp.spring_boot_security_web.config.SecurityConfig;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -95,5 +91,17 @@ public class UserService {
             return false;
         }
 
+    }
+
+    public List<UserEntity> adminEntityList(){
+        List<UserEntity> userList = userRepository.findAll();
+        List<UserEntity> adminList = new ArrayList<>();
+        for (UserEntity userEntity : userList) {
+            if (userEntity.getRolePermissionEntities().getRoleEnum().contains("ADMIN")) {
+
+                adminList.add(userEntity);
+            }
+        }
+        return  adminList;
     }
 }
