@@ -46,7 +46,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers( "/**").permitAll()
+                .requestMatchers( "/*").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Java/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Python/**").permitAll()
@@ -61,6 +61,7 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/")
+                .failureForwardUrl("/")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -74,8 +75,8 @@ public class SecurityConfig {
         JavaMailSenderImpl javaMailSender=new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
         javaMailSender.setPort(587);
-        javaMailSender.setUsername("shodiyorbektolqinov7777@gmail.com");
-        javaMailSender.setPassword("shodiyorbek2007");
+        javaMailSender.setUsername("bekzodsadriddinov92@gmail.com");
+        javaMailSender.setPassword("jodjyjphsxfckksi");
         Properties properties=javaMailSender.getJavaMailProperties();
         properties.put("mail.transport.protocol","smtp");
         properties.put("mail.smtp.auth","true");

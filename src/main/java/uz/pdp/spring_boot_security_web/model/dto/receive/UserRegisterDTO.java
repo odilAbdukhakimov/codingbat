@@ -15,12 +15,13 @@ public class UserRegisterDTO {
     private String username;
     private String password;
     private String name;
+    private String email;
 
     private List<String> role;
     private List<String> permissions;
 
     @JsonIgnore
-    public boolean isUser(){
+    public boolean  isUser(){
         return role == null && permissions == null;
     }
 
