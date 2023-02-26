@@ -32,16 +32,9 @@ private final UserRepository userRepository;
     public ModelAndView getAdmins(
             ModelAndView modelAndView
     ){
-        List<UserEntity> userList = userRepository.findAll();
-        List<UserEntity> adminList = new ArrayList<>();
-        for (UserEntity userEntity : userList) {
-            if (userEntity.getRolePermissionEntities().getRoleEnum().contains("ADMIN")) {
 
-                adminList.add(userEntity);
-            }
-        }
         modelAndView.setViewName("CrudAdmin");
-        modelAndView.addObject("adminList",adminList);
+        modelAndView.addObject("adminList",userService.adminEntityList());
         return modelAndView;
 
     }
