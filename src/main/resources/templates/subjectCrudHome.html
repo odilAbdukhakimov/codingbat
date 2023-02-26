@@ -270,10 +270,10 @@ $(document).ready(function(){
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2>Manage <b>Employees</b></h2>
+						<h2>Manage <b>Subject</b></h2>
 					</div>
 					<div class="col-sm-6">
-						<a href="/admin/subject/add" class="btn btn-success" ><i class="material-icons">&#xE147;</i> <span>Add new Subject</span></a>
+						<a href="lang/subjectUpdate" class="btn btn-success" ><i class="material-icons">&#xE147;</i> <span>Add new Subject</span></a>
 					</div>
 				</div>
 			</div>
@@ -291,7 +291,7 @@ $(document).ready(function(){
 						<td th:text="${subject.title}"></td>
 
 						<td>
-							<a th:href="@{subject/edit/{title}(title=${subject.getTitle()})}"><i class="material-icons"  title="Edit">&#xE254;</i></a>
+							<a th:href="@{subject/edit/{title}(title=${subject.Title})}"><i class="material-icons"  title="Edit">&#xE254;</i></a>
 							<a th:href="@{subject/delete/{title}(title=${subject.getTitle()})}" class="delete" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
@@ -303,7 +303,7 @@ $(document).ready(function(){
 	</div>        
 </div>
 <!-- Edit Modal HTML -->
-<div id="addEmployeeModal" class="modal fade">
+<div id="addSubjectModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<form>
