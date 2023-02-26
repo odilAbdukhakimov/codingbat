@@ -3,6 +3,7 @@ package uz.pdp.spring_boot_security_web.service;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailMessage;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,18 +11,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.pdp.spring_boot_security_web.common.exception.RecordAlreadyExist;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
-import uz.pdp.spring_boot_security_web.config.SecurityConfig;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
-import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
-import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
-import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
-import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
-import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
@@ -44,9 +39,9 @@ public class UserService {
             throw new IllegalArgumentException(String.format("username %s already exist", userRegisterDTO.getUsername()));
         }
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
-        userEntity.setEmailCode(UUID.randomUUID().toString().substring(0, 4));
+        userEntity.setEmailCode(UUID.randomUUID().toString().substring(0,4));
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        userRepository.save(userEntity);
+         userRepository.save(userEntity);
         sendEmail(userEntity.getEmail(), userEntity.getEmailCode());
 
         return true;
@@ -91,8 +86,7 @@ public class UserService {
             throw new IllegalArgumentException(String.format("username %s already exist", username));
         }
     }
-
-    public void addAdmin(AdminRequestDto adminRequestDto) {
+    public void addAdmin(AdminRequestDto adminRequestDto){
         UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
                 .name(adminRequestDto.getName())
                 .username(adminRequestDto.getUsername())
@@ -104,8 +98,8 @@ public class UserService {
         userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
         userRepository.save(userEntity);
 
-
     }
+
 
     public boolean sendEmail(String email, String emailCode){
        try {
@@ -135,15 +129,16 @@ public class UserService {
 
     public boolean verifyEmail(String email, String emailCode) {
         Optional<UserEntity> byEmailAndEmailCode = userRepository.findByEmailAndEmailCode(email, emailCode);
-        if (byEmailAndEmailCode.isPresent()) {
+        if (byEmailAndEmailCode.isPresent()){
             return true;
-        } else {
+        }
+        else {
             return false;
         }
 
     }
 
-    public List<UserEntity> adminEntityList() {
+    public List<UserEntity> adminEntityList(){
         List<UserEntity> userList = userRepository.findAll();
         List<UserEntity> adminList = new ArrayList<>();
         for (UserEntity userEntity : userList) {
@@ -152,8 +147,26 @@ public class UserService {
                 adminList.add(userEntity);
             }
         }
-        return adminList;
+        return  adminList;
     }
+    public boolean resetPassword(String email){
+        try {
+            SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
+            simpleMailMessage.setFrom("bekzod@gaiml.com");
+            simpleMailMessage.setTo(email);
+            simpleMailMessage.setSubject("Keldi kod");
+simpleMailMessage.setText("<a href='http://localhost:8080/api/user/password/reset/email="+email+"'>hello</a>");
+            javaMailSender.send(simpleMailMessage);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+public UserEntity findEmail(String email){
+return userRepository.findByEmail(email);
+
+}
 
     public void delete(int id) {
         Optional<UserEntity> byId = userRepository.findById(id);
