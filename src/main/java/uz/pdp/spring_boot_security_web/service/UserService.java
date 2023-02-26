@@ -1,18 +1,18 @@
 package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import uz.pdp.spring_boot_security_web.common.exception.RecordAlreadyExist;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -47,14 +47,20 @@ public class UserService {
             throw new IllegalArgumentException(String.format("username %s already exist", username));
         }
     }
-    public void addAdmin(UserRegisterDTO userRegisterDTO){
-        checkByUsername(userRegisterDTO.getUsername());
+    public void addAdmin(AdminRequestDto adminRequestDto){
+        UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
+                .name(adminRequestDto.getName())
+                .username(adminRequestDto.getUsername())
+                .permissions(Arrays.stream(adminRequestDto.getPermission().split(",")).toList())
+                .role(Arrays.stream(adminRequestDto.getRoles().split(",")).toList())
+                .build();
+        //checkByUsername(adminRequestDto.getUsername());
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
-        userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+        userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
         userRepository.save(userEntity);
 
-
     }
+
 
     public boolean sendEmail(String email, String emailCode){
        try {
@@ -71,16 +77,16 @@ public class UserService {
     }
 
 
-    public List<UserEntity> adminList(){
-        List<UserEntity> all = userRepository.findAll();
-        List<UserEntity>role=new ArrayList<>();
-        for (UserEntity userEntity:all){
-            if (!userEntity.getRolePermissionEntities().getRoleEnum().equals("USER")){
-                role.add(userEntity);
-            }
-        }
-        return role;
-    }
+//    public List<UserEntity> adminList(){
+//        List<UserEntity> all = userRepository.findAll();
+//        List<UserEntity>role=new ArrayList<>();
+//        for (UserEntity userEntity:all){
+//            if (!userEntity.getRolePermissionEntities().getRoleEnum().equals("USER")){
+//                role.add(userEntity);
+//            }
+//        }
+//        return role;
+//    }
 
     public boolean verifyEmail(String email, String emailCode) {
         Optional<UserEntity> byEmailAndEmailCode = userRepository.findByEmailAndEmailCode(email, emailCode);
