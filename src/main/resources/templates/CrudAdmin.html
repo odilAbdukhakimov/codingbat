@@ -375,10 +375,6 @@ $(document).ready(function(){
 						<input type="checkbox" name="roles" value="ADMIN" /> Admin
 						<br/>
 
-
-
-
-
 						<input type="checkbox" name="roles" value="USER" /> User
 
 					</div>
@@ -395,7 +391,7 @@ $(document).ready(function(){
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form>
+			<form action="/api/admin/update/{id}" method="post">
 				<div class="modal-header">
 					<h4 class="modal-title">Edit Admin</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -439,10 +435,10 @@ $(document).ready(function(){
 
 						<input  type="checkbox" name="roles" value ="ADMIN">
 						<br/>
-						<label>Super Admin</label>
+<!--						<label>Super Admin</label>-->
 
-						<input  type="checkbox" name="roles" value ="SUPER_ADMIN">
-						<br/>
+<!--						<input  type="checkbox" name="roles" value ="SUPER_ADMIN">-->
+<!--						<br/>-->
 						<label>Admin</label>
 
 						<input  type="checkbox" name="roles" value ="USER">

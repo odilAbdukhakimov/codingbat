@@ -25,7 +25,7 @@ private final UserRepository userRepository;
     ) {
 
        userService.addAdmin(adminRequestDto);
-        return "CrudAdmin";
+        return "redirect:/api/admin";
     }
 
     @GetMapping("")
