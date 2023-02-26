@@ -22,7 +22,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final TopicRepository topicRepository;
     private final UserRepository userRepository;
-    private final LanguageRepository languageRepository;
+
 
     public TaskEntity addTask(TaskRequestDTO taskRequestDTO) {
         Optional<TopicEntity> byId = topicRepository.findById(taskRequestDTO.getTopicId());
@@ -87,5 +87,13 @@ public class TaskService {
     public List<TaskEntity> userTaskEntityList(String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
         return userEntity.get().getTaskEntityList();
+    }
+
+    public List<TaskEntity> getUserTaskEntityList(String username) {
+        Optional<UserEntity> userOptional = userRepository.findByUsername(username);
+        if (userOptional.isPresent()) {
+            return userOptional.get().getTaskEntityList();
+        }
+        return null;
     }
 }

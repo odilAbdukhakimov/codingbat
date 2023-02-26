@@ -23,7 +23,7 @@ public class TopicController {
     private final AuthService authService;
     private final TopicService topicService;
 
-    @GetMapping("/{language}/{id}")
+    @GetMapping("/{language}/{topic}")
     public ModelAndView getTaskList(
             ModelAndView modelAndView,
             @PathVariable String language,
@@ -33,13 +33,23 @@ public class TopicController {
         modelAndView.addObject("subjectList", languageService.languageEntityList());
 //        modelAndView.addObject("taskList", taskService.getTaskList(id));
         if (user != null){
-            modelAndView.addObject("userTasksList", taskService.userTaskEntityList(String.valueOf(user.getUsername())));
+            modelAndView.addObject("userTasksList", taskService.getUserTaskEntityList(String.valueOf(user.getUsername())));
         }
         modelAndView.setViewName("task");
         modelAndView.addObject("taskList", taskService.getTaskListByTopicAndLanguage(
                 language, topic
         ));
         modelAndView.setViewName("question");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = null;
+        if(!(authentication.getPrincipal() + "").equals("anonymousUser")){
+            userEntity = (UserEntity) authentication.getPrincipal();
+            modelAndView.addObject("isUser", "yes");
+            modelAndView.addObject("user", userEntity);
+        }
+        else {
+            modelAndView.addObject("isUser","not");
+        }
         return modelAndView;
     }
 
