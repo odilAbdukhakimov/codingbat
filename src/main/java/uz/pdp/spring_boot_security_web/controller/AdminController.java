@@ -18,13 +18,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
-private final UserRepository userRepository;
+
     @PostMapping("/add")
     public String addUser(
-            @ModelAttribute AdminRequestDto adminRequestDto
+            @ModelAttribute UserRegisterDTO userRegisterDTO
     ) {
 
-       userService.addAdmin(adminRequestDto);
+       userService.addAdmin(userRegisterDTO);
         return "CrudAdmin";
     }
 
@@ -44,5 +44,12 @@ private final UserRepository userRepository;
         modelAndView.addObject("adminList",adminList);
         return modelAndView;
 
+    }
+
+    @ResponseBody
+    @GetMapping("/list")
+    public String adminList(){
+       userService.adminList();
+        return "CrudAdmin";
     }
 }

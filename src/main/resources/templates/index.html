@@ -7,7 +7,35 @@
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
 <div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
+<div style="float:right;  margin:0px; border: 1px solid lightgray;">
+    <table th:if="${isUser == 'not'}">
+        <form method="post" action="/login">
+        <tbody>
+        <tr>
+            <td>email</td>
+            <td><input type="text" name="email" size="20"></td>
+        </tr>
+        <tr>
+            <td>password</td>
+            <td><input type="password" name="password" size="20"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="login" value="log in"></td>
+        </tr>
+        </form>
+        <tr>
+            <td colspan="2"><a href='/forget-password'>forget password</a> | <a href=/register>create account</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <table th:if="${isUser == 'yes'}">
+
+<h1 th:text = "${user.email}"></h1>
+        <a href="/logout">Log out</a>
+    </table>
+</div>
 <div class="tabc">
+    <h1 th:text = "${isUser}"></h1>
     <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
     <nav>
         <tr th:each="subject: ${subjectList}">

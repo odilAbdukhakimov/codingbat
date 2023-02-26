@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -16,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import uz.pdp.spring_boot_security_web.service.AuthService;
+
+import java.util.Properties;
 
 @Configuration
 @EnableMethodSecurity
@@ -42,7 +46,7 @@ public class SecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers( "/**").permitAll()
+                .requestMatchers( "/*").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Java/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Python/**").permitAll()
@@ -50,6 +54,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/admin/add").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/admin/list").permitAll()
 //                .requestMatchers(HttpMethod.DELETE, "/admin/lang/delete/*").permitAll()
                 .anyRequest()
                 .authenticated()
@@ -59,10 +64,27 @@ public class SecurityConfig {
                 .and()
                 .logout()
                 .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
                 .deleteCookies("JSESSIONID");
 
         return http.build();
     }
+    @Bean
+    public JavaMailSender javaMailSender(){
+        JavaMailSenderImpl javaMailSender=new JavaMailSenderImpl();
+        javaMailSender.setHost("smtp.gmail.com");
+        javaMailSender.setPort(587);
+        javaMailSender.setUsername("bekzodsadriddinov92@gmail.com");
+        javaMailSender.setPassword("jodjyjphsxfckksi");
+        Properties properties=javaMailSender.getJavaMailProperties();
+        properties.put("mail.transport.protocol","smtp");
+        properties.put("mail.smtp.auth","true");
+        properties.put("mail.smtp.starttls.enable","true");
+        properties.put("mail.debug","true");
+        return javaMailSender;
+
+    }
+
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
