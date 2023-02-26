@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
@@ -36,6 +37,18 @@ public class UserController {
         return "";
     }
 
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String email){
+        userService.resetPassword(email);
+        return "index";
+    }
+@GetMapping("/password/reset/{email}")
+    public ModelAndView passwordReset(@PathVariable String email, ModelAndView modelAndView){
+
+       modelAndView.addObject("currentUser", userService.findEmail(email));
+       modelAndView.setViewName("updateUser2");
+       return modelAndView;
+}
 
 
 }

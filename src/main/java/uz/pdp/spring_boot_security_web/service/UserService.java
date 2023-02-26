@@ -2,8 +2,10 @@ package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailMessage;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
@@ -110,4 +112,22 @@ public class UserService {
         }
         return  adminList;
     }
+    public boolean resetPassword(String email){
+        try {
+            SimpleMailMessage simpleMailMessage=new SimpleMailMessage();
+            simpleMailMessage.setFrom("bekzod@gaiml.com");
+            simpleMailMessage.setTo(email);
+            simpleMailMessage.setSubject("Keldi kod");
+simpleMailMessage.setText("<a href='http://localhost:8080/api/user/password/reset/email="+email+"'>hello</a>");
+            javaMailSender.send(simpleMailMessage);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+public UserEntity findEmail(String email){
+return userRepository.findByEmail(email);
+
+}
 }
