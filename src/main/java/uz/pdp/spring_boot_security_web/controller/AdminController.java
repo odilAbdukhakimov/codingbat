@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import uz.pdp.spring_boot_security_web.entity.UserEntity;
-import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
-import uz.pdp.spring_boot_security_web.repository.UserRepository;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 import java.util.ArrayList;
@@ -32,24 +29,24 @@ public class AdminController {
     public ModelAndView getAdmins(
             ModelAndView modelAndView
     ){
-        List<UserEntity> userList = userRepository.findAll();
-        List<UserEntity> adminList = new ArrayList<>();
-        for (UserEntity userEntity : userList) {
-            if (userEntity.getRolePermissionEntities().getRoleEnum().contains("ADMIN")) {
-
-                adminList.add(userEntity);
-            }
-        }
+//        List<UserEntity> userList = userRepository.findAll();
+//        List<UserEntity> adminList = new ArrayList<>();
+//        for (UserEntity userEntity : userList) {
+//            if (userEntity.getRolePermissionEntities().getRoleEnum().contains("ADMIN")) {
+//
+//                adminList.add(userEntity);
+//            }
+//        }
         modelAndView.setViewName("CrudAdmin");
-        modelAndView.addObject("adminList",adminList);
+        modelAndView.addObject("adminList",userService.adminList());
         return modelAndView;
 
     }
 
-    @ResponseBody
-    @GetMapping("/list")
-    public String adminList(){
-       userService.adminList();
-        return "CrudAdmin";
-    }
+//    @ResponseBody
+//    @GetMapping("/list")
+//    public String adminList(){
+//       userService.adminList();
+//        return "CrudAdmin";
+//    }
 }
