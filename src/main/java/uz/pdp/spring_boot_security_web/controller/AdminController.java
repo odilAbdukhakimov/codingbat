@@ -18,24 +18,39 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
-private final UserRepository userRepository;
+    private final UserRepository userRepository;
+
     @PostMapping("/add")
     public String addUser(
             @ModelAttribute AdminRequestDto adminRequestDto
     ) {
 
-       userService.addAdmin(adminRequestDto);
+        userService.addAdmin(adminRequestDto);
         return "redirect:/api/admin";
     }
 
     @GetMapping("")
     public ModelAndView getAdmins(
             ModelAndView modelAndView
-    ){
+    ) {
 
         modelAndView.setViewName("CrudAdmin");
-        modelAndView.addObject("adminList",userService.adminEntityList());
+        modelAndView.addObject("adminList", userService.adminEntityList());
         return modelAndView;
 
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable int id,
+                         @ModelAttribute AdminRequestDto updateAdmin
+    ) {
+        userService.updateAdmin(id, updateAdmin);
+        return "redirect:/api/admin";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+        userService.delete(id);
+        return "redirect:/api/admin";
     }
 }
