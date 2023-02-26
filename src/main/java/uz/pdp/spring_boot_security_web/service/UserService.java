@@ -38,7 +38,7 @@ public class UserService {
     public boolean addUser(UserRegisterDTO userRegisterDTO) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userRegisterDTO.getUsername());
         if (optionalUserEntity.isPresent()) {
-            throw new IllegalArgumentException(String.format("username %s already exist", userRegisterDTO.getEmail()));
+            throw new IllegalArgumentException(String.format("username %s already exist", userRegisterDTO.getUsername()));
         }
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setEmailCode(UUID.randomUUID().toString().substring(0,4));
@@ -47,6 +47,9 @@ public class UserService {
         sendEmail(userEntity.getEmail(), userEntity.getEmailCode());
 
         return true;
+    }
+    public UserEntity getByUser(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFountException(String.format("user %s not found", username)));
     }
 
     public void update(String name, UserRegisterDTO userRegisterDTO) {

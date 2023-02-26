@@ -75,8 +75,4 @@ public class HomeController {
         }
         return model;
     }
-
-
-
-
 }

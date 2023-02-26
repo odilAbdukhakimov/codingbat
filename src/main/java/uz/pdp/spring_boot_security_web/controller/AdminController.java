@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.UserService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/api/admin")
@@ -42,11 +46,28 @@ public class AdminController {
     public String addUser(
             @ModelAttribute UserRegisterDTO userRegisterDTO ,Model model
     ) {
-
        userService.addAdmin(userRegisterDTO);
        model.addAttribute("adminList",userService.getALlAdmins());
         return "CrudAdmin";
     }
+
+    @GetMapping("")
+    public ModelAndView getAdmins(
+            ModelAndView modelAndView
+    ) {
+//        List<UserEntity> userList = userRepository.findAll();
+//        List<UserEntity> adminList = new ArrayList<>();
+//        for (UserEntity userEntity : userList) {
+//            if (userEntity.getRolePermissionEntities().getRoleEnum().contains("ADMIN")) {
+//
+//                adminList.add(userEntity);
+//            }
+//        }
+        modelAndView.setViewName("CrudAdmin");
+        modelAndView.addObject("adminList", userService.adminList());
+        return modelAndView;
+    }
+
     @DeleteMapping("/delete/{username}")
     public String delete(@PathVariable("username") String username, Model model){
         userService.delete(username);
