@@ -27,7 +27,7 @@ public class ImageService {
 
     private static final String uploadPath = "downloadPictures";
     private static final String getPath = "../static/";
-    private static final String uploadPath2 = "D:/Spring-framwork/codingbat/src/main/resources/static";
+    private static final String uploadPath2 = "C:/Users/odila/IdeaProjects/codingbat/src/main/resources/static";
 
 
     public void uploadImage(MultipartFile file ,String username) throws IOException {
