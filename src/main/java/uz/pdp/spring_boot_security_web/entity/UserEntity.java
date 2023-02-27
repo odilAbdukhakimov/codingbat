@@ -19,7 +19,6 @@ import java.util.List;
 @Entity
 @Builder
 @EntityListeners(AuditingEntityListener.class)
-@ToString
 public class UserEntity extends BaseEntity implements UserDetails {
 
     private String name;

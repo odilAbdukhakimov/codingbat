@@ -12,5 +12,5 @@ import lombok.*;
 public class TaskEntity extends BaseEntity {
     private String name;
     private String title;
-
+    private String isSolved ="❎";
 }
