@@ -22,6 +22,7 @@
         <tr>
             <td><input type="submit" name="login"></td>
         </tr>
+
         </form>
         <tr>
             <td colspan="2"><a href='/forget-password'>forget password</a> | <a href=/register>create account</a></td>
@@ -36,7 +37,21 @@
 </div>
 <div class="tabc">
     <h1 th:text = "${isUser}"></h1>
-    <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
+<!--    <nav>-->
+<!--        <tr >-->
+<!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
+<!--            ||->-->
+<!--            <a th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum(),'ADMIN')}" style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
+<!--        </tr>-->
+<!--        <tr th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum().get(0),'ADMIN')}">-->
+<!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
+<!--        </tr>-->
+<!--    </nav>-->
+
+    <nav th:if="${ ADMIN == 'ADMIN'}">
+        <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
+    </nav>
+
     <nav>
         <tr th:each="subject: ${subjectList}">
             <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
