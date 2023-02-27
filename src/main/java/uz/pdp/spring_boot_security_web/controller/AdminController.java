@@ -2,30 +2,55 @@ package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
+import uz.pdp.spring_boot_security_web.repository.UserRepository;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
 public class AdminController {
     private final UserService userService;
+    private final UserRepository userRepository;
+
     @PostMapping("/add")
     public String addUser(
-            @ModelAttribute UserRegisterDTO userRegisterDTO
+            @ModelAttribute AdminRequestDto adminRequestDto
     ) {
-       userService.addAdmin(userRegisterDTO);
-        return "CrudAdmin";
+
+        userService.addAdmin(adminRequestDto);
+        return "redirect:/api/admin";
     }
 
-    @ResponseBody
-    @GetMapping("/list")
-    public String adminList(){
-       userService.adminList();
-        return "CrudAdmin";
+    @GetMapping("")
+    public ModelAndView getAdmins(
+            ModelAndView modelAndView
+    ) {
+
+        modelAndView.setViewName("CrudAdmin");
+        modelAndView.addObject("adminList", userService.adminEntityList());
+        return modelAndView;
+
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable int id,
+                         @ModelAttribute AdminRequestDto updateAdmin
+    ) {
+        userService.updateAdmin(id, updateAdmin);
+        return "redirect:/api/admin";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id) {
+        userService.delete(id);
+        return "redirect:/api/admin";
     }
 }

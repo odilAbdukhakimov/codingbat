@@ -36,6 +36,4 @@ public abstract class BaseEntity {
 
     @UpdateTimestamp
     protected Timestamp updatedDate;
-
-
 }

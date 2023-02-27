@@ -48,7 +48,7 @@
             <table>
                 <tbody>
                 <tr th:each="task: ${taskList}">
-                    <td width="200">&nbsp;<img src="/c.jpg"><a th:text="${task.getName()}"
+                    <td width="200">&nbsp;<span th:text="${task.getIsSolved()}"></span><a th:text="${task.getName()}"
                                                                th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font
                             color="gray">H</font></td>
                 </tr>

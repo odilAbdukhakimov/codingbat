@@ -55,12 +55,15 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/admin/add").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/admin/list").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/user/reset-password").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/user/password/**").permitAll()
 //                .requestMatchers(HttpMethod.DELETE, "/admin/lang/delete/*").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/")
+                .failureForwardUrl("/")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
@@ -82,7 +85,6 @@ public class SecurityConfig {
         properties.put("mail.smtp.starttls.enable","true");
         properties.put("mail.debug","true");
         return javaMailSender;
-
     }
 
 

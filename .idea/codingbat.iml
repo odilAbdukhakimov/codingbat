@@ -62,7 +62,6 @@
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:6.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:6.0.1" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-mail:3.0.2" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:6.0.4" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.angus:jakarta.mail:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: jakarta.activation:jakarta.activation-api:2.1.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.eclipse.angus:angus-activation:1.0.0" level="project" />
@@ -165,5 +164,6 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:postgresql:1.17.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:jdbc:1.17.6" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testcontainers:database-commons:1.17.6" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-context-support:6.0.4" level="project" />
   </component>
 </module>

@@ -1,6 +1,8 @@
 package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,5 +24,13 @@ public class AuthService implements UserDetailsService {
         //Optional<UserEntity> optionalUserEntity = userRepository.findByEmail(username);
          Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(username);
         return optionalUserEntity.orElseThrow(() -> new UsernameNotFoundException(String.format("username %s not found", username)));
+    }
+    public  UserEntity findUserByUsername(){
+        Optional<UserEntity> userEntity = userRepository.findByUsername(getAuthentication().getName());
+        return userEntity.orElse(null);
+    }
+
+    public Authentication getAuthentication() {
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }
