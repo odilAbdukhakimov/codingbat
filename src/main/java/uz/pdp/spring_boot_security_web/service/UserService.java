@@ -206,4 +206,14 @@ public class UserService {
                         currentUser, SecurityContextHolder.getContext().getAuthentication().getCredentials(), currentUser.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authToken);
     }
+
+    public String getAdmin_In_Roles(UserEntity userEntity) {
+        List<String> roleEnum = userEntity.getRolePermissionEntities().getRoleEnum();
+        for (String admin:roleEnum){
+            if (admin.equals("ADMIN")){
+                return "ADMIN";
+            }
+        }
+        return "";
+    }
 }

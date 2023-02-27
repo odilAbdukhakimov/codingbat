@@ -41,8 +41,8 @@ public class HomeController {
          userEntity = (UserEntity) authentication.getPrincipal();
          modelAndView.addObject("isUser", "yes");
          modelAndView.addObject("user", userEntity);
-        }
-        else {
+         modelAndView.addObject("ADMIN", userService.getAdmin_In_Roles(userEntity));
+        }else {
         modelAndView.addObject("isUser","not");
         }
 
@@ -69,6 +69,7 @@ public class HomeController {
             userEntity = (UserEntity) authentication.getPrincipal();
             model.addObject("isUser", "yes");
             model.addObject("user", userEntity);
+            model.addObject("ADMIN", userService.getAdmin_In_Roles(userEntity));
         }
         else {
             model.addObject("isUser","not");
