@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
+import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;

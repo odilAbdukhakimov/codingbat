@@ -19,5 +19,4 @@ public class TopicEntity extends BaseEntity {
     private LanguageEntity languageEntity;
     @ManyToMany(cascade = CascadeType.ALL)
     private List<TaskEntity> taskEntityList;
-
 }

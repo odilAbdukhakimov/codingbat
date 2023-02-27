@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDTO;
+import uz.pdp.spring_boot_security_web.service.AuthService;
 import uz.pdp.spring_boot_security_web.service.LanguageService;
 import uz.pdp.spring_boot_security_web.service.TaskService;
 import uz.pdp.spring_boot_security_web.service.TopicService;
@@ -19,6 +20,7 @@ import uz.pdp.spring_boot_security_web.service.TopicService;
 public class TopicController {
     private final LanguageService languageService;
     private final TaskService taskService;
+    private final AuthService authService;
     private final TopicService topicService;
 
     @GetMapping("/{language}/{topic}")
@@ -42,6 +44,15 @@ public class TopicController {
         else {
             modelAndView.addObject("isUser","not");
         }
+//        modelAndView.addObject("taskList", taskService.getTaskList(id));
+//        if (user != null){
+//            modelAndView.addObject("userTasksList", taskService.getUserTaskEntityList(String.valueOf(user.getUsername())));
+//        }
+        modelAndView.setViewName("task");
+        modelAndView.addObject("taskList", taskService.getTaskListByTopicAndLanguage(
+                language, topic
+        ));
+
         return modelAndView;
     }
 
