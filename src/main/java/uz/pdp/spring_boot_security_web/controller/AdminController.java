@@ -1,17 +1,13 @@
 package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
-import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 import uz.pdp.spring_boot_security_web.service.UserService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Controller
 @RequestMapping("/api/admin")
@@ -21,6 +17,7 @@ public class AdminController {
     private final UserRepository userRepository;
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public String addUser(
             @ModelAttribute AdminRequestDto adminRequestDto
     ) {
@@ -30,17 +27,19 @@ public class AdminController {
     }
 
     @GetMapping("")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public ModelAndView getAdmins(
             ModelAndView modelAndView
     ) {
 
         modelAndView.setViewName("CrudAdmin");
-        modelAndView.addObject("adminList", userService.adminEntityList());
+        modelAndView.addObject("adminList", userService.getAdminList());
         return modelAndView;
 
     }
 
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public String update(@PathVariable int id,
                          @ModelAttribute AdminRequestDto updateAdmin
     ) {
@@ -49,6 +48,7 @@ public class AdminController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
     public String delete(@PathVariable int id) {
         userService.delete(id);
         return "redirect:/api/admin";

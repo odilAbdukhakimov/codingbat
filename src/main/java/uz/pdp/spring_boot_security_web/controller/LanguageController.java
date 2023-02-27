@@ -1,6 +1,7 @@
 package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ public class LanguageController {
     private final LanguageService languageService;
 
     @GetMapping("")
+    @PreAuthorize("hasRole('ADMIN')")
     public  ModelAndView langPage(ModelAndView model){
         model.addObject("subjectList", languageService.languageEntityList());
         model.setViewName("language");
@@ -24,6 +26,7 @@ public class LanguageController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN') and hasPermission('ADD')")
     public String addLanguage(
             @ModelAttribute LanguageRequestDTO languageRequestDTO
     ) {
@@ -32,6 +35,7 @@ public class LanguageController {
     }
 
     @GetMapping("/del/{id}")
+    @PreAuthorize("hasRole('ADMIN') and hasPermission('DELETE')")
     public String deleteLanguage(
             @PathVariable int id
     ) {
@@ -40,6 +44,7 @@ public class LanguageController {
     }
 
     @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN') and hasPermission('UPDATE')")
     public String updateLanguage(
             @PathVariable int id,
             @ModelAttribute LanguageRequestDTO title

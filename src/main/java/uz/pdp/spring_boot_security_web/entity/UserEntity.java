@@ -22,9 +22,12 @@ import java.util.List;
 public class UserEntity extends BaseEntity implements UserDetails {
 
     private String name;
+    @Column(unique = true)
     private String username;
     private String password;
+    @Column(unique = true)
     private String email;
+
     private String emailCode;
 
     @Column(name = "logo_url")

@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
-import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
@@ -38,47 +37,9 @@ public class UserService {
                 "Your " + userEntity.getEmail() + " account has been successfully registered");
         return true;
     }
-//    public UserEntity getByUser(String username) {
-//        return userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFountException(String.format("user %s not found", username)));
-//    }
 
-    public void update(String name, UserRegisterDTO userRegisterDTO) {
-        Optional<UserEntity> byUsername = userRepository.findByUsername(name);
-        RolePermissionEntity rolePermission = new RolePermissionEntity();
-        if (byUsername.isEmpty()) {
-            throw new RecordNotFountException("this user not found");
-        }
-        UserEntity oldUserEntity = byUsername.get();
-        if (userRegisterDTO.getName() != null && !userRegisterDTO.getName().equals("")) {
-            oldUserEntity.setName(userRegisterDTO.getName());
-        }
-        if (userRegisterDTO.getPassword() != null) {
-            oldUserEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
-        }
-        if (userRegisterDTO.getPermissions() != null) {
-            rolePermission.setPermissionEnum(userRegisterDTO.getPermissions());
-            oldUserEntity.setRolePermissionEntities(rolePermission);
-        }
-        if (userRegisterDTO.getRole() != null) {
-            rolePermission.setRoleEnum(userRegisterDTO.getRole());
-            oldUserEntity.setRolePermissionEntities(rolePermission);
-        }
-        if (userRegisterDTO.getUsername() != null && !userRegisterDTO.getUsername().equals("")) {
-            oldUserEntity.setUsername(userRegisterDTO.getUsername());
-        }
-        userRepository.save(oldUserEntity);
-
-    }
-
-    public UserEntity getByUser(String username) {
+    public UserEntity getByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new RecordNotFountException(String.format("user %s not found", username)));
-    }
-
-    private void checkByUsername(String username) {
-        Optional<UserEntity> userEntity = userRepository.findByUsername(username);
-        if (userEntity.isPresent()) {
-            throw new IllegalArgumentException(String.format("username %s already exist", username));
-        }
     }
 
     public void addAdmin(AdminRequestDto adminRequestDto) {
@@ -88,23 +49,12 @@ public class UserService {
                 .permissions(Arrays.stream(adminRequestDto.getPermission().split(",")).toList())
                 .role(Arrays.stream(adminRequestDto.getRoles().split(",")).toList())
                 .build();
-        //checkByUsername(adminRequestDto.getUsername());
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
         userRepository.save(userEntity);
     }
 
-//    public boolean verifyEmail(String email, String emailCode) {
-//        Optional<UserEntity> byEmailAndEmailCode = userRepository.findByEmailAndEmailCode(email, emailCode);
-//        if (byEmailAndEmailCode.isPresent()) {
-//            return true;
-//        } else {
-//            return false;
-//        }
-//
-//    }
-
-    public List<UserEntity> adminEntityList() {
+    public List<UserEntity> getAdminList() {
         List<UserEntity> userList = userRepository.findAll();
         List<UserEntity> adminList = new ArrayList<>();
         for (UserEntity userEntity : userList) {
@@ -120,8 +70,8 @@ public class UserService {
         userRepository.save(byUser);
     }
 
-    public UserEntity findEmail(String email) {
-        return userRepository.findByEmail(email);
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email).orElse(null);
     }
 
     public void delete(int id) {
@@ -172,7 +122,7 @@ public class UserService {
     }
 
     public UserEntity updateUser(String username, UserRegisterDTO userRegisterDTO) {
-        UserEntity byUsername = getByUser(username);
+        UserEntity byUsername = getByUsername(username);
         RolePermissionEntity rolePermission = new RolePermissionEntity();
 
         if (userRegisterDTO.getName() != null && !userRegisterDTO.getName().equals("")) {
@@ -209,9 +159,9 @@ public class UserService {
 
     public String getAdmin_In_Roles(UserEntity userEntity) {
         List<String> roleEnum = userEntity.getRolePermissionEntities().getRoleEnum();
-        for (String admin:roleEnum){
-            if (admin.equals("ADMIN")){
-                return "ADMIN";
+        for (String admin : roleEnum) {
+            if (admin.equals("ADMIN") || admin.equals("SUPER_ADMIN")) {
+                return admin;
             }
         }
         return "";

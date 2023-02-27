@@ -32,7 +32,7 @@ public class TaskService {
                 .name(taskRequestDTO.getName())
                 .title(taskRequestDTO.getTitle())
                 .build();
-        if (topic.getTaskEntityList() == null){
+        if (topic.getTaskEntityList() == null) {
             topic.setTaskEntityList(List.of(
                     taskEntity
             ));
@@ -47,14 +47,15 @@ public class TaskService {
 
     public void delete(int taskId) {
         Optional<TaskEntity> byId = taskRepository.findById(taskId);
-        if (byId.isPresent()){
+        if (byId.isPresent()) {
             TaskEntity taskEntity = byId.get();
             taskRepository.delete(taskEntity);
             return;
         }
         throw new RecordNotFountException("The task is not found");
     }
-    public List<TaskEntity> getTaskList(int topicId){
+
+    public List<TaskEntity> getTaskList(int topicId) {
         Optional<TopicEntity> byId = topicRepository.findById(topicId);
         return byId.get().getTaskEntityList();
     }
@@ -72,41 +73,40 @@ public class TaskService {
 
     }
 
-    public TaskEntity getById(int id){
+    public TaskEntity getById(int id) {
         Optional<TaskEntity> byId = taskRepository.findById(id);
         return byId.orElse(null);
     }
-    public List<TaskEntity> getTaskListByTopicAndLanguage(String language, String topic){
+
+    public List<TaskEntity> getTaskListByTopicAndLanguage(String language, String topic) {
         Optional<LanguageEntity> byTitle = languageRepository.findByTitle(language);
         if (byTitle.isEmpty()) return null;
         List<TopicEntity> topicEntities = byTitle.get().getTopicEntities();
         Optional<TopicEntity> first = topicEntities.stream().filter((s) -> s.getName().equals(topic)).findFirst();
         return first.map(TopicEntity::getTaskEntityList).orElse(null);
     }
+
     public List<TaskEntity> getTasksUserSolvedAndNotSolved(UserEntity user, String language, String topic) {
 
         List<TaskEntity> taskListByTopicAndLanguage = getTaskListByTopicAndLanguage(language, topic);
 
-        if (user.getUsername() != null){
+        if (user.getUsername() != null) {
 
             List<TaskEntity> userTaskEntityList = getUserTaskEntityList(user.getUsername());
 
-            if (!userTaskEntityList.isEmpty()) {
+            if (userTaskEntityList != null) {
                 for (TaskEntity taskEntity : taskListByTopicAndLanguage) {
                     for (TaskEntity entity : userTaskEntityList) {
-                        if (taskEntity.getName().equals(entity.getName())){
+                        if (taskEntity.getName().equals(entity.getName())) {
                             taskEntity.setIsSolved("✅");
                         }
                     }
                 }
             }
         }
-        for (TaskEntity taskEntity : taskListByTopicAndLanguage) {
-            System.out.println("taskEntity = " + taskEntity.getIsSolved());
-        }
-
         return taskListByTopicAndLanguage;
     }
+
     public List<TaskEntity> getUserTaskEntityList(String username) {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
         return userEntity.map(UserEntity::getTaskEntityList).orElse(null);

@@ -1,20 +1,16 @@
 package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.spring_boot_security_web.entity.AttachmentEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.repository.AttachmentRepository;
-import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Iterator;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -47,7 +43,7 @@ public class ImageService {
 
             attachment.setName(randomName);
             attachmentRepository.save(attachment);
-            UserEntity byUser = userService.getByUser(username);
+            UserEntity byUser = userService.getByUsername(username);
             byUser.setLogoUrl(randomName);
             userService.update(byUser);
             Path path = Paths.get(uploadPath2 + "/" + randomName);
