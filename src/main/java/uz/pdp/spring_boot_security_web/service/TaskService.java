@@ -47,12 +47,12 @@ public class TaskService {
 
     public void delete(int taskId) {
         Optional<TaskEntity> byId = taskRepository.findById(taskId);
-        if (byId.isPresent()){
-            TaskEntity taskEntity = byId.get();
-            taskRepository.delete(taskEntity);
-            return;
+        if (byId.isEmpty()){
+            throw new RecordNotFountException("The task is not found");
         }
-        throw new RecordNotFountException("The task is not found");
+        TaskEntity taskEntity = byId.get();
+        taskRepository.delete(taskEntity);
+
     }
     public List<TaskEntity> getTaskList(int topicId){
         Optional<TopicEntity> byId = topicRepository.findById(topicId);
@@ -74,7 +74,10 @@ public class TaskService {
 
     public TaskEntity getById(int id){
         Optional<TaskEntity> byId = taskRepository.findById(id);
-        return byId.orElse(null);
+        if (byId.isEmpty()){
+            return null;
+        }
+        return byId.get();
     }
     public List<TaskEntity> getTaskListByTopicAndLanguage(String language, String topic){
         Optional<LanguageEntity> byTitle = languageRepository.findByTitle(language);

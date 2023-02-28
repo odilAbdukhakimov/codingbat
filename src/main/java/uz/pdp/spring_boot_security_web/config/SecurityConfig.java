@@ -53,8 +53,23 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/admin/add").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/admin/add").permitAll()/////////////
+                .requestMatchers(HttpMethod.GET, "/api/admin/delete/{id}").permitAll()//////
+                .requestMatchers(HttpMethod.GET, "/api/admin").permitAll()//////
+                .requestMatchers(HttpMethod.POST, "/api/admin/update/{id}").permitAll()/////
                 .requestMatchers(HttpMethod.POST, "/api/admin/list").permitAll()
+                .requestMatchers(HttpMethod.POST, "/admin/lang/add").permitAll()////////
+                .requestMatchers(HttpMethod.GET, "/admin/lang/del/{id}").permitAll()////////
+                .requestMatchers(HttpMethod.GET, "/admin/lang").permitAll()////////
+                .requestMatchers(HttpMethod.POST, "/admin/lang/update/{id}").permitAll()////////
+                .requestMatchers(HttpMethod.POST, "/admin/task/add").permitAll()////////
+                .requestMatchers(HttpMethod.POST, "/admin/task/update/{id}").permitAll()////////
+                .requestMatchers(HttpMethod.GET, "/admin/task/del/{id}").permitAll()////////
+                .requestMatchers(HttpMethod.GET, "/task/{id}").permitAll()////////
+                .requestMatchers(HttpMethod.POST, "/admin/topic/add").permitAll()////////
+                .requestMatchers(HttpMethod.GET, "/admin/topic/del/{id}").permitAll()////////
+                .requestMatchers(HttpMethod.GET, "/{language}/{topic}").permitAll()////////
+                .requestMatchers(HttpMethod.POST, "/admin/topic/update/{id}").permitAll()////////
                 .requestMatchers(HttpMethod.POST, "/api/user/reset-password").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/user/password/**").permitAll()
 //                .requestMatchers(HttpMethod.DELETE, "/admin/lang/delete/*").permitAll()

@@ -43,6 +43,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
         this.rolePermissionEntities = rolePermissionEntities;
     }
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return rolePermissionEntities.getAuthority();

@@ -17,12 +17,13 @@ public class LanguageController {
     private final LanguageService languageService;
 
     @GetMapping("")
-    public  ModelAndView langPage(ModelAndView model){
+    public ModelAndView langPage(ModelAndView model) {
         model.addObject("subjectList", languageService.languageEntityList());
         model.setViewName("language");
         return model;
     }
 
+    @ResponseBody
     @PostMapping("/add")
     public String addLanguage(
             @ModelAttribute LanguageRequestDTO languageRequestDTO
@@ -39,9 +40,10 @@ public class LanguageController {
         return "redirect:/admin/lang";
     }
 
+
     @PostMapping("/update/{id}")
     public String updateLanguage(
-            @PathVariable int id,
+            @PathVariable("id") int id,
             @ModelAttribute LanguageRequestDTO title
     ) {
         languageService.update(id, title);

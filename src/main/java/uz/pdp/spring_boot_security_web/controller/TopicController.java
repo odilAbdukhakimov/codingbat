@@ -70,7 +70,7 @@ public class TopicController {
 
     @GetMapping("/admin/topic/del/{id}")
     public String deleteTopic(
-            @PathVariable int id
+            @PathVariable("id") int id
     ) {
         topicService.delete(id);
         return "redirect:/admin/lang";

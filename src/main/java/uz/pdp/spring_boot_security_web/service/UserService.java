@@ -1,5 +1,6 @@
 package uz.pdp.spring_boot_security_web.service;
 
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,9 +16,11 @@ import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
+import java.io.File;
 import java.util.*;
 
 @Service
+
 @RequiredArgsConstructor
 public class UserService {
 
@@ -87,8 +90,9 @@ public class UserService {
                 .username(adminRequestDto.getUsername())
                 .permissions(Arrays.stream(adminRequestDto.getPermission().split(",")).toList())
                 .role(Arrays.stream(adminRequestDto.getRoles().split(",")).toList())
+                .image(new File(adminRequestDto.getLogoUrl()))
                 .build();
-        //checkByUsername(adminRequestDto.getUsername());
+        checkByUsername(adminRequestDto.getUsername());
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
         userRepository.save(userEntity);
@@ -126,10 +130,13 @@ public class UserService {
 
     public void delete(int id) {
         Optional<UserEntity> byId = userRepository.findById(id);
+        if (byId.isPresent()){
+            UserEntity userEntity = byId.get();
+            userRepository.delete(userEntity);
+        }
         if (byId.isEmpty())
             throw new RecordNotFountException("User note found");
-        UserEntity userEntity = byId.get();
-        userRepository.delete(userEntity);
+
     }
 
     public void updateAdmin(int adminId, AdminRequestDto adminRequestDto) {

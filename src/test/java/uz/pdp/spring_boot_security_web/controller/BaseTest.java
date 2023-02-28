@@ -10,6 +10,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import uz.pdp.spring_boot_security_web.repository.LanguageRepository;
+import uz.pdp.spring_boot_security_web.repository.TaskRepository;
+import uz.pdp.spring_boot_security_web.repository.TopicRepository;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -22,6 +24,10 @@ public abstract class BaseTest {
     LanguageRepository languageRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TaskRepository taskRepository;
+    @Autowired
+    TopicRepository topicRepository;
 
     protected final static PostgreSQLContainer<?> postgres;
 

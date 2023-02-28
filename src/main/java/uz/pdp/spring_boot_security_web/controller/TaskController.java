@@ -23,7 +23,7 @@ public class TaskController {
     @GetMapping("/task/{id}")
     public ModelAndView compPage(
             ModelAndView modelAndView,
-            @PathVariable int id
+            @PathVariable("id") int id
     ) {
         modelAndView.addObject("task", taskService.getById(id));
         modelAndView.setViewName("compiler");
@@ -49,7 +49,7 @@ public class TaskController {
 
     @GetMapping("/admin/task/del/{id}")
     public String deleteTask(
-            @PathVariable int id
+            @PathVariable("id") int id
     ) {
         taskService.delete(id);
         return "redirect:/admin/lang";
@@ -60,7 +60,7 @@ public class TaskController {
             @PathVariable int id,
             @ModelAttribute TaskRequestDTO taskRequestDTO
     ) {
-        taskService.update(id,taskRequestDTO);
+        taskService.update(id, taskRequestDTO);
         return "redirect:/admin/lang";
     }
 }

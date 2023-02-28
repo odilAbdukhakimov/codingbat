@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class TaskRequestDTO {
+
     private String name;
     private String title;
     private Integer topicId;

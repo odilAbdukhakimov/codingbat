@@ -24,7 +24,6 @@ public class AdminController {
     public String addUser(
             @ModelAttribute AdminRequestDto adminRequestDto
     ) {
-
         userService.addAdmin(adminRequestDto);
         return "redirect:/api/admin";
     }
@@ -39,15 +38,18 @@ public class AdminController {
         return modelAndView;
 
     }
+    @ResponseBody
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable int id,
-                         @ModelAttribute AdminRequestDto updateAdmin
+    public String update(
+            @PathVariable("id") int id,
+            @ModelAttribute AdminRequestDto updateAdmin
     ) {
         userService.updateAdmin(id, updateAdmin);
         return "redirect:/api/admin";
     }
 
+    @ResponseBody
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id) {
         userService.delete(id);
