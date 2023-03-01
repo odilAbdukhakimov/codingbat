@@ -28,23 +28,11 @@ class TaskControllerTest extends BaseTest {
 
     @Test
     void compPage() throws Exception {
-        mockMvc.perform(post("/admin/lang/add")
-                .param("title", "Java"));
-        mockMvc.perform( post("/admin/topic/add")
-                .param("name", "hhhh")
-                .param("content", "hhh")
-                .param("language", "Java"));
-       mockMvc.perform(post("/admin/task/add")
-                .param("name", "bbb")
-                .param("title", "bb")
-                .param("topicId", "1"));
+        callTask();
         ResultActions resultActions = mockMvc.perform(get("/task/{id}", 1));
-        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(view().name("compiler"));
     }
 
-    @Test
-    void topicHome() {
-    }
 
     @Test
     void addTask() throws Exception {
@@ -56,12 +44,13 @@ class TaskControllerTest extends BaseTest {
         callTask();
         callTask().andExpect(view().name("redirect:/admin/lang"));
     }
+
     private ResultActions callTask() throws Exception {
 
-        mockMvc.perform( post("/admin/topic/add")
-                        .param("name", "hhhh")
-                        .param("content", "hhh")
-                        .param("language", "Java"));
+        mockMvc.perform(post("/admin/topic/add")
+                .param("name", "hhhh")
+                .param("content", "hhh")
+                .param("language", "Java"));
         final MockHttpServletRequestBuilder request =
                 post("/admin/task/add")
                         .param("name", "aaa")
@@ -69,14 +58,16 @@ class TaskControllerTest extends BaseTest {
                         .param("topicId", "1");
         return mockMvc.perform(request);
     }
-//////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////
     @Test
     void deleteTask() throws Exception {
         callTask();
         ResultActions perform = mockMvc.perform(get("/admin/task/del/{id}", 1));
         perform.andExpect(view().name("redirect:/admin/lang"));
     }
-////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////
     @Test
     void updateTask() throws Exception {
         callTask();

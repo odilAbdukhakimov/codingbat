@@ -65,6 +65,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/admin/task/add").permitAll()////////
                 .requestMatchers(HttpMethod.POST, "/admin/task/update/{id}").permitAll()////////
                 .requestMatchers(HttpMethod.GET, "/admin/task/del/{id}").permitAll()////////
+                .requestMatchers(HttpMethod.GET, "admin/{language}/{topic}/{id}").permitAll()////////
                 .requestMatchers(HttpMethod.GET, "/task/{id}").permitAll()////////
                 .requestMatchers(HttpMethod.POST, "/admin/topic/add").permitAll()////////
                 .requestMatchers(HttpMethod.GET, "/admin/topic/del/{id}").permitAll()////////

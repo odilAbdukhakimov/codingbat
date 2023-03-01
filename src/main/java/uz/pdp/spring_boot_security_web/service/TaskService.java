@@ -77,7 +77,8 @@ public class TaskService {
         if (byId.isEmpty()){
             return null;
         }
-        return byId.get();
+        TaskEntity taskEntity = byId.get();
+        return taskEntity;
     }
     public List<TaskEntity> getTaskListByTopicAndLanguage(String language, String topic){
         Optional<LanguageEntity> byTitle = languageRepository.findByTitle(language);
