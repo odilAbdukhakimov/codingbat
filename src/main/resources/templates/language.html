@@ -335,7 +335,8 @@
                 </thead>
                 <tbody th:each="subject: ${subjectList}">
                 <tr>
-                    <td> <a th:text="${subject.getTitle()}"
+                    <td>
+                        <a th:text="${subject.getTitle()}"
                             th:href="@{/admin/{language}/{id}(language=${subject.getTitle()},id=${subject.getId()})}"> </a></td>
                     <td >
                         <a type="button"  data-toggle="modal"

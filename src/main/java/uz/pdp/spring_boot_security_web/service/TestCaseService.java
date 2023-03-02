@@ -2,12 +2,14 @@ package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TestCaseEntity;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.model.dto.TestCaseDto;
 import uz.pdp.spring_boot_security_web.repository.TaskRepository;
 import uz.pdp.spring_boot_security_web.repository.TestCaseRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,12 +18,24 @@ import java.util.Optional;
 public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto> {
 
     private final TestCaseRepository testCaseRepository;
-    private final TaskRepository questionService;
+    private final TaskRepository taskRepository;
 
     @Override
     public List<TestCaseEntity> getList() {
         return testCaseRepository.findAll();
     }
+
+    public List<TestCaseEntity>getTestCaseListByTaskId(int id, String task){
+        List<TestCaseEntity>testCaseEntitiesList=new ArrayList<>();
+        for (TestCaseEntity testCaseEntity : testCaseRepository.findAll()) {
+            if (testCaseEntity.getQuestion().getName().equals(task)){
+                testCaseEntitiesList.add(testCaseEntity);
+            }
+        }
+
+        return testCaseEntitiesList;
+    }
+
 
     @Override
     public TestCaseEntity getById(int id) {
@@ -47,7 +61,7 @@ public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto>
         TestCaseEntity test = TestCaseEntity.builder()
                 .firstParam(testCaseDto.getFirstParam())
                 .secondParam(testCaseDto.getSecondParam())
-                .question(questionService.findByName(testCaseDto.getQuestionName()))
+                .question(taskRepository.findByName(testCaseDto.getQuestionName()))
                 .build();
         String result=null;
         if(testCaseDto.getResult().startsWith("\"")&&testCaseDto.getResult().endsWith("\"")){

@@ -15,9 +15,9 @@ public class TestCaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String firstParam;
-    private String secondParam;
-    private String result;
+    private String firstParam;// 1
+    private String secondParam;//2
+    private String result;//javobi
     @ManyToOne
     TaskEntity question;
 }

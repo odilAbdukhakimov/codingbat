@@ -345,28 +345,25 @@
                     <th>ACTIONS</th>
                 </tr>
                 </thead>
-                <tbody th:each="task: ${taskList}">
+                <tbody th:each="testCase: ${testCaseList}">
                 <tr>
-                    <td><a th:text="${task.getName()}"
-                           th:href="@{/admin/{language}/{topic}/{task}/{id}(language=${topic.getLanguageEntity().getTitle()},topic=${topic.getName()},task=${task.getName()},id=${topic.getId()})}"> </a>
-
-                    </td>
-                    <td>
-                        <a type="button" data-toggle="modal"
-                           data-target="#myModal" th:attr="onclick=|updateId('${task.getId()}')|">
+                    <td> <a th:text="${testCase.getResult()}"> </a></td>
+                    <td >
+                        <a type="button"  data-toggle="modal"
+                           data-target="#myModal" th:attr="onclick=|updateId('${testCase.getId()}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
-                        <a type="button" data-toggle="modal"
-                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${task.getId()}')|">
+                        <a type="button"  data-toggle="modal"
+                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${testCase.getId()}')|">
                             <i class="material-icons btn btn-danger">&#xE872;</i>
                         </a>
                     </td>
 
-                    <div fragment="modal" id="myModal" class="modal" tabindex="-1" role="dialog">
+                    <div fragment="modal"  id="myModal"  class="modal" tabindex="-1" role="dialog">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Task Update</h5>
+                                    <h5 class="modal-title">TaskCase Update</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -374,15 +371,52 @@
                                 <div class="modal-body">
                                     <form id="updateId" method="post">
                                         <div class="form-group">
-                                            <label class="control-label">Task Name:</label>
-                                            <input type="text" name="name"
-                                                   class="form-control" placeholder="Enter task new name">
-                                            <label class="control-label">Task Title:</label>
-                                            <input type="text" name="title"
-                                                   class="form-control" placeholder="Enter task new title">
+                                            <label class="control-label" >Task Name:</label>
+                                            <input type="text"  name="questionName" class="form-control" placeholder="Enter task new name" >
                                         </div>
-                                        <input type="button" class="btn btn-default" data-dismiss="modal"
-                                               value="Cancel">
+                                        <div class="form-group">
+                                            <label>firstParam</label>
+                                            <br/>
+                                            <label>String</label>
+                                            <input  type="checkbox" name="firstParam" value ="String">
+                                            <br>
+                                            <label>int</label>
+
+                                            <input  type="checkbox" name="firstParam" value ="int">
+                                            <br>
+                                            <label>double</label>
+                                            <input  type="checkbox" name="permission" value ="double">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>secondParam</label>
+                                            <br/>
+                                            <label>String</label>
+                                            <input  type="checkbox" name="secondParam" value ="String">
+                                            <br>
+                                            <label>int</label>
+
+                                            <input  type="checkbox" name="secondParam" value ="int">
+                                            <br>
+                                            <label>double</label>
+                                            <input  type="checkbox" name="secondParam" value ="double">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>result</label>
+                                            <br/>
+                                            <label>String</label>
+                                            <input  type="checkbox" name="result" value ="String">
+                                            <br>
+                                            <label>int</label>
+
+                                            <input  type="checkbox" name="result" value ="int">
+                                            <br>
+                                            <label>double</label>
+                                            <input  type="checkbox" name="result" value ="double">
+                                            <br>
+                                            <label>void</label>
+                                            <input  type="checkbox" name="result" value ="void">
+                                        </div>
+                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
                                         <button type="submit" class="btn btn-success">Submit</button>
                                     </form>
                                 </div>
@@ -397,18 +431,15 @@
                                 <form id="deleteId" method="get">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Delete Task</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                            &times;
-                                        </button>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
                                         <p>Are you sure you want to delete these Records?</p>
                                         <p class="text-warning"><small>This action cannot be undone.</small></p>
                                     </div>
                                     <div class="modal-footer">
-                                        <input type="button" class="btn btn-default" data-dismiss="modal"
-                                               value="Cancel">
-                                        <input type="submit" class="btn btn-danger" value="Delete">
+                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                        <input  type="submit" class="btn btn-danger" value="Delete">
 
                                     </div>
                                 </form>
@@ -438,19 +469,65 @@
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/admin/task/add}" method="post">
+            <form th:action="@{/admin/testCase/add}" method="post">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Task</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Task Name</label>
-                        <input type="text" class="form-control" placeholder="Enter task Name" name="name">
-                        <label class="control-label">Task title :</label>
-                        <input type="text" name="title"
-                               class="form-control" placeholder="Enter task title">
-                        <input type="hidden" name="topicId" th:value="${topic.getId()}">
+                        <div class="form-group">
+                            <label class="control-label" >Task Name:</label>
+                            <input type="text"  name="questionName" class="form-control" placeholder="Enter task new name" >
+                        </div>
+                        <div class="form-group">
+                            <label>firstParam</label>
+                            <br/>
+                            <label>String</label>
+                            <input  type="checkbox" name="firstParam" value ="String">
+                            <br>
+                            <label>int</label>
+
+                            <input  type="checkbox" name="firstParam" value ="int">
+                            <br>
+                            <label>double</label>
+                            <input  type="checkbox" name="permission" value ="double">
+                        </div>
+                        <div class="form-group">
+                            <label>secondParam</label>
+                            <br/>
+                            <label>String</label>
+                            <input  type="checkbox" name="secondParam" value ="String">
+                            <br>
+                            <label>int</label>
+
+                            <input  type="checkbox" name="secondParam" value ="int">
+                            <br>
+                            <label>double</label>
+                            <input  type="checkbox" name="secondParam" value ="double">
+                        </div>
+                        <div class="form-group">
+                            <label>result</label>
+                            <br/>
+                            <label>String</label>
+                            <input  type="checkbox" name="result" value ="String">
+                            <br>
+                            <label>int</label>
+
+                            <input  type="checkbox" name="result" value ="int">
+                            <br>
+                            <label>double</label>
+                            <input  type="checkbox" name="result" value ="double">
+                            <br>
+                            <label>void</label>
+                            <input  type="checkbox" name="result" value ="void">
+                        </div>
+
+<!--                        <label>Task Name</label>-->
+<!--                        <input type="text" class="form-control" placeholder="Enter task Name" name="name">-->
+<!--                        <label class="control-label" >Task title :</label>-->
+<!--                        <input type="text" name="title" class="form-control" placeholder="Enter task title" >-->
+<!--                        <input type="hidden" name="task" th:value="${task.getId()}">-->
 
                     </div>
                 </div>
@@ -464,18 +541,16 @@
 </div>
 
 <script>
-    function updateId(taskId) {
-        let var2 = document.getElementById("updateId").action = "/admin/task/update/" + taskId;
+    function updateId(testCaseId){
+        let var2 = document.getElementById("updateId").action="/admin/testCase/update/"+testCaseId;
         // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
         console.log(var2)
     }
-
-    function deleteId(taskId) {
-        let var2 = document.getElementById("deleteId").action = "/admin/task/del/" + taskId
+    function deleteId(testCaseId){
+        let var2 = document.getElementById("deleteId").action="/admin/testCase/del/"+testCaseId
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
         console.log(var2)
     }
-
     $(document).ready(function () {
         // Activate tooltip
         $('[data-toggle="tooltip"]').tooltip();
