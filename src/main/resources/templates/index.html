@@ -1,14 +1,17 @@
 <!doctype html>
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="codingbat.css">
 
     <title>CodingBat Java</title></head>
+<link rel="stylesheet" type="text/css" th:href="@{component/css/index.css}" href="../static/component/css/index.css">
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
-<div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
-<div style="float:right;  margin:0px; border: 1px solid lightgray;">
-    <table th:if="${isUser == 'not'}">
+<div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">
+    help</a> for the latest.</p>
+</div>
+<div th:class="login-param" class="login-param">
+
+    <table th:if="${isUser == 'not'}" >
         <form method="post" action="/login">
             <tbody>
             <tr>
@@ -29,24 +32,16 @@
         </tr>
         </tbody>
     </table>
-    <table th:if="${isUser == 'yes'}">
-
-        <h1 th:text = "${user.email}"></h1>
+    <table th:if="${isUser == 'yes'}" class="login-param">
+        <p class="images">
+            <img src=" " th:src="@{${'view/img/'+user.logoUrl}}">
+        </p>
+        <h1 th:text="${user.email}"></h1>
         <a href="/logout">Log out</a> | <a href="/api/user/update">My Account</a>
     </table>
 </div>
 <div class="tabc">
-    <h1 th:text = "${isUser}"></h1>
-    <!--    <nav>-->
-    <!--        <tr >-->
-    <!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
-    <!--            ||->-->
-    <!--            <a th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum(),'ADMIN')}" style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
-    <!--        </tr>-->
-    <!--        <tr th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum().get(0),'ADMIN')}">-->
-    <!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
-    <!--        </tr>-->
-    <!--    </nav>-->
+    <h1 th:text="${isUser}"></h1>
 
     <nav th:if="${ ADMIN == 'ADMIN'}">
         <a style="text-decoration: none" href="/admin/lang"> Language crud</a>

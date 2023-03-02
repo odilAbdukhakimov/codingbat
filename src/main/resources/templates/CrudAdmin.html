@@ -360,7 +360,7 @@
                     </td>
                     <td >
                         <a type="button"  data-toggle="modal"
-                           data-target="#editEmployeeModal" th:attr="onclick=|updateId('${admin.getId()}')|">
+                           data-target="#editEmployeeModal" th:attr="onclick=|updateId('${admin.getId()}','${admin.name}','${admin.username}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
                         <a type="button"  data-toggle="modal"
@@ -445,14 +445,14 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             </div>
             <div class="modal-body">
-                <form id="updateId" method="post">
+                <form id="updateId" method="post" >
                     <div class="form-group">
                         <label>Name</label>
-                        <input name="name" type="text" class="form-control" required>
+                        <input name="name" type="text" id="admin-name" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Username</label>
-                        <input name="username" type="text" class="form-control" required>
+                        <input name="username" id="admin-username" type="text" class="form-control" required>
                     </div>
                     <div class="form-group">
                         <label>Password</label>
@@ -492,12 +492,13 @@
 
                         <input type="checkbox" name="roles" value="USER">
                     </div>
+                    <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-info" value="Save">
+                </div>
                 </form>
             </div>
-            <div class="modal-footer">
-                <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                <input type="submit" class="btn btn-info" value="Save">
-            </div>
+
         </div>
     </div>
 </div>
@@ -523,10 +524,12 @@
     </div>
 </div>
 <script>
-    function updateId(subjectId) {
+    function updateId(subjectId,name,username) {
         console.log(subjectId)
         let var2 = document.getElementById("updateId").action = "/api/admin/update/" + subjectId;
-        console.log(var2)
+        document.getElementById("admin-name").value = name;
+        document.getElementById("admin-username").value = username;
+        console.log(var2,name, username)
     }
 
     function deleteId(subjectId) {
