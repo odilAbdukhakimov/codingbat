@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping("/reset-password")
     public String resetPassword(@RequestParam String email) {
         String message = "<a href='http://localhost:8080/api/user/password/reset/email=" + email + "'>hello</a>";
-        emailService.sendMessage(email,message);
+        emailService.sendMessage(email, message);
         return "index";
     }
 
