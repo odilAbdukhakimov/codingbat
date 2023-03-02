@@ -6,12 +6,10 @@ import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
 import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
-import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TaskRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.LanguageRepository;
 import uz.pdp.spring_boot_security_web.repository.TaskRepository;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
-import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +19,6 @@ import java.util.Optional;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TopicRepository topicRepository;
-    private final UserRepository userRepository;
     private final LanguageRepository languageRepository;
 
     public TaskEntity addTask(TaskRequestDTO taskRequestDTO) {
@@ -74,11 +71,7 @@ public class TaskService {
 
     public TaskEntity getById(int id){
         Optional<TaskEntity> byId = taskRepository.findById(id);
-        if (byId.isEmpty()){
-            return null;
-        }
-        TaskEntity taskEntity = byId.get();
-        return taskEntity;
+        return byId.orElse(null);
     }
     public List<TaskEntity> getTaskListByTopicAndLanguage(String language, String topic){
         Optional<LanguageEntity> byTitle = languageRepository.findByTitle(language);
@@ -87,6 +80,7 @@ public class TaskService {
         Optional<TopicEntity> first = topicEntities.stream().filter((s) -> s.getName().equals(topic)).findFirst();
         return first.map(TopicEntity::getTaskEntityList).orElse(null);
     }
+
     public List<TaskEntity> getTasksUserSolvedAndNotSolved(UserEntity user, String language, String topic) {
 
         List<TaskEntity> taskListByTopicAndLanguage = getTaskListByTopicAndLanguage(language, topic);
@@ -95,11 +89,11 @@ public class TaskService {
 
             List<TaskEntity> userTaskEntityList = getUserTaskEntityList(user.getUsername());
 
-            if (userTaskEntityList!=null && taskListByTopicAndLanguage!=null) {
+            if (userTaskEntityList != null) {
                 for (TaskEntity taskEntity : taskListByTopicAndLanguage) {
                     for (TaskEntity entity : userTaskEntityList) {
                         if (taskEntity.getName().equals(entity.getName())){
-                            taskEntity.setIsSolved("✅");
+                            taskEntity.setTickIcon("✅");
                         }
                     }
                 }
@@ -112,4 +106,35 @@ public class TaskService {
         Optional<UserEntity> userEntity = userRepository.findByUsername(username);
         return userEntity.map(UserEntity::getTaskEntityList).orElse(null);
     }
+
+//----------------------------------------------------------------
+
+    public String getTopicNameByQuestion(TaskEntity question, List<LanguageEntity> list){
+        for (LanguageEntity subjectEntity : list) {
+            for (TopicEntity topicEntity : subjectEntity.getTopicEntities()) {
+                for (TaskEntity questionEntity : topicEntity.getTaskEntityList()) {
+                    if(questionEntity.equals(question)){
+                        return topicEntity.getName();
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
+    public void makeQuestionSolved(UserEntity user, TaskEntity question){
+        List<TaskEntity> questionEntityList = user.getTaskEntityList();
+        questionEntityList.add(question);
+        user.setTaskEntityList(questionEntityList);
+        try {
+            userRepository.save(user);
+        }catch (Exception e){
+            System.err.println("Trying to solve the same question second time");
+            e.printStackTrace();
+        }
+    }
+
+
+
 }

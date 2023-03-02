@@ -35,7 +35,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TaskEntity> taskEntityList;
 
     public UserEntity(String name, String username,String password, String logoUrl, RolePermissionEntity rolePermissionEntities) {
@@ -45,7 +45,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
         this.password=password;
         this.rolePermissionEntities = rolePermissionEntities;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

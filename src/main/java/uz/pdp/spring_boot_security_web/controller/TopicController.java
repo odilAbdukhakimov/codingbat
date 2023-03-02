@@ -9,7 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDTO;
-import uz.pdp.spring_boot_security_web.service.*;
+import uz.pdp.spring_boot_security_web.service.LanguageService;
+import uz.pdp.spring_boot_security_web.service.TaskService;
+import uz.pdp.spring_boot_security_web.service.TopicService;
+import uz.pdp.spring_boot_security_web.service.UserService;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,8 +20,8 @@ import uz.pdp.spring_boot_security_web.service.*;
 public class TopicController {
     private final LanguageService languageService;
     private final TaskService taskService;
-    private final UserService userService;
     private final TopicService topicService;
+    private final UserService userService;
 
     @GetMapping("/{language}/{topic}")
     public ModelAndView getTaskList(
@@ -27,13 +30,10 @@ public class TopicController {
             @PathVariable String topic
     ) {
         modelAndView.addObject("subjectList", languageService.languageEntityList());
-//        modelAndView.addObject("taskList", taskService.getTaskListByTopicAndLanguage(
-//                language, topic
-//        ));
 
         UserEntity currentUser = userService.getCurrentUser();
         modelAndView.addObject("taskList",taskService.getTasksUserSolvedAndNotSolved(currentUser, language, topic));
-        modelAndView.setViewName("question");
+        modelAndView.setViewName("question1");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserEntity userEntity = null;
         if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
@@ -43,16 +43,11 @@ public class TopicController {
         } else {
             modelAndView.addObject("isUser", "not");
         }
-       // modelAndView.addObject("userTasksList", taskService.getUserTaskEntityList(String.valueOf(user.getUsername())));
-//        modelAndView.addObject("taskList", taskService.getTaskListByTopicAndLanguage(
-//                language, topic
-//        ));
-
         return modelAndView;
     }
 
     @GetMapping("admin/{language}/{id}")
-    public ModelAndView topicHome(@PathVariable int id, ModelAndView model) {
+        public ModelAndView topicHome( @PathVariable int id, ModelAndView model){
         LanguageEntity byId = languageService.getById(id);
         model.addObject("language", byId);
         model.addObject("topicList", byId.getTopicEntities());
@@ -70,7 +65,7 @@ public class TopicController {
 
     @GetMapping("/admin/topic/del/{id}")
     public String deleteTopic(
-            @PathVariable("id") int id
+            @PathVariable int id
     ) {
         topicService.delete(id);
         return "redirect:/admin/lang";
