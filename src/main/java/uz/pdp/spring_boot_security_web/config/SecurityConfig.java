@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers( "/*").permitAll()
                 .requestMatchers(HttpMethod.POST,"/api/user/add").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/user/update/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Java/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/Python/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()

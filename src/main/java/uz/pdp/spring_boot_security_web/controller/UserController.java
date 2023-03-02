@@ -1,13 +1,15 @@
 package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import org.springframework.web.servlet.ModelAndView;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.EmailService;
+import uz.pdp.spring_boot_security_web.service.ImageService;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 @Controller
@@ -16,6 +18,7 @@ import uz.pdp.spring_boot_security_web.service.UserService;
 public class UserController {
     private final EmailService emailService;
     private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
 
     @PostMapping("/add")
@@ -41,18 +44,23 @@ public class UserController {
 
     @PostMapping("/reset-password")
     public String resetPassword(@RequestParam String email) {
-        String message = "<a href='http://localhost:8080/api/user/password/reset/email=" + email + "'>hello</a>";
-        emailService.sendMessage(email, message);
-        return "index";
+        String message = "<a href='http://localhost:8080/api/user/password/reset/" + email + "'>hello</a>";
+        emailService.sendMessage(email,message);
+        return "redirect:/";
     }
-
     @GetMapping("/password/reset/{email}")
     public ModelAndView passwordReset(@PathVariable String email, ModelAndView modelAndView) {
-
-        modelAndView.addObject("currentUser", userService.findByEmail(email));
+        UserEntity byEmail = userService.findByEmail(email);
+        modelAndView.addObject("currentUser",byEmail );
         modelAndView.setViewName("updateUser2");
         return modelAndView;
     }
+
+//    @GetMapping("/password/reset/{email}")
+//    public String passwordReset(@PathVariable String email, Model modelAndView) {
+//        modelAndView.addAttribute("currentUser", userService.findByEmail(email));
+//        return "updateUser2";
+//    }
 
     @GetMapping("/update")
     public String updateUser(Model model) {
@@ -65,7 +73,7 @@ public class UserController {
 
     @PostMapping("/update/{username}")
     public String updateUser(@PathVariable("username") String username,
-                             UserRegisterDTO userRegisterDTO,
+                             @ModelAttribute UserRegisterDTO userRegisterDTO,
                              Model model) {
         UserEntity userEntity = userService.updateUser(username, userRegisterDTO);
         UserEntity currentUser = userService.getCurrentUser();
@@ -77,7 +85,7 @@ public class UserController {
             }
             return "redirect:/";
         } else {
-            return "register";
+            return "register:/update/" + username;
         }
     }
 
