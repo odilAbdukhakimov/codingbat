@@ -1,7 +1,11 @@
 package uz.pdp.spring_boot_security_web.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import lombok.*;
+
+import java.util.List;
 
 @Setter
 @Getter
@@ -16,5 +20,7 @@ public class TaskEntity extends BaseEntity {
     private String example;
 
     private String methodAndParams;
+    @OneToMany(cascade = CascadeType.ALL,mappedBy = "TaskEntity")
+    private List<TestCaseEntity> testCaseEntityList;
 
 }

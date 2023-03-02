@@ -77,15 +77,14 @@ public class TaskController {
     @PostMapping("task/response/{id}")
     public String checkAnswer(@PathVariable int id, HttpServletRequest request, Model model) {
         Object objectUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if(!objectUser.equals("anonymousUser")) {
+        if (!objectUser.equals("anonymousUser")) {
             UserEntity userEntity = (UserEntity) objectUser;
             TaskEntity question = taskService.getById(id);
             String code = request.getParameter("code");
             String[] split = question.getMethodAndParams().split(",");
             List<String> passedTestCases = null;
-            List<TestCaseEntity> testCases = null;
             if (code != null) {
-                testCases = testCaseRepository.findAllByQuestionId(question.getId());
+                List<TestCaseEntity> testCases = testCaseService.testCasesOfQuestion(question.getId());
                 passedTestCases = compliedClass.passAllTestCases(testCases, split, code);
                 int size = testCaseService.quantityOfSuccessfulTestCases(passedTestCases).size();
                 String tick = "❌";
@@ -104,7 +103,7 @@ public class TaskController {
             if (str != null) {
                 model.addAttribute("topic", str);
             }
-        }else {
+        } else {
             return "register";
         }
         return "question";

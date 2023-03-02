@@ -13,17 +13,17 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto> {
+public class TestCaseService {
 
     private final TestCaseRepository testCaseRepository;
     private final TaskRepository questionService;
 
-    @Override
+
     public List<TestCaseEntity> getList() {
         return testCaseRepository.findAll();
     }
 
-    @Override
+
     public TestCaseEntity getById(int id) {
         Optional<TestCaseEntity> byId = testCaseRepository.findById(id);
         if (byId.isEmpty()) {
@@ -32,7 +32,7 @@ public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto>
         return byId.get();
     }
 
-    @Override
+
     public boolean delete(int id) {
         Optional<TestCaseEntity> byId = testCaseRepository.findById(id);
         if (byId.isEmpty()) {
@@ -42,29 +42,29 @@ public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto>
         return true;
     }
 
-    @Override
+
     public TestCaseEntity add(TestCaseDto testCaseDto) {
         TestCaseEntity test = TestCaseEntity.builder()
                 .firstParam(testCaseDto.getFirstParam())
                 .secondParam(testCaseDto.getSecondParam())
                 .question(questionService.findByName(testCaseDto.getQuestionName()))
                 .build();
-        String result=null;
-        if(testCaseDto.getResult().startsWith("\"")&&testCaseDto.getResult().endsWith("\"")){
-            result = testCaseDto.getResult().substring(1,testCaseDto.getResult().length()-2);
+        String result = null;
+        if (testCaseDto.getResult().startsWith("\"") && testCaseDto.getResult().endsWith("\"")) {
+            result = testCaseDto.getResult().substring(1, testCaseDto.getResult().length() - 2);
             test.setResult(result);
-        }else {
+        } else {
             test.setResult(testCaseDto.getResult());
         }
         return testCaseRepository.save(test);
     }
 
-    public List<TestCaseEntity> testCasesOfQuestion(Integer id){
-
-        return testCaseRepository.findAllByQuestionId(id);
+    public List<TestCaseEntity> testCasesOfQuestion(Integer id) {
+        Optional<List<TestCaseEntity>> allByQuestionId = testCaseRepository.findAllByQuestionId(id);
+        return allByQuestionId.orElseThrow(()-> new RecordNotFountException("Test case not found"));
     }
 
-    public List<String> quantityOfSuccessfulTestCases(List<String> list){
+    public List<String> quantityOfSuccessfulTestCases(List<String> list) {
         return list.stream().filter(s -> s.contains("✅")).toList();
     }
 }
