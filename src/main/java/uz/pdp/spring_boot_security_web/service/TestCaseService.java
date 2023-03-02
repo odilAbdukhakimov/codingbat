@@ -2,8 +2,10 @@ package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TestCaseEntity;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
+import uz.pdp.spring_boot_security_web.model.dto.TaskRequestDTO;
 import uz.pdp.spring_boot_security_web.model.dto.TestCaseDto;
 import uz.pdp.spring_boot_security_web.repository.TaskRepository;
 import uz.pdp.spring_boot_security_web.repository.TestCaseRepository;
@@ -26,20 +28,13 @@ public class TestCaseService {
 
     public TestCaseEntity getById(int id) {
         Optional<TestCaseEntity> byId = testCaseRepository.findById(id);
-        if (byId.isEmpty()) {
-            throw new IllegalArgumentException("Test case not found");
-        }
-        return byId.get();
+        return byId.orElseThrow(() -> new RecordNotFountException("Test Case not found"));
     }
 
 
-    public boolean delete(int id) {
-        Optional<TestCaseEntity> byId = testCaseRepository.findById(id);
-        if (byId.isEmpty()) {
-            throw new RecordNotFountException("Test case not found");
-        }
-        testCaseRepository.deleteById(id);
-        return true;
+    public void delete(int id) {
+        TestCaseEntity byId = getById(id);
+        testCaseRepository.delete(byId);
     }
 
 
@@ -47,7 +42,7 @@ public class TestCaseService {
         TestCaseEntity test = TestCaseEntity.builder()
                 .firstParam(testCaseDto.getFirstParam())
                 .secondParam(testCaseDto.getSecondParam())
-                .question(questionService.findByName(testCaseDto.getQuestionName()))
+                .question(questionService.findById(testCaseDto.getTaskId()).orElse(null))
                 .build();
         String result = null;
         if (testCaseDto.getResult().startsWith("\"") && testCaseDto.getResult().endsWith("\"")) {
@@ -66,5 +61,16 @@ public class TestCaseService {
 
     public List<String> quantityOfSuccessfulTestCases(List<String> list) {
         return list.stream().filter(s -> s.contains("✅")).toList();
+    }
+    public TestCaseEntity update(int id, TestCaseDto testCaseDto) {
+        TestCaseEntity testCaseEntity = getById(id);
+        if (testCaseDto.getFirstParam() != null && !testCaseDto.getFirstParam().equals(""))
+            testCaseEntity.setFirstParam(testCaseDto.getFirstParam());
+        if (testCaseDto.getSecondParam() != null && !testCaseDto.getSecondParam().equals(""))
+            testCaseEntity.setSecondParam(testCaseDto.getSecondParam());
+        if (testCaseDto.getResult() != null && !testCaseDto.getResult().equals(""))
+            testCaseEntity.setResult(testCaseDto.getResult());
+        return testCaseRepository.save(testCaseEntity);
+
     }
 }

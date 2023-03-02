@@ -11,5 +11,5 @@ public class TestCaseDto {
     private String firstParam;
     private String secondParam;
     private String result;
-    private String questionName;
+    private Integer taskId;
 }
