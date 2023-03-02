@@ -12,7 +12,7 @@
     problems of the current session. The name field is not required, but with the Teacher Share feature, it can help the
     teacher see who is who. The password should have at least 6 characters.
 <p>
-<form name=pform action='/api/user/add' method=post>
+<form name=pform action='/api/user/add' method=post enctype="multipart/form-data">
     <table>
         <tr>
             <td width=200><label>Name</label></td>
@@ -37,7 +37,7 @@
         </tr>
         <tr>
             <td width=200><label>Photo</label></td>
-            <td><input type=file name="file" value=""></td>
+            <td><input type=file name="image" value=""></td>
         </tr>
         <tr>
             <td></td>

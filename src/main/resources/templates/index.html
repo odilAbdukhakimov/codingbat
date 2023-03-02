@@ -1,27 +1,31 @@
-<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="codingbat.css">
 
     <title>CodingBat Java</title></head>
+<link rel="stylesheet" type="text/css" th:href="@{component/css/index.css}" href="../static/component/css/index.css">
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
-<div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
-<div style="float:right;  margin:0px; border: 1px solid lightgray;">
-    <table th:if="${isUser == 'not'}">
+<div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">
+    help</a> for the latest.</p>
+</div>
+<div th:class="login-param" class="login-param">
+
+    <table th:if="${isUser == 'not'}" >
         <form method="post" action="/login">
-        <tbody>
-        <tr>
-            <td>username</td>
-            <td><input type="text" name="username" size="20"></td>
-        </tr>
-        <tr>
-            <td>password</td>
-            <td><input type="password" name="password" size="20"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" name="login"></td>
-        </tr>
+            <tbody>
+            <tr>
+                <td>username</td>
+                <td><input type="text" name="username" size="20"></td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td><input type="password" name="password" size="20"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="login"></td>
+            </tr>
 
         </form>
         <tr>
@@ -29,24 +33,17 @@
         </tr>
         </tbody>
     </table>
-    <table th:if="${isUser == 'yes'}">
-
-<h1 th:text = "${user.email}"></h1>
+    <table th:if="${isUser == 'yes'}" class="login-param">
+        <p class="images">
+            <img src=" " th:src="@{${'view/img/'+user.logoUrl}}">
+        </p>
+        <h1 th:text="${user.email}"></h1>
         <a href="/logout">Log out</a> | <a href="/api/user/update">My Account</a>
+
     </table>
 </div>
 <div class="tabc">
-    <h1 th:text = "${isUser}"></h1>
-<!--    <nav>-->
-<!--        <tr >-->
-<!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
-<!--            ||->-->
-<!--            <a th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum(),'ADMIN')}" style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
-<!--        </tr>-->
-<!--        <tr th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum().get(0),'ADMIN')}">-->
-<!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
-<!--        </tr>-->
-<!--    </nav>-->
+    <h1 th:text="${isUser}"></h1>
 
     <nav th:if="${ ADMIN == 'ADMIN'}">
         <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
@@ -73,9 +70,11 @@
                        th:href="@{/{name}/{topic}(name=${lang}, topic=${topic.getName()})}"></a>
                 </h4>
                 <img
-                        src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img
+                        src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img
                     src="https://codingbat.com/s1.jpg"><img
-                    src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img
+                    src="https://codingbat.com/s1.jpg"><img
+                    src="https://codingbat.com/s1.jpg"><img src="https://codingbat.com/s1.jpg"><img
+                    src="https://codingbat.com/s1.jpg"><img
                     src="https://codingbat.com/s1.jpg"><br>
                 <h4 th:text="${topic.getContent()}"></h4>
                 <br><img src="https://codingbat.com/c1.jpg"></div>
@@ -87,7 +86,6 @@
 
 <style>
     .alls {
-        width: 1400px !important;
         display: flex !important;
         flex-wrap: wrap;
         gap: 30px;
@@ -107,32 +105,12 @@
         font-family: verdana, arial, helvetica, sans-serif;
     }
 
-    /* MOBILE-CSS prevents crazy shrinking of font in table e.g. on section page */
 
-
-    /* someday maybe a bigger font */
-
-    /* font-size: 85% works ok too. Historically cb was verdana/small */
-    /* font-size: medium .. have tried */
-    /* TBD: wikipedia sets a custom line-height which seems to work nicely with small font */
-
-    /* cb: font-size: small; */
-    /* Small seems a bit over-small. Using a % seems to give a fraction of "medium". I think "small" is about 75% */
-    /* hacker: body  { font-family:Verdana, Geneva, sans-serif; font-size:10pt; color:#828282; }*/
-
-    /* at one time, pre was coming out too small when body=small, but medium is huge, so now do nothing */
-    /* The show-solution button really hits this case. */
-    /* pre, code {font-size:medium; } */
-    /* It turns out the "monaco" font family looks pretty big at small, so we just leave it now */
-    /* could have  "medium" directive for the "doc" pages where it looks nicer */
-
-    /* this is the list from ace which seems fine */
     pre, code {
         font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace
     }
 
 
-    /* Older p max-width directive, phase out */
     p {
         max-width: 800px;
     }
@@ -186,22 +164,6 @@
         display: table;
     }
 
-    /* These are more normal names, tied to div */
-
-
-    /* div class to reset the floats to normal */
-
-
-    /* The little box that summarizes a section. Margin is box vs. outside, padding is within the box */
-
-
-    /* used to indent the Challenge content similarly to div.summ */
-
-
-    /* padding:5px; */
-
-
-    /* generally what we want */
     td {
         vertical-align: top;
     }
@@ -425,3 +387,5 @@
 
 </style>
 </body>
+
+

@@ -1,6 +1,7 @@
 package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.pdp.spring_boot_security_web.entity.AttachmentEntity;
@@ -21,9 +22,9 @@ public class ImageService {
     private final AttachmentRepository attachmentRepository;
     private final UserService userService;
 
-    private static final String uploadPath = "downloadPictures";
-    private static final String getPath = "../static/";
-    private static final String uploadPath2 = "C:/Users/odila/IdeaProjects/codingbat/src/main/resources/static";
+    private static final String getPath = "/view/img/";
+    private static final String uploadPath2 = "C:/MY_PROJECTS/redis/codingbat/src/main/resources/static/view/img";
+
 
 
     public void uploadImage(MultipartFile file ,String username) throws IOException {

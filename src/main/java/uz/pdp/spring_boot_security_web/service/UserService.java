@@ -1,11 +1,13 @@
 package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
@@ -14,6 +16,7 @@ import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -23,12 +26,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
-
-    public boolean addUser(UserRegisterDTO userRegisterDTO) {
+    public boolean addUser(UserRegisterDTO userRegisterDTO){
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userRegisterDTO.getUsername());
         if (optionalUserEntity.isPresent()) {
             throw new IllegalArgumentException(String.format("username %s already exist", userRegisterDTO.getUsername()));
         }
+//        MultipartHttpServletRequest request = userRegisterDTO.getImage();
+//        Iterator<String> fileName = request.getFileNames();
+//        imageService.uploadImage(userRegisterDTO.getImage().getFile(fileName.next()),userRegisterDTO.getUsername());
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setEmailCode(UUID.randomUUID().toString().substring(0, 4));
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
@@ -103,6 +108,8 @@ public class UserService {
             rolePermission.setPermissionEnum(
                     Arrays.stream(adminRequestDto.getRoles().split(",")).toList()
             );
+            List<String> permissionEnum = userEntity.getRolePermissionEntities().getPermissionEnum();
+            List<String> permissionEnum1 = userEntity.getRolePermissionEntities().getRoleEnum();
         }
         userRepository.save(userEntity);
     }

@@ -50,7 +50,8 @@ public class PictureController {
     @PostMapping("/upload/{username}")
     public String uploadFileSystem( @PathVariable("username") String username,
                                     MultipartHttpServletRequest request,
-                                    Model model) throws IOException {
+                                    Model model)
+            throws IOException {
 
         Iterator<String> fileName = request.getFileNames();
         imageService.uploadImage(request.getFile(fileName.next()),username);
