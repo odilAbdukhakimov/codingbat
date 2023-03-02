@@ -14,6 +14,7 @@ import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -23,6 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final ImageService imageService;
 
     public boolean addUser(UserRegisterDTO userRegisterDTO) {
         Optional<UserEntity> optionalUserEntity = userRepository.findByUsername(userRegisterDTO.getUsername());
@@ -32,6 +34,8 @@ public class UserService {
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
         userEntity.setEmailCode(UUID.randomUUID().toString().substring(0, 4));
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
+        String url = imageService.uploadImage2(userRegisterDTO.getImage());
+        userEntity.setLogoUrl(url);
         userRepository.save(userEntity);
         emailService.sendMessage(userEntity.getEmail(), "Hi! " +
                 "Your " + userEntity.getEmail() + " account has been successfully registered");
@@ -142,6 +146,9 @@ public class UserService {
         }
         if (userRegisterDTO.getUsername() != null && !userRegisterDTO.getUsername().equals("")) {
             byUsername.setUsername(userRegisterDTO.getUsername());
+        }
+        if (userRegisterDTO.getImage()!=null){
+            imageService.updateImage(userRegisterDTO.getImage(), byUsername.getLogoUrl());
         }
         return userRepository.save(byUsername);
     }

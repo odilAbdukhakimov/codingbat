@@ -60,37 +60,26 @@ class AdminControllerTest extends BaseTest {
                 get(PATH_list);
         return mockMvc.perform(request);
     }
-
-//    @Test
-//    void adminList() throws Exception {
-//
-///////////////////////////////////////////
-////        List<UserEntity> listOfEmployees = new ArrayList<>();
-////        listOfEmployees.add(UserEntity.builder().name("5").username("5").password("5").rolePermissionEntities(new RolePermissionEntity(Collections.singletonList("ADMIN"), Collections.singletonList("ADD"))).build());
-////        listOfEmployees.add(UserEntity.builder().name("6").username("6").password("6").rolePermissionEntities(new RolePermissionEntity(Collections.singletonList("ADMIN"), Collections.singletonList("ADD"))).build());
-////        userRepository.saveAll(listOfEmployees);
-//      // ResultActions response = mockMvc.perform(get("/api/admin/list"));
-//
-//        response.andExpect(status().isOk());
-//    }
-    public void updateAdminShouldReturnStatusOkStatus() {
-
+    @Test
+    public void updateAdminShouldReturnStatusOkStatus() throws Exception {
+        callAdd();
+        callUpdate().andExpect(status().isOk());
     }
 
-//    @Test
-//    private ResultActions callAdd() {
-//        final MockHttpServletRequestBuilder request =
-//                put()
-//    }
+    @Test
+    public void updateAdminShouldReturnThrowException() throws Exception {
+        callAdd();
+        callUpdate().andExpect(status().isBadRequest());
+    }
 
     @SneakyThrows
     private ResultActions callUpdate() {
         final MockHttpServletRequestBuilder request =
-                put(ADMIN_UPDATE_PATH, "asil")
+                put(ADMIN_UPDATE_PATH, "5")
                         .param("username", "ASIL")
                         .param("password", "1999")
                         .param("name", "Nuraliyev Asilbek")
-                        .param("role", "[" + "ADMIN" + "USER" + "]")
+                        .param("role", "[" +"SUPER_ADMIN"+ "ADMIN" + "USER" + "]")
                         .param("permissions", "[" + "ADD" + "READ" + "]");
         return mockMvc.perform(request);
     }
