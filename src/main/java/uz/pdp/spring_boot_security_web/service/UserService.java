@@ -75,7 +75,13 @@ public class UserService {
     }
 
     public UserEntity findByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+        //return userRepository.findByEmail(email).orElse(null);
+        Optional<UserEntity> getUserByEmail = userRepository.findByEmail(email);
+        System.out.println(email.substring(0, email.lastIndexOf(".")));
+        if (getUserByEmail.isPresent()){
+            return  getUserByEmail.get();
+        }
+        return null;
     }
 
     public void delete(int id) {
