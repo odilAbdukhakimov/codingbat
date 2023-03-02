@@ -42,8 +42,7 @@ public class ImageService {
             attachment.setContentType(contentType);
             attachment.setFileOriginalName(originalFileName);
 
-            String[] split = originalFileName.split("\\.");
-            String randomName = UUID.randomUUID().toString() + "." + split[split.length - 1];
+            String randomName = makeRandomFileName(originalFileName);
 
             attachment.setName(randomName);
             AttachmentEntity saveAttachment = attachmentRepository.save(attachment);
@@ -53,22 +52,35 @@ public class ImageService {
             attachmentContentEntity.setBytes(file.getBytes());
             attachmentContentRepository.save(attachmentContentEntity);
 
-            Path path = Paths.get(uploadPath2 + "/" + randomName);
-            Files.copy(file.getInputStream(), path);
+            writeToFile(file,randomName);
             return randomName;
         }
         throw new IOException("file  not found");
+    }
+    private String makeRandomFileName(String originalFileName ){
+        String[] split = originalFileName.split("\\.");
+        return UUID.randomUUID().toString() + "." + split[split.length - 1];
+    }
+
+    @SneakyThrows
+    private void writeToFile(MultipartFile file, String randomName){
+        Path path = Paths.get(uploadPath2 + "/" + randomName);
+        Files.copy(file.getInputStream(), path);
     }
     @SneakyThrows
     public void updateImage(MultipartFile file , String url){
         if (url!=null){
             Optional<AttachmentEntity> foundByName = attachmentRepository.findByName(url);
             if (foundByName.isPresent()){
+                String randomName = makeRandomFileName(file.getOriginalFilename());
+                writeToFile(file,randomName);
+
                 AttachmentEntity attachmentEntity = foundByName.get();
-                attachmentEntity.setName(file.getName());
+                attachmentEntity.setName(randomName);
                 attachmentEntity.setSize(file.getSize());
                 attachmentEntity.setContentType(file.getContentType());
                 attachmentEntity.setFileOriginalName(file.getOriginalFilename());
+
                 AttachmentEntity updateAttachment = attachmentRepository.save(attachmentEntity);
                 Optional<AttachmentContentEntity> foundByAtmId = attachmentContentRepository.findByAttachmentId(updateAttachment.getId());
                 if (foundByAtmId.isPresent()){
