@@ -68,7 +68,7 @@ public class ImageService {
         Files.copy(file.getInputStream(), path);
     }
     @SneakyThrows
-    public void updateImage(MultipartFile file , String url){
+    public String updateImage(MultipartFile file , String url){
         if (url!=null){
             Optional<AttachmentEntity> foundByName = attachmentRepository.findByName(url);
             if (foundByName.isPresent()){
@@ -97,10 +97,12 @@ public class ImageService {
                 }else {
                     System.out.println("File was Not  deleted successfully");
                 }
+                return randomName;
             }else {
                 throw new RecordNotFountException("AttachmentEntity was not found");
             }
         }
+        return "";
     }
     public String getPicture(int id) {
         Optional<AttachmentEntity> optionalAttachment = attachmentRepository.findById(id);

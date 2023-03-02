@@ -154,7 +154,7 @@ public class UserService {
             byUsername.setUsername(userRegisterDTO.getUsername());
         }
         if (userRegisterDTO.getImage()!=null){
-            imageService.updateImage(userRegisterDTO.getImage(), byUsername.getLogoUrl());
+            byUsername.setLogoUrl(imageService.updateImage(userRegisterDTO.getImage(), byUsername.getLogoUrl()));
         }
         return userRepository.save(byUsername);
     }

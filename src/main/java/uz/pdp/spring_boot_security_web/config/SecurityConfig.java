@@ -59,7 +59,6 @@ public class SecurityConfig {
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/")
-                .failureForwardUrl("/")
                 .and()
                 .logout()
                 .logoutUrl("/logout")

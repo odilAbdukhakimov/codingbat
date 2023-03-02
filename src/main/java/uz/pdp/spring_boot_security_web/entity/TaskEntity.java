@@ -20,7 +20,5 @@ public class TaskEntity extends BaseEntity {
     private String example;
 
     private String methodAndParams;
-    @OneToMany(cascade = CascadeType.ALL,mappedBy = "TaskEntity")
-    private List<TestCaseEntity> testCaseEntityList;
 
 }
