@@ -35,7 +35,7 @@ public class AdminController {
     ) {
 
         modelAndView.setViewName("CrudAdmin");
-        modelAndView.addObject("adminList", userService.adminEntityList());
+        modelAndView.addObject("adminList", userService.getAdminList());
         return modelAndView;
 
     }

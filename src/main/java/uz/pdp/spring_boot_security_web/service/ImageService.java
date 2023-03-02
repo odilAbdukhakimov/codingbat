@@ -47,7 +47,7 @@ public class ImageService {
 
             attachment.setName(randomName);
             attachmentRepository.save(attachment);
-            UserEntity byUser = userService.getByUser(username);
+            UserEntity byUser = userService.getByUsername(username);
             byUser.setLogoUrl(randomName);
             userService.update(byUser);
             Path path = Paths.get(uploadPath2 + "/" + randomName);

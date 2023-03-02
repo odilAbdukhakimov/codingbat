@@ -1,389 +1,498 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" type="text/css" href="codingbat.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Admin panel</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
 
-    <title>CodingBat Java</title></head>
+    <style>
+        body {
+            color: #566787;
+            background: #f5f5f5;
+            font-family: 'Varela Round', sans-serif;
+            font-size: 13px;
+        }
+
+        .table-responsive {
+            margin: 30px 0;
+        }
+
+        .table-wrapper {
+            background: #fff;
+            padding: 20px 25px;
+            border-radius: 3px;
+            min-width: 1000px;
+            box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+        }
+
+        .table-title {
+            padding-bottom: 15px;
+            background: #435d7d;
+            color: #fff;
+            padding: 16px 30px;
+            min-width: 100%;
+            margin: -20px -25px 10px;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .table-title h2 {
+            margin: 5px 0 0;
+            font-size: 24px;
+        }
+
+        .table-title .btn-group {
+            float: right;
+        }
+
+        .table-title .btn {
+            color: #fff;
+            float: right;
+            font-size: 13px;
+            border: none;
+            min-width: 50px;
+            border-radius: 2px;
+            border: none;
+            outline: none !important;
+            margin-left: 10px;
+        }
+
+        .table-title .btn i {
+            float: left;
+            font-size: 21px;
+            margin-right: 5px;
+        }
+
+        .table-title .btn span {
+            float: left;
+            margin-top: 2px;
+        }
+
+        table.table tr th, table.table tr td {
+            border-color: #e9e9e9;
+            padding: 12px 15px;
+            vertical-align: middle;
+        }
+
+        table.table tr th:first-child {
+            width: 60px;
+        }
+
+        table.table tr th:last-child {
+            width: 100px;
+        }
+
+        table.table-striped tbody tr:nth-of-type(odd) {
+            background-color: #fcfcfc;
+        }
+
+        table.table-striped.table-hover tbody tr:hover {
+            background: #f5f5f5;
+        }
+
+        table.table th i {
+            font-size: 13px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        table.table td:last-child i {
+            opacity: 0.9;
+            font-size: 22px;
+            margin: 0 5px;
+        }
+
+        table.table td a {
+            font-weight: bold;
+            color: #566787;
+            display: inline-block;
+            text-decoration: none;
+            outline: none !important;
+        }
+
+        table.table td a:hover {
+            color: #2196F3;
+        }
+
+        table.table td a.edit {
+            color: #FFC107;
+        }
+
+        table.table td a.delete {
+            color: #F44336;
+        }
+
+        table.table td i {
+            font-size: 19px;
+        }
+
+        table.table .avatar {
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+        .pagination {
+            float: right;
+            margin: 0 0 5px;
+        }
+
+        .pagination li a {
+            border: none;
+            font-size: 13px;
+            min-width: 30px;
+            min-height: 30px;
+            color: #999;
+            margin: 0 2px;
+            line-height: 30px;
+            border-radius: 2px !important;
+            text-align: center;
+            padding: 0 6px;
+        }
+
+        .pagination li a:hover {
+            color: #666;
+        }
+
+        .pagination li.active a, .pagination li.active a.page-link {
+            background: #03A9F4;
+        }
+
+        .pagination li.active a:hover {
+            background: #0397d6;
+        }
+
+        .pagination li.disabled i {
+            color: #ccc;
+        }
+
+        .pagination li i {
+            font-size: 16px;
+            padding-top: 6px
+        }
+
+        .hint-text {
+            float: left;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        /* Custom checkbox */
+        .custom-checkbox {
+            position: relative;
+        }
+
+        .custom-checkbox input[type="checkbox"] {
+            opacity: 0;
+            position: absolute;
+            margin: 5px 0 0 3px;
+            z-index: 9;
+        }
+
+        .custom-checkbox label:before {
+            width: 18px;
+            height: 18px;
+        }
+
+        .custom-checkbox label:before {
+            content: '';
+            margin-right: 10px;
+            display: inline-block;
+            vertical-align: text-top;
+            background: white;
+            border: 1px solid #bbb;
+            border-radius: 2px;
+            box-sizing: border-box;
+            z-index: 2;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked + label:after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 3px;
+            width: 6px;
+            height: 11px;
+            border: solid #000;
+            border-width: 0 3px 3px 0;
+            transform: inherit;
+            z-index: 3;
+            transform: rotateZ(45deg);
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked + label:before {
+            border-color: #03A9F4;
+            background: #03A9F4;
+        }
+
+        .custom-checkbox input[type="checkbox"]:checked + label:after {
+            border-color: #fff;
+        }
+
+        .custom-checkbox input[type="checkbox"]:disabled + label:before {
+            color: #b8b8b8;
+            cursor: auto;
+            box-shadow: none;
+            background: #ddd;
+        }
+
+        /* Modal styles */
+        .modal .modal-dialog {
+            max-width: 400px;
+        }
+
+        .modal .modal-header, .modal .modal-body, .modal .modal-footer {
+            padding: 20px 30px;
+        }
+
+        .modal .modal-content {
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .modal .modal-footer {
+            background: #ecf0f1;
+            border-radius: 0 0 3px 3px;
+        }
+
+        .modal .modal-title {
+            display: inline-block;
+        }
+
+        .modal .form-control {
+            border-radius: 2px;
+            box-shadow: none;
+            border-color: #dddddd;
+        }
+
+        .modal textarea.form-control {
+            resize: vertical;
+        }
+
+        .modal .btn {
+            border-radius: 2px;
+            min-width: 100px;
+        }
+
+        .modal form label {
+            font-weight: normal;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            // Activate tooltip
+            $('[data-toggle="tooltip"]').tooltip();
+
+            // Select/Deselect checkboxes
+            var checkbox = $('table tbody input[type="checkbox"]');
+            $("#selectAll").click(function () {
+                if (this.checked) {
+                    checkbox.each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    checkbox.each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            checkbox.click(function () {
+                if (!this.checked) {
+                    $("#selectAll").prop("checked", false);
+                }
+            });
+        });
+    </script>
+</head>
 <body>
-<a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
+<div class="container-xl">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+<!--            <div class="table-title">-->
+<!--                <div class="row">-->
+<!--&lt;!&ndash;                    <div class="col-sm-6">&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{/admin/allUsers}" class="btn btn-success">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>User Page</span></a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>Topic Page</span></a>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <span>Question Page</span></a>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h2>Manage <b>subject</b></h2>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
+                                class="material-icons">&#xE147;</i> <span>Add New Topic</span></a>
+                    </div>
+                </div>
+            </div>
 
-<div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
-<div class="tabc">
-    <nav>
-        <tr th:each="subject: ${subjectList}">
-            <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
-        </tr>
-
-
-        </tr>
-    </nav>
-    <div class="tabin">
-        <div class="floatleft">
-            <table>
-                <tbody>
-                <tr th:each="task: ${taskList}">
-                    <td width="200">&nbsp;<img src="/c.jpg"><a th:text="${task.getName()}" th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font
-                            color="gray">H</font></td>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ACTIONS</th>
                 </tr>
+                </thead>
+                <tbody th:each="task: ${taskList}">
+                <tr>
+                    <td> <a th:text="${task.getName()}"> </a></td>
+                    <td >
+                        <a type="button"  data-toggle="modal"
+                           data-target="#myModal" th:attr="onclick=|updateId('${task.getId()}')|">
+                            <i class="material-icons btn btn-primary">&#xE254;</i>
+                        </a>
+                        <a type="button"  data-toggle="modal"
+                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${task.getId()}')|">
+                            <i class="material-icons btn btn-danger">&#xE872;</i>
+                        </a>
+                    </td>
+
+                    <div fragment="modal"  id="myModal"  class="modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Task Update</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="updateId" method="post">
+                                        <div class="form-group">
+                                            <label class="control-label" >Task Name:</label>
+                                            <input type="text"  name="name"
+                                                   class="form-control" placeholder="Enter task new name" >
+                                            <label class="control-label" >Task Title:</label>
+                                            <input type="text" name="title"
+                                                   class="form-control" placeholder="Enter task new title" >
+                                        </div>
+                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div id="deleteCategory" class="modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form id="deleteId" method="get">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Task</h4>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete these Records?</p>
+                                        <p class="text-warning"><small>This action cannot be undone.</small></p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                        <input  type="submit" class="btn btn-danger" value="Delete">
+
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </tr>
+
                 </tbody>
+
             </table>
-
+<!--            <div class="clearfix">-->
+<!--                <ul class="pagination">-->
+<!--                    <li class="page-item disabled"><a href="#">Previous</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">1</a></li>-->
+<!--                    <li class="page-item active"><a href="#" class="page-link">2</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">3</a></li>-->
+<!--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>-->
+<!--                </ul>-->
+<!--            </div>-->
         </div>
-
     </div>
 </div>
-<style>
-    html, body {
-        font-size: small;
-        font-family: verdana, arial, helvetica, sans-serif;
+
+<!-- Add Modal HTML -->
+<div id="addEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form th:action="@{/admin/task/add}" method="post">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Task</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Task Name</label>
+                        <input type="text" class="form-control" placeholder="Enter task Name" name="name">
+                        <label class="control-label" >Task title :</label>
+                        <input type="text" name="title"
+                               class="form-control" placeholder="Enter task title" >
+                        <input type="hidden" name="topicId" th:value="${topic.getId()}">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateId(taskId){
+        let var2 = document.getElementById("updateId").action="/admin/task/update/"+taskId;
+        // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
+        console.log(var2)
     }
-
-    /* MOBILE-CSS prevents crazy shrinking of font in table e.g. on section page */
-    html, body {
-        -webkit-text-size-adjust: none;
-        text-size-adjust: none;
+    function deleteId(taskId){
+        let var2 = document.getElementById("deleteId").action="/admin/task/del/"+taskId
+        // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
+        console.log(var2)
     }
+    $(document).ready(function () {
+        // Activate tooltip
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Select/Deselect checkboxes
+        var checkbox = $('table tbody input[type="checkbox"]');
+        $("#selectAll").click(function () {
+            if (this.checked) {
+                checkbox.each(function () {
+                    this.checked = true;
+                });
+            } else {
+                checkbox.each(function () {
+                    this.checked = false;
+                });
+            }
+        });
+        checkbox.click(function () {
+            if (!this.checked) {
+                $("#selectAll").prop("checked", false);
+            }
+        });
+    });
+
+</script>
 
-    /* someday maybe a bigger font */
 
-    /* font-size: 85% works ok too. Historically cb was verdana/small */
-    /* font-size: medium .. have tried */
-    /* TBD: wikipedia sets a custom line-height which seems to work nicely with small font */
-
-    /* cb: font-size: small; */
-    /* Small seems a bit over-small. Using a % seems to give a fraction of "medium". I think "small" is about 75% */
-    /* hacker: body  { font-family:Verdana, Geneva, sans-serif; font-size:10pt; color:#828282; }*/
-
-    /* at one time, pre was coming out too small when body=small, but medium is huge, so now do nothing */
-    /* The show-solution button really hits this case. */
-    /* pre, code {font-size:medium; } */
-    /* It turns out the "monaco" font family looks pretty big at small, so we just leave it now */
-    /* could have  "medium" directive for the "doc" pages where it looks nicer */
-
-    /* this is the list from ace which seems fine */
-    pre, code {
-        font-family: "Monaco", "Menlo", "Ubuntu Mono", "Consolas", "source-code-pro", monospace
-    }
-
-
-    /* Older p max-width directive, phase out */
-    p {
-        max-width: 800px;
-    }
-
-    /* main max width */
-    p.max {
-        max-width: 800px;
-    }
-
-    /* doc paragraph above code area, should agree with code area width roughly */
-    p.max2 {
-        max-width: 600px;
-    }
-
-    a {
-        text-decoration: none;
-    }
-
-    /* ..EE is web default, we go a bit darker */
-    :link {
-        color: #0000DD;
-    }
-
-    /* web default #551A8B */
-    :visited {
-        color: #551A8B;
-    }
-
-
-    /* These are used on Challenge page */
-    .coding {
-        border: 2px solid gray;
-        font-family: monospace;
-        font-size: medium
-    }
-
-    .lefty {
-        float: left;
-        padding-right: 40px;
-    }
-
-    /* left div with ta-code */
-    .righty {
-        float: left;
-    }
-
-    /* right output div */
-    .parenty:after { /* Imaginary class name */
-        content: "";
-        clear: both;
-        display: table;
-    }
-
-    /* These are more normal names, tied to div */
-    div.floatleft {
-        float: left;
-    }
-
-    div.floatclear {
-        clear: both;
-    }
-
-    /* div class to reset the floats to normal */
-
-
-    /* The little box that summarizes a section. Margin is box vs. outside, padding is within the box */
-    div.summ {
-        max-width: 300px;
-        margin: 15px;
-        padding: 10px;
-        border: 1px solid gray;
-        border-radius: 1em;
-    }
-
-
-    /* used to indent the Challenge content similarly to div.summ */
-    div.indent {
-        margin-left: 15px;
-        margin-top: 15px;
-    }
-
-    /* padding:5px; */
-
-
-    /* generally what we want */
-    td {
-        vertical-align: top;
-    }
-
-    /* These used to define w 'h1,' h2 h3, but still have the .h1 .h2 versions. class=h2 is our go-to big font for section titles etc. */
-    .h1 {
-        font-size: 300%;
-    }
-
-    .h2 {
-        font-size: 166%;
-    }
-
-    .h3 {
-        font-size: 120%;
-    }
-
-
-    /* used in output for red coloring of fail results */
-    span.no {
-        color: red
-    }
-
-    td.no {
-        min-width: 22px;
-        background-color: red;
-    }
-
-    td.ok {
-        min-width: 22px;
-        background-color: green;
-    }
-
-    /* code snippet with explanation to its right on API pages*/
-    code.spaceright {
-        margin-right: 12px;
-    }
-
-    /* text snippet to indent a little */
-    p.indent {
-        margin-left: 25px;
-    }
-
-    /* main go button. Used to lightgray, a windows 95 look! */
-    button.go {
-        width: 200px;
-        height: 30px;
-        background-color: #f1f1f1;
-        font-size: 112%;
-        font-weight: bold;
-        border-radius: 6px;
-    }
-
-
-    /* make the color here the same so fits in */
-    button.gray {
-        background-color: #f1f1f1;
-        border-radius: 6px;
-    }
-
-    button.go {
-        font-weight: bold;
-        border-radius: 8px; /* all current browsers */
-        background: #bbb;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #777;
-        color: #333;
-        text-align: center;
-        text-shadow: 1px 1px 0 #d8d8d8;
-        background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
-
-
-        width: 200px;
-        height: 35px;
-        font-size: 125%;
-    }
-
-    button.go:hover {
-        background-color: #aaa;
-        color: #111;
-        border-color: #444;
-
-        transition-duration: 0.1s; /* looks a little better */
-    }
-
-    button.go:active {
-        background: #484848;
-    }
-
-
-    /* played around with the plain buttons for some sort of hover, but left it stock */
-    button.plain {
-        /*
-         border-radius: 6px;
-         font-weight: bold;
-         */
-    }
-
-    button.plain:hover {
-        /*
-        background-color: #f2f2f2;
-        border-radius: 6px;
-        */
-    }
-
-    /* border: solid 1px #203E5F; */
-
-    /*
-        background-image: -moz-linear-gradient(top,rgba(255,255,255,0.8),rgba(255,255,255,0.2));
-        background-image: -webkit-gradient(linear,center top,center bottom,from(rgba(255,255,255,0.8)),to(rgba(255,255,255,0.2)));
-        background-image: linear-gradient(to bottom,rgba(255,255,255,0.8),rgba(255,255,255,0.2));
-    */
-
-    /*
-    // for author page, this may be necessary to make the disabled have the same light gray across browsers
-    // works when the disabled attr is present (with any value)
-    textarea[disabled]{background-color: #F8F8F8; }
-    */
-
-    /*
-    From challenge page
-    textarea name=code rows=24 cols=80 style='border: 2px solid gray; font-family: monospace;' spellcheck=false onKeyPress='return handleCR(\"codeform\",event)'>
-    */
-
-
-    /* challenge docs in here, so UI does not jump around too much for short docs. */
-    div.minh {
-        min-height: 32px;
-    }
-
-    /* div of text above the tabs. Min-height here so the key muscle-memory bits don't jump around too much.
-    26px here works with a line of text */
-
-    div.pretab {
-        min-height: 9px;
-    }
-
-    /* container around tab, forcing it below login widget. clear:both is required */
-    div.tabc {
-        min-width: 100vw;
-        clear: both;
-    }
-
-    /* nav/tab stuff here */
-    nav ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-
-    /* TRBL ! */
-    nav li {
-        display: inline;
-        border: solid;
-        border-width: 1px 1px 0 1px;
-        margin: 0 25px 0 6px; /* space between the two tabs */
-    }
-
-    nav li a {
-        padding: 0 40px; /* horiz space around the blue link */
-    }
-
-    /*
-    #nav li {
-        float: left;
-        border: 1px solid;
-        border-bottom-width: 0;
-        margin: 0 5px 0 0;
-    }
-    */
-
-    div.tabin {
-        border-top: 1px solid;
-        clear: both;
-    }
-
-    #content {
-        border-top: 1px solid;
-        clear: both;
-    }
-
-    #selected {
-        position: relative;
-        top: 1px;
-        background: white;
-    }
-
-    /* end nav/li */
-
-
-    /* ace support */
-    /* their demo, which is awful
-    #editor {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
-    */
-
-    /* discarded: margin: auto; display: block; border: 1px solid #888; */
-    #ace_div {
-        width: 600px;
-        height: 375px;
-        border: 2px solid gray;
-    }
-
-
-    /* output table */
-
-    table.out {
-        border-collapse: collapse; /* vs. sep border per cell */
-    }
-
-    table.out td { /* , th */
-        border: 2px solid black;
-        padding: 4px;
-    }
-
-
-    /* as above, but over on the pref page */
-    table.clean {
-        border-collapse: collapse; /* vs. sep border per cell */
-    }
-
-    td.clean {
-        border: 1px solid black;
-        padding: 6px;
-    }
-
-
-</style>
 </body>
+</html>

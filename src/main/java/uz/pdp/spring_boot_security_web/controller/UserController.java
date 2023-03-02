@@ -49,7 +49,7 @@ public class UserController {
     @GetMapping("/password/reset/{email}")
     public ModelAndView passwordReset(@PathVariable String email, ModelAndView modelAndView) {
 
-        modelAndView.addObject("currentUser", userService.findEmail(email));
+        modelAndView.addObject("currentUser", userService.findByEmail(email));
         modelAndView.setViewName("updateUser2");
         return modelAndView;
     }

@@ -10,18 +10,19 @@
 <div style="float:right;  margin:0px; border: 1px solid lightgray;">
     <table th:if="${isUser == 'not'}">
         <form method="post" action="/login">
-        <tbody>
-        <tr>
-            <td>username</td>
-            <td><input type="text" name="username" size="20"></td>
-        </tr>
-        <tr>
-            <td>password</td>
-            <td><input type="password" name="password" size="20"></td>
-        </tr>
-        <tr>
-            <td><input type="submit" name="login"></td>
-        </tr>
+            <tbody>
+            <tr>
+                <td>username</td>
+                <td><input type="text" name="username" size="20"></td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td><input type="password" name="password" size="20"></td>
+            </tr>
+            <tr>
+                <td><input type="submit" name="login"></td>
+            </tr>
+
         </form>
         <tr>
             <td colspan="2"><a href='/forget-password'>forget password</a> | <a href=/register>create account</a></td>
@@ -30,13 +31,30 @@
     </table>
     <table th:if="${isUser == 'yes'}">
 
-<h1 th:text = "${user.email}"></h1>
+        <h1 th:text = "${user.email}"></h1>
         <a href="/logout">Log out</a> | <a href="/api/user/update">My Account</a>
     </table>
 </div>
 <div class="tabc">
     <h1 th:text = "${isUser}"></h1>
-    <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
+    <!--    <nav>-->
+    <!--        <tr >-->
+    <!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
+    <!--            ||->-->
+    <!--            <a th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum(),'ADMIN')}" style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
+    <!--        </tr>-->
+    <!--        <tr th:if="${#lists.contains(user.getRolePermissionEntities().getRoleEnum().get(0),'ADMIN')}">-->
+    <!--            <a style="text-decoration: none" href="/admin/lang"> Language crud</a>-->
+    <!--        </tr>-->
+    <!--    </nav>-->
+
+    <nav th:if="${ ADMIN == 'ADMIN'}">
+        <a style="text-decoration: none" href="/admin/lang"> Language crud</a>
+    </nav>
+    <nav th:if="${ ADMIN == 'SUPER_ADMIN'}">
+        <a style="text-decoration: none" href="/api/admin"> ADMIN CONTROLLER</a>
+    </nav>
+
     <nav>
         <tr th:each="subject: ${subjectList}">
             <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>

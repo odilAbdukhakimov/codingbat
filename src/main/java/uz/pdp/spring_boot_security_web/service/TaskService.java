@@ -91,7 +91,7 @@ public class TaskService {
 
             List<TaskEntity> userTaskEntityList = getUserTaskEntityList(user.getUsername());
 
-            if (!userTaskEntityList.isEmpty()) {
+            if (userTaskEntityList!=null && taskListByTopicAndLanguage!=null) {
                 for (TaskEntity taskEntity : taskListByTopicAndLanguage) {
                     for (TaskEntity entity : userTaskEntityList) {
                         if (taskEntity.getName().equals(entity.getName())){
@@ -100,9 +100,6 @@ public class TaskService {
                     }
                 }
             }
-        }
-        for (TaskEntity taskEntity : taskListByTopicAndLanguage) {
-            System.out.println("taskEntity = " + taskEntity.getIsSolved());
         }
 
         return taskListByTopicAndLanguage;
