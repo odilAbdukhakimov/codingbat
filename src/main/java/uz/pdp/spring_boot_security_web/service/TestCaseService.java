@@ -26,14 +26,14 @@ public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto>
     }
 
     public List<TestCaseEntity>getTestCaseListByTaskId(int id, String task){
-        List<TestCaseEntity>testCaseEntitiesList=new ArrayList<>();
-        for (TestCaseEntity testCaseEntity : testCaseRepository.findAll()) {
-            if (testCaseEntity.getQuestion().getName().equals(task)){
-                testCaseEntitiesList.add(testCaseEntity);
+        List<TestCaseEntity>list=new ArrayList<>();
+        for (TaskEntity taskEntity : taskRepository.findAll()){
+            if ( taskEntity.getName().equals(task)){
+             return taskEntity.getTestCaseEntities();
             }
-        }
 
-        return testCaseEntitiesList;
+        }
+        return list;
     }
 
 
