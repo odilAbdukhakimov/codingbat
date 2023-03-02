@@ -6,10 +6,12 @@ import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
 import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TaskRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.LanguageRepository;
 import uz.pdp.spring_boot_security_web.repository.TaskRepository;
 import uz.pdp.spring_boot_security_web.repository.TopicRepository;
+import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final TopicRepository topicRepository;
     private final LanguageRepository languageRepository;
+    private final UserRepository userRepository;
 
     public TaskEntity addTask(TaskRequestDTO taskRequestDTO) {
         Optional<TopicEntity> byId = topicRepository.findById(taskRequestDTO.getTopicId());
@@ -89,7 +92,7 @@ public class TaskService {
 
             List<TaskEntity> userTaskEntityList = getUserTaskEntityList(user.getUsername());
 
-            if (userTaskEntityList != null) {
+            if (userTaskEntityList != null && taskListByTopicAndLanguage != null) {
                 for (TaskEntity taskEntity : taskListByTopicAndLanguage) {
                     for (TaskEntity entity : userTaskEntityList) {
                         if (taskEntity.getName().equals(entity.getName())){
@@ -107,7 +110,7 @@ public class TaskService {
         return userEntity.map(UserEntity::getTaskEntityList).orElse(null);
     }
 
-//----------------------------------------------------------------
+//-------------------------------`---------------------------------
 
     public String getTopicNameByQuestion(TaskEntity question, List<LanguageEntity> list){
         for (LanguageEntity subjectEntity : list) {
