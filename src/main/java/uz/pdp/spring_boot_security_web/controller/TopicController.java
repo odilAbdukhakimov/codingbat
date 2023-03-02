@@ -1,14 +1,18 @@
 package uz.pdp.spring_boot_security_web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDTO;
 import uz.pdp.spring_boot_security_web.service.LanguageService;
 import uz.pdp.spring_boot_security_web.service.TaskService;
 import uz.pdp.spring_boot_security_web.service.TopicService;
+import uz.pdp.spring_boot_security_web.service.UserService;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,6 +21,7 @@ public class TopicController {
     private final LanguageService languageService;
     private final TaskService taskService;
     private final TopicService topicService;
+    private final UserService userService;
 
     @GetMapping("/{language}/{topic}")
     public ModelAndView getTaskList(
@@ -25,10 +30,19 @@ public class TopicController {
             @PathVariable String topic
     ) {
         modelAndView.addObject("subjectList", languageService.languageEntityList());
-        modelAndView.addObject("taskList", taskService.getTaskListByTopicAndLanguage(
-                language, topic
-        ));
-        modelAndView.setViewName("question");
+
+        UserEntity currentUser = userService.getCurrentUser();
+        modelAndView.addObject("taskList",taskService.getTasksUserSolvedAndNotSolved(currentUser, language, topic));
+        modelAndView.setViewName("question1");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity userEntity = null;
+        if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
+            userEntity = (UserEntity) authentication.getPrincipal();
+            modelAndView.addObject("isUser", "yes");
+            modelAndView.addObject("user", userEntity);
+        } else {
+            modelAndView.addObject("isUser", "not");
+        }
         return modelAndView;
     }
 

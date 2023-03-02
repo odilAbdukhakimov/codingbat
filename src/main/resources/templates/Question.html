@@ -1,34 +1,106 @@
 <!doctype html>
-<head>
+<head xmlns="http://www.w3.org/1999/html">
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="codingbat.css">
 
     <title>CodingBat Java</title></head>
 <body>
 <a href="/"><span style='font-size:200%;'>CodingBat</span></a> code practice
-<div class="pretab"><p class="max">Welcome to Codingbat. See <a href="/help.html">help</a> for the latest.</p></div>
+
+<!--Userni profelini tekshirish uchun -->
+<span th:if="${users==null}">
+
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+    <table>
+        <tr>
+            <td colspan="2">  <a href="/login">Log in</a></td>
+        </tr>
+        <tr>
+            <td colspan="2">  <a href="/register">Create account</a></td>
+        </tr>
+    </table>
+</div>
+
+</span>
+
+<span th:if="${users!=null}">
+    <a th:each="user: ${users}">
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+         <img :src="../static/images/avatar.jpeg" width="80" height="60"
+              th:src="@{images/avatar.jpeg}"/>
+    </div>
+    </a>
+    <div style='float:right;  margin:0px; border: 1px solid lightgray;'>
+
+          <a th:each="user: ${users}">
+              <td><a th:text="${users.getEmail()}"></a></td>
+              <br>
+              <br>
+            <a href="/logout">Log out</a>
+            <a href="/api/user/editPhoto">|  Edit profile</a>
+    </a>
+</div>
+</span>
+
+<!--oxiri-->
+
+<div class="pretab"><p class="max">Welcome to Codingbat. </p></div>
 <div class="tabc">
     <nav>
-        <tr th:each="subject: ${subjectList}">
-            <a th:text="${subject.getTitle()}" th:href="@{/{title}(title=${subject.getTitle()})}"></a>
-        </tr>
-
-
-        </tr>
+        <ul>
+            <li class="h2" th:each="subject: ${subjects}">
+                <a th:text="${subject.getTitle()}" th:href="@{/subject/{title}(title=${subject.getTitle()})}"></a>
+            </li>
+        </ul>
     </nav>
     <div class="tabin">
-        <div class="floatleft">
-            <table>
+        <div class=tabin>
+            <table border="0">
                 <tbody>
-                <tr th:each="task: ${taskList}">
-                    <td width="200">&nbsp;<img src="/c.jpg"><a th:text="${task.getName()}" th:href="@{/task/{id}(id=${task.getId()})}"></a>&nbsp;<font
-                            color="gray">H</font></td>
+                <tr>
+                    <td>
+                        <div class=indent><span class=h2 th:text="${topic}"></span> &gt; <span class=h2
+                                                                                               th:text="${question.getName()}"></span>
+                            <table border=0>
+                                <tr>
+                                    <td valign=top>
+                                        <div class=minh><p class=max2 th:text="${question.getTitle()}"></p></div>
+                                        <br>
+                                        <div class=minh><p class=max2 th:text="${question.getExample()}"></p></div>
+                                        <form th:action="@{/task/response/{id}(id=${question.getId()})}" method="post"
+                                              name=codeform>
+                                <textarea rows="30" cols="80" name="code" th:text="${compile}">
+                                </textarea><br>
+                                            <button type="submit">Submit answer</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td th:if="${passedTestCases!=null}" width="500" valign="top">
+                        <div id="results" style="margin-top:10em;margin-left:1em;">
+                            <center>
+                                <div id="tests">
+                                    <table class="out">
+                                        <tr>
+                                            <th>Test Cases</th>
+                                        </tr>
+                                        <tbody th:each="testCase: ${passedTestCases}">
+                                        <tr>
+                                            <td th:text="${testCase}"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br>
+                                <h3 th:text="${passMessage}"></h3></center>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
-
         </div>
-
     </div>
 </div>
 <style>

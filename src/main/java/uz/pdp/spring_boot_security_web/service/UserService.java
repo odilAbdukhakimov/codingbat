@@ -1,10 +1,12 @@
 package uz.pdp.spring_boot_security_web.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordAlreadyExist;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
+import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
@@ -52,5 +54,23 @@ public class UserService {
 
     public List<UserEntity> userEntityList(){
         return userRepository.findAll();
+    }
+
+
+
+
+
+    public UserEntity getCurrentUser() {
+        Object currentUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (currentUser != null) {
+            try {
+                UserEntity user = (UserEntity) currentUser;
+//                System.out.println(user.getUsername());
+                return user;
+            } catch (Exception e) {
+                return new UserEntity("", "", "", "", null);
+            }
+        }
+        return null;
     }
 }

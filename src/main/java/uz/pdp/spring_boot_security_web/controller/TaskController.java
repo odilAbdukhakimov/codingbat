@@ -1,16 +1,23 @@
 package uz.pdp.spring_boot_security_web.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import uz.pdp.spring_boot_security_web.entity.LanguageEntity;
-import uz.pdp.spring_boot_security_web.entity.TopicEntity;
+import uz.pdp.spring_boot_security_web.compiler.CompliedClass;
+import uz.pdp.spring_boot_security_web.entity.*;
 import uz.pdp.spring_boot_security_web.model.dto.TaskRequestDTO;
-import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDTO;
+import uz.pdp.spring_boot_security_web.repository.TestCaseRepository;
 import uz.pdp.spring_boot_security_web.service.LanguageService;
 import uz.pdp.spring_boot_security_web.service.TaskService;
+import uz.pdp.spring_boot_security_web.service.TestCaseService;
 import uz.pdp.spring_boot_security_web.service.TopicService;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -19,16 +26,19 @@ public class TaskController {
     private final LanguageService languageService;
     private final TaskService taskService;
     private final TopicService topicService;
+    private final TestCaseRepository testCaseRepository;
+    private final CompliedClass compliedClass;
+    private final TestCaseService testCaseService;
 
-    @GetMapping("/task/{id}")
-    public ModelAndView compPage(
-            ModelAndView modelAndView,
-            @PathVariable int id
-    ) {
-        modelAndView.addObject("task", taskService.getById(id));
-        modelAndView.setViewName("compiler");
-        return modelAndView;
-    }
+//    @GetMapping("/task/{id}")
+//    public ModelAndView compPage(
+//            ModelAndView modelAndView,
+//            @PathVariable int id
+//    ) {
+//        modelAndView.addObject("task", taskService.getById(id));
+//        modelAndView.setViewName("compiler");
+//        return modelAndView;
+//    }
 
     @GetMapping("admin/{language}/{topic}/{id}")
     public ModelAndView topicHome(@PathVariable int id, ModelAndView model) {
@@ -60,7 +70,71 @@ public class TaskController {
             @PathVariable int id,
             @ModelAttribute TaskRequestDTO taskRequestDTO
     ) {
-        taskService.update(id,taskRequestDTO);
+        taskService.update(id, taskRequestDTO);
         return "redirect:/admin/lang";
+    }
+
+    @PostMapping("task/response/{id}")
+    public String checkAnswer(@PathVariable int id, HttpServletRequest request, Model model) {
+        Object objectUser = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(!objectUser.equals("anonymousUser")) {
+            UserEntity userEntity = (UserEntity) objectUser;
+            TaskEntity question = taskService.getById(id);
+            String code = request.getParameter("code");
+            String[] split = question.getMethodAndParams().split(",");
+            List<String> passedTestCases = null;
+            List<TestCaseEntity> testCases = null;
+            if (code != null) {
+                testCases = testCaseRepository.findAllByQuestionId(question.getId());
+                passedTestCases = compliedClass.passAllTestCases(testCases, split, code);
+                int size = testCaseService.quantityOfSuccessfulTestCases(passedTestCases).size();
+                String tick = "❌";
+                if (size == testCases.size()) {
+                    taskService.makeQuestionSolved(userEntity, question);
+                    tick = "✅";
+                }
+                model.addAttribute("passMessage", tick + " " + size + " test cases out of " + testCases.size() + " passed successfully");
+            }
+            List<LanguageEntity> list = languageService.languageEntityList();
+            model.addAttribute("passedTestCases", passedTestCases);
+            model.addAttribute("compile", code);
+            model.addAttribute("question", question);
+            model.addAttribute("subjects", list);
+            String str = taskService.getTopicNameByQuestion(question, list);
+            if (str != null) {
+                model.addAttribute("topic", str);
+            }
+        }else {
+            return "register";
+        }
+        return "question";
+    }
+
+    @GetMapping("/task/{id}")
+    public String getTopicQuestion(@PathVariable int id, Model model) {
+        TaskEntity question = taskService.getById(id);
+        List<LanguageEntity> list = languageService.languageEntityList();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserEntity user = null;
+        if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
+            user = (UserEntity) authentication.getPrincipal();
+            model.addAttribute("users", user);
+        }
+        if (question.getMethodAndParams() != null) {
+            String[] split = question.getMethodAndParams().split(",");
+            model.addAttribute("compile",
+                    "public class Solution {\n"
+                            + "    public " + split[0] + " " + split[1] + "(" + split[2] + " firstParam, " + split[3] + " secondParam) {\n"
+                            + "        return ;\n"
+                            + "    }\n"
+                            + "}");
+        }
+        model.addAttribute("question", question);
+        model.addAttribute("subjects", list);
+        String str = taskService.getTopicNameByQuestion(question, list);
+        if (str != null) {
+            model.addAttribute("topic", str);
+        }
+        return "question";
     }
 }

@@ -12,5 +12,9 @@ import lombok.*;
 public class TaskEntity extends BaseEntity {
     private String name;
     private String title;
+    private String tickIcon;
+    private String example;
+
+    private String methodAndParams;
 
 }

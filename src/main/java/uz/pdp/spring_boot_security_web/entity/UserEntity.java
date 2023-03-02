@@ -23,12 +23,24 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     private String name;
     private String username;
+    private String email;
     private String password;
 
     @Column(name = "logo_url")
     private String logoUrl;
     @OneToOne(cascade = CascadeType.ALL)
     private RolePermissionEntity rolePermissionEntities;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<TaskEntity> taskEntityList;
+
+    public UserEntity(String name, String username,String password, String logoUrl, RolePermissionEntity rolePermissionEntities) {
+        this.name = name;
+        this.username = username;
+        this.logoUrl = logoUrl;
+        this.password=password;
+        this.rolePermissionEntities = rolePermissionEntities;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
