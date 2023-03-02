@@ -9,6 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.service.EmailService;
+import uz.pdp.spring_boot_security_web.service.ImageService;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 @Controller

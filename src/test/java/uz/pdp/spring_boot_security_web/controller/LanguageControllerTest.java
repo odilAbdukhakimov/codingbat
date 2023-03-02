@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
@@ -12,9 +13,10 @@ import uz.pdp.spring_boot_security_web.service.LanguageService;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 @WithUserDetails("a")
 class LanguageControllerTest extends BaseTest {
     private static final String PATH_ADD = "/admin/lang/add";
@@ -54,6 +56,28 @@ class LanguageControllerTest extends BaseTest {
     private ResultActions deleteLanguage(int id) throws Exception {
         final MockHttpServletRequestBuilder request =
                 delete(PATH_DEL+"/"+id);
+        return mockMvc.perform(request);
+    }
+
+    // page qaytarish
+
+    @Test
+    @WithMockUser(roles = "ADMIN")
+    void addLanguageWithView() throws Exception {
+        callAddLanguage();
+        callLanguageList().andExpect(view().name("language"));
+    }
+
+    private ResultActions callLanguageList() throws Exception {
+        final MockHttpServletRequestBuilder request =
+                get("/admin/lang");
+        return mockMvc.perform(request);
+    }
+
+    private ResultActions callAddLanguage() throws Exception {
+        final MockHttpServletRequestBuilder request =
+                post("/admin/lang/add")
+                        .param("title","Java");
         return mockMvc.perform(request);
     }
 }

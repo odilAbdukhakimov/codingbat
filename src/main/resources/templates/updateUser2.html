@@ -55,7 +55,7 @@
   </style>
 </head>
 <body>
-<form th:action="@{/api/user/update/{username}(username=${currentUser.username})}" th:object="${currentUser}" method="post">
+<form th:action="@{/api/user/update/{username}(username=${currentUser.username})}" th:object="${currentUser}" method="post" enctype="multipart/form-data">
 <div class="container rounded bg-white mt-5 mb-5">
   <div class="row" >
 <!--    <form th:action="@{/api/user/update/{username}(username=${currentUser.username})}" >-->
