@@ -14,7 +14,6 @@ public class AdminRequestDto {
     private String name;
     private String username;
     private String password;
-
     @Column(name = "logo_url")
     private String logoUrl;
     private String permission;

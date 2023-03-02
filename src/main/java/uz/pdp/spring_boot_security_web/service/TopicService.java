@@ -49,14 +49,11 @@ public class TopicService {
 
     public void delete(int id) {
         Optional<TopicEntity> byId = topicRepository.findById(id);
-        if (byId.isPresent()){
-            TopicEntity topicEntity = byId.get();
-            topicRepository.delete(topicEntity);
-            return;
-        }
-        throw new RecordNotFountException("The topic is not found");
+        if (byId.isEmpty()){
+            throw new RecordNotFountException("The topic is not found");
 
-//        topicRepository.deleteById(id);
+        }
+        topicRepository.deleteById(id);
     }
 
     public TopicEntity update(int id, TopicRequestDTO topicRequestDTO) {
