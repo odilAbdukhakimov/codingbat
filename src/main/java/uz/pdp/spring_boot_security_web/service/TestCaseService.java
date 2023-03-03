@@ -10,6 +10,7 @@ import uz.pdp.spring_boot_security_web.repository.TaskRepository;
 import uz.pdp.spring_boot_security_web.repository.TestCaseRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,15 +26,9 @@ public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto>
         return testCaseRepository.findAll();
     }
 
-    public List<TestCaseEntity>getTestCaseListByTaskId(int id, String task){
-        List<TestCaseEntity>list=new ArrayList<>();
-        for (TaskEntity taskEntity : taskRepository.findAll()){
-            if ( taskEntity.getName().equals(task)){
-             return taskEntity.getTestCaseEntities();
-            }
+    public List<TestCaseEntity>getTestCaseListByTaskId(int id){
 
-        }
-        return list;
+        return  testCaseRepository.findByQuestionId(id);
     }
 
 
@@ -61,7 +56,9 @@ public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto>
         TestCaseEntity test = TestCaseEntity.builder()
                 .firstParam(testCaseDto.getFirstParam())
                 .secondParam(testCaseDto.getSecondParam())
-                .question(taskRepository.findByName(testCaseDto.getQuestionName()))
+                .testCaseName(testCaseDto.getTestCaseName())
+                .question(taskRepository.findByIdIn(Collections.singleton(testCaseDto.getTaskId())))
+                //.question(taskRepository.findByName(testCaseDto.getQuestionName()))
                 .build();
         String result=null;
         if(testCaseDto.getResult().startsWith("\"")&&testCaseDto.getResult().endsWith("\"")){
@@ -80,5 +77,20 @@ public class TestCaseService implements BaseService<TestCaseEntity, TestCaseDto>
 
     public List<String> quantityOfSuccessfulTestCases(List<String> list){
         return list.stream().filter(s -> s.contains("✅")).toList();
+    }
+
+    public void update(int id, TestCaseDto testCaseDto) {
+        Optional<TestCaseEntity> optionalTestCase = testCaseRepository.findById(id);
+        if (optionalTestCase.isEmpty()){
+            throw new IllegalArgumentException("Test case not found");
+        }
+        TestCaseEntity testCaseEntity = optionalTestCase.get();
+
+        testCaseEntity.setTestCaseName(testCaseDto.getTestCaseName());
+        testCaseEntity.setFirstParam(testCaseDto.getFirstParam());
+        testCaseEntity.setSecondParam(testCaseDto.getSecondParam());
+        testCaseEntity.setResult(testCaseDto.getResult());
+        testCaseRepository.save(testCaseEntity);
+
     }
 }

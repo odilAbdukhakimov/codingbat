@@ -347,10 +347,11 @@
                 </thead>
                 <tbody th:each="testCase: ${testCaseList}">
                 <tr>
-                    <td> <a th:text="${testCase.getResult()}"> </a></td>
+                    <td> <a th:text="${testCase.getTestCaseName()}"> </a></td>
                     <td >
                         <a type="button"  data-toggle="modal"
-                           data-target="#myModal" th:attr="onclick=|updateId('${testCase.getId()}')|">
+                           data-target="#myModal"
+                           th:attr="onclick=|updateId('${testCase.getId()}','${testCase.getTestCaseName()}','${testCase.getResult()}','${testCase.getFirstParam()}','${testCase.getSecondParam()}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
                         <a type="button"  data-toggle="modal"
@@ -369,55 +370,37 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="updateId" method="post">
+                                    <form  id="updateId" method="post">
                                         <div class="form-group">
-                                            <label class="control-label" >Task Name:</label>
-                                            <input type="text"  name="questionName" class="form-control" placeholder="Enter task new name" >
-                                        </div>
-                                        <div class="form-group">
-                                            <label>firstParam</label>
-                                            <br/>
-                                            <label>String</label>
-                                            <input  type="checkbox" name="firstParam" value ="String">
-                                            <br>
-                                            <label>int</label>
+                                            <div class="form-group">
+                                                <label class="control-label" >Task Name:</label>
+                                                <input type="text"  id ="testCaseName" name="testCaseName" class="form-control" placeholder="Enter task new name" >
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">firstParam</label>
+                                                <input type="radio"  name="firstParam" value="String"><label >String</label>
+                                                <input type="radio"  name="firstParam" value="int"><label >int</label>
+                                                <input type="radio"  name="firstParam" value="double"><label >double</label>
+                                                <p   id="firstParam" ></p>
+                                       </div>
+                                            <div class="form-group">
+                                                <label>secondParam</label>
+                                                <input type="radio"  name="secondParam" value="String"><label >String</label>
+                                                <input type="radio"  name="secondParam" value="int"><label >int</label>
+                                                <input type="radio"  name="secondParam" value="double"><label >double</label>
+                                                <p  id="secondParam"  ></p>
+                                                  </div>
+                                            <div class="form-group">
+                                                <label>result</label>
+                                                <input type="radio"  name="result" value="String"><label >String</label>
+                                                <input type="radio"  name="result" value="int"><label >int</label>
+                                                <input type="radio" name="result" value="void"><label >void</label>
+                                                <input type="radio"  name="result" value="double"><label>double</label>
+                                                <p  id="result" ></p>
+                                               </div>
+                                            <input type="hidden" name="taskId" th:value="${task.getId}">
 
-                                            <input  type="checkbox" name="firstParam" value ="int">
-                                            <br>
-                                            <label>double</label>
-                                            <input  type="checkbox" name="permission" value ="double">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>secondParam</label>
-                                            <br/>
-                                            <label>String</label>
-                                            <input  type="checkbox" name="secondParam" value ="String">
-                                            <br>
-                                            <label>int</label>
-
-                                            <input  type="checkbox" name="secondParam" value ="int">
-                                            <br>
-                                            <label>double</label>
-                                            <input  type="checkbox" name="secondParam" value ="double">
-                                        </div>
-                                        <div class="form-group">
-                                            <label>result</label>
-                                            <br/>
-                                            <label>String</label>
-                                            <input  type="checkbox" name="result" value ="String">
-                                            <br>
-                                            <label>int</label>
-
-                                            <input  type="checkbox" name="result" value ="int">
-                                            <br>
-                                            <label>double</label>
-                                            <input  type="checkbox" name="result" value ="double">
-                                            <br>
-                                            <label>void</label>
-                                            <input  type="checkbox" name="result" value ="void">
-                                        </div>
-                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        </div>   <button type="submit" class="btn btn-success">Submit</button>
                                     </form>
                                 </div>
                             </div>
@@ -452,15 +435,6 @@
                 </tbody>
 
             </table>
-            <!--            <div class="clearfix">-->
-            <!--                <ul class="pagination">-->
-            <!--                    <li class="page-item disabled"><a href="#">Previous</a></li>-->
-            <!--                    <li class="page-item"><a href="#" class="page-link">1</a></li>-->
-            <!--                    <li class="page-item active"><a href="#" class="page-link">2</a></li>-->
-            <!--                    <li class="page-item"><a href="#" class="page-link">3</a></li>-->
-            <!--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>-->
-            <!--                </ul>-->
-            <!--            </div>-->
         </div>
     </div>
 </div>
@@ -477,57 +451,35 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="form-group">
-                            <label class="control-label" >Task Name:</label>
-                            <input type="text"  name="questionName" class="form-control" placeholder="Enter task new name" >
+                            <label class="control-label" >Test Case Name:</label>
+                            <input type="text"  name="testCaseName" class="form-control" placeholder="Enter Test Case Name" >
+
+
                         </div>
                         <div class="form-group">
                             <label>firstParam</label>
                             <br/>
-                            <label>String</label>
-                            <input  type="checkbox" name="firstParam" value ="String">
-                            <br>
-                            <label>int</label>
-
-                            <input  type="checkbox" name="firstParam" value ="int">
-                            <br>
-                            <label>double</label>
-                            <input  type="checkbox" name="permission" value ="double">
+                            <input type="radio"  name="firstParam" value="String"><label >String</label>
+                            <input type="radio"  name="firstParam" value="int"><label >int</label>
+                            <input type="radio"  name="firstParam" value="double"><label >double</label>
                         </div>
                         <div class="form-group">
                             <label>secondParam</label>
                             <br/>
-                            <label>String</label>
-                            <input  type="checkbox" name="secondParam" value ="String">
-                            <br>
-                            <label>int</label>
-
-                            <input  type="checkbox" name="secondParam" value ="int">
-                            <br>
-                            <label>double</label>
-                            <input  type="checkbox" name="secondParam" value ="double">
+                            <input type="radio"  name="secondParam" value="String"><label >String</label>
+                            <input type="radio"  name="secondParam" value="int"><label >int</label>
+                            <input type="radio"  name="secondParam" value="double"><label >double</label>
                         </div>
                         <div class="form-group">
                             <label>result</label>
                             <br/>
-                            <label>String</label>
-                            <input  type="checkbox" name="result" value ="String">
-                            <br>
-                            <label>int</label>
 
-                            <input  type="checkbox" name="result" value ="int">
-                            <br>
-                            <label>double</label>
-                            <input  type="checkbox" name="result" value ="double">
-                            <br>
-                            <label>void</label>
-                            <input  type="checkbox" name="result" value ="void">
+                            <input type="radio"  name="result" value="String"><label >String</label>
+                            <input type="radio"  name="result" value="int"><label >int</label>
+                            <input type="radio" name="result" value="void"><label >void</label>
+                            <input type="radio"  name="result" value="double"><label>double</label>
                         </div>
-
-<!--                        <label>Task Name</label>-->
-<!--                        <input type="text" class="form-control" placeholder="Enter task Name" name="name">-->
-<!--                        <label class="control-label" >Task title :</label>-->
-<!--                        <input type="text" name="title" class="form-control" placeholder="Enter task title" >-->
-<!--                        <input type="hidden" name="task" th:value="${task.getId()}">-->
+                        <input type="hidden" name="taskId" th:value="${task.getId}">
 
                     </div>
                 </div>
@@ -541,11 +493,17 @@
 </div>
 
 <script>
-    function updateId(testCaseId){
-        let var2 = document.getElementById("updateId").action="/admin/testCase/update/"+testCaseId;
-        // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
-        console.log(var2)
-    }
+      // let var2 = document.getElementById("updateId").action="/admin/testCase/update/"+testCaseId;
+        function updateId(testCaseId,testCaseName,result,firstParam,secondParam){
+            console.log(testCaseId,testCaseName,result,firstParam,secondParam)
+            document.getElementById("updateId").action ="/admin/testCase/update/"+testCaseId
+            document.getElementById("testCaseName").value=testCaseName;
+            document.getElementById("result").innerHTML=result;
+            document.getElementById("firstParam").innerHTML=firstParam;
+            document.getElementById("secondParam").innerHTML=secondParam;
+        }
+
+
     function deleteId(testCaseId){
         let var2 = document.getElementById("deleteId").action="/admin/testCase/del/"+testCaseId
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;

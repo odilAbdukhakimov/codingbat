@@ -18,9 +18,6 @@ public class TaskEntity extends BaseEntity {
     private String title;
     private String tickIcon;
     private String example;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
-    private List<TestCaseEntity>testCaseEntities;
     private String methodAndParams;
 
 }

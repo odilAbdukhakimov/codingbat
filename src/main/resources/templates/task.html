@@ -348,7 +348,7 @@
                 <tbody th:each="task: ${taskList}">
                 <tr>
                     <td><a th:text="${task.getName()}"
-                           th:href="@{/admin/{language}/{topic}/{task}/{id}(language=${topic.getLanguageEntity().getTitle()},topic=${topic.getName()},task=${task.getName()},id=${topic.getId()})}"> </a>
+                           th:href="@{/admin/{language}/{topic}/{task}/{id}(language=${topic.getLanguageEntity().getTitle()},topic=${topic.getName()},task=${task.getName()},id=${task.getId()})}"> </a>
 
                     </td>
                     <td>

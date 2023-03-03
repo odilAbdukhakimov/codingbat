@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import uz.pdp.spring_boot_security_web.entity.TaskEntity;
 import uz.pdp.spring_boot_security_web.entity.TestCaseEntity;
 import uz.pdp.spring_boot_security_web.entity.TopicEntity;
+import uz.pdp.spring_boot_security_web.model.dto.TaskRequestDTO;
 import uz.pdp.spring_boot_security_web.model.dto.TestCaseDto;
 import uz.pdp.spring_boot_security_web.model.dto.TopicRequestDTO;
 import uz.pdp.spring_boot_security_web.repository.TaskRepository;
@@ -23,11 +24,11 @@ public class TestCaseController {
 
     @GetMapping("admin/{language}/{topic}/{task}/{id}")
     public ModelAndView testCaseHome(@PathVariable int id,
-                                     @PathVariable String task, ModelAndView model) {
+                                   ModelAndView model) {
 
         TaskEntity byId = taskService.getById(id);
         model.addObject("task", byId);
-        model.addObject("testCaseList", testCaseService.getTestCaseListByTaskId(byId.getId(),task));
+        model.addObject("testCaseList", testCaseService.testCasesOfQuestion(id));
         model.setViewName("TestCase");
         return model;
     }
@@ -44,6 +45,15 @@ public class TestCaseController {
             @PathVariable int id
     ) {
         testCaseService.delete(id);
+        return "redirect:/admin/lang";
+    }
+
+    @PostMapping("/admin/testCase/update/{id}")
+    public String updateTask(
+            @PathVariable int id,
+            @ModelAttribute TestCaseDto testCaseDto
+    ) {
+        testCaseService.update(id, testCaseDto);
         return "redirect:/admin/lang";
     }
 

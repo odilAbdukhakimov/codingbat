@@ -18,6 +18,7 @@ public class TestCaseEntity {
     private String firstParam;// 1
     private String secondParam;//2
     private String result;//javobi
+    private String testCaseName;
     @ManyToOne
     TaskEntity question;
 }
