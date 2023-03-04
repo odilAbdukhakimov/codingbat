@@ -30,7 +30,7 @@ public class ImageService {
 
 
     @SneakyThrows
-    public String uploadImage2(MultipartFile file )  {
+    public String uploadImage2(MultipartFile file) {
 
         if (file != null) {
             String originalFileName = file.getOriginalFilename();
@@ -47,33 +47,35 @@ public class ImageService {
             attachment.setName(randomName);
             AttachmentEntity saveAttachment = attachmentRepository.save(attachment);
 
-            AttachmentContentEntity attachmentContentEntity =new AttachmentContentEntity();
+            AttachmentContentEntity attachmentContentEntity = new AttachmentContentEntity();
             attachmentContentEntity.setAttachment(saveAttachment);
             attachmentContentEntity.setBytes(file.getBytes());
             attachmentContentRepository.save(attachmentContentEntity);
 
-            writeToFile(file,randomName);
+            writeToFile(file, randomName);
             return randomName;
         }
         throw new IOException("file  not found");
     }
-    private String makeRandomFileName(String originalFileName ){
+
+    private String makeRandomFileName(String originalFileName) {
         String[] split = originalFileName.split("\\.");
         return UUID.randomUUID().toString() + "." + split[split.length - 1];
     }
 
     @SneakyThrows
-    private void writeToFile(MultipartFile file, String randomName){
+    private void writeToFile(MultipartFile file, String randomName) {
         Path path = Paths.get(uploadPath2 + "/" + randomName);
         Files.copy(file.getInputStream(), path);
     }
+
     @SneakyThrows
-    public String updateImage(MultipartFile file , String url){
-        if (url!=null){
+    public String updateImage(MultipartFile file, String url) {
+        if (url != null) {
             Optional<AttachmentEntity> foundByName = attachmentRepository.findByName(url);
-            if (foundByName.isPresent()){
+            if (foundByName.isPresent()) {
                 String randomName = makeRandomFileName(file.getOriginalFilename());
-                writeToFile(file,randomName);
+                writeToFile(file, randomName);
 
                 AttachmentEntity attachmentEntity = foundByName.get();
                 attachmentEntity.setName(randomName);
@@ -83,27 +85,28 @@ public class ImageService {
 
                 AttachmentEntity updateAttachment = attachmentRepository.save(attachmentEntity);
                 Optional<AttachmentContentEntity> foundByAtmId = attachmentContentRepository.findByAttachmentId(updateAttachment.getId());
-                if (foundByAtmId.isPresent()){
+                if (foundByAtmId.isPresent()) {
                     AttachmentContentEntity attachmentContentEntity = foundByAtmId.get();
                     attachmentContentEntity.setBytes(file.getBytes());
                     attachmentContentEntity.setAttachment(updateAttachment);
                     attachmentContentRepository.save(attachmentContentEntity);
-                }else {
+                } else {
                     throw new RecordNotFountException("AttachmentContentEntity was not found");
                 }
-                File removedFile= new File(uploadPath2+"/"+url);
-                if (removedFile.delete()){
+                File removedFile = new File(uploadPath2 + "/" + url);
+                if (removedFile.delete()) {
                     System.out.println("File was  deleted successfully");
-                }else {
+                } else {
                     System.out.println("File was Not  deleted successfully");
                 }
                 return randomName;
-            }else {
+            } else {
                 throw new RecordNotFountException("AttachmentEntity was not found");
             }
         }
         return "";
     }
+
     public String getPicture(int id) {
         Optional<AttachmentEntity> optionalAttachment = attachmentRepository.findById(id);
         if (optionalAttachment.isPresent()) {
