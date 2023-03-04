@@ -314,6 +314,18 @@
 <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
+            <!--            <div class="table-title">-->
+            <!--                <div class="row">-->
+            <!--&lt;!&ndash;                    <div class="col-sm-6">&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <a th:href="@{/admin/allUsers}" class="btn btn-success">&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <span>User Page</span></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <span>Topic Page</span></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <span>Question Page</span></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
@@ -321,7 +333,7 @@
                     </div>
                     <div class="col-sm-6">
                         <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i
-                                class="material-icons">&#xE147;</i> <span>Add New Subject</span></a>
+                                class="material-icons">&#xE147;</i> <span>Add New Topic</span></a>
                     </div>
                 </div>
             </div>
@@ -333,18 +345,17 @@
                     <th>ACTIONS</th>
                 </tr>
                 </thead>
-                <tbody th:each="subject: ${subjectList}">
+                <tbody th:each="testCase: ${testCaseList}">
                 <tr>
-                    <td>
-                        <a th:text="${subject.getTitle()}"
-                            th:href="@{/admin/{language}/{id}(language=${subject.getTitle()},id=${subject.getId()})}"> </a></td>
+                    <td> <a th:text="${testCase.getTestCaseName()}"> </a></td>
                     <td >
                         <a type="button"  data-toggle="modal"
-                           data-target="#myModal" th:attr="onclick=|updateId('${subject.getId()}')|">
+                           data-target="#myModal"
+                           th:attr="onclick=|updateId('${testCase.getId()}','${testCase.getTestCaseName()}','${testCase.getResult()}','${testCase.getFirstParam()}','${testCase.getSecondParam()}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
                         <a type="button"  data-toggle="modal"
-                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${subject.getId()}')|">
+                           data-target="#deleteCategory" th:attr="onclick=|deleteId('${testCase.getId()}')|">
                             <i class="material-icons btn btn-danger">&#xE872;</i>
                         </a>
                     </td>
@@ -353,20 +364,43 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Subject Update</h5>
+                                    <h5 class="modal-title">TaskCase Update</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="updateId" method="post">
+                                    <form  id="updateId" method="post">
                                         <div class="form-group">
-                                            <label class="control-label" >Subject Title:</label>
-                                            <input type="text" required name="title"
-                                                   class="form-control" placeholder="Enter subject title" >
-                                        </div>
-                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                        <button type="submit" class="btn btn-success">Submit</button>
+                                            <div class="form-group">
+                                                <label class="control-label" >Task Name:</label>
+                                                <input type="text"  id ="testCaseName" name="testCaseName" class="form-control" placeholder="Enter task new name" >
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label">firstParam</label>
+                                                <input type="radio"  name="firstParam" value="String"><label >String</label>
+                                                <input type="radio"  name="firstParam" value="int"><label >int</label>
+                                                <input type="radio"  name="firstParam" value="double"><label >double</label>
+                                                <p   id="firstParam" ></p>
+                                       </div>
+                                            <div class="form-group">
+                                                <label>secondParam</label>
+                                                <input type="radio"  name="secondParam" value="String"><label >String</label>
+                                                <input type="radio"  name="secondParam" value="int"><label >int</label>
+                                                <input type="radio"  name="secondParam" value="double"><label >double</label>
+                                                <p  id="secondParam"  ></p>
+                                                  </div>
+                                            <div class="form-group">
+                                                <label>result</label>
+                                                <input type="radio"  name="result" value="String"><label >String</label>
+                                                <input type="radio"  name="result" value="int"><label >int</label>
+                                                <input type="radio" name="result" value="void"><label >void</label>
+                                                <input type="radio"  name="result" value="double"><label>double</label>
+                                                <p  id="result" ></p>
+                                               </div>
+                                            <input type="hidden" name="taskId" th:value="${task.getId}">
+
+                                        </div>   <button type="submit" class="btn btn-success">Submit</button>
                                     </form>
                                 </div>
                             </div>
@@ -379,7 +413,7 @@
                             <div class="modal-content">
                                 <form id="deleteId" method="get">
                                     <div class="modal-header">
-                                        <h4 class="modal-title">Delete Subject</h4>
+                                        <h4 class="modal-title">Delete Task</h4>
                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                     </div>
                                     <div class="modal-body">
@@ -401,15 +435,6 @@
                 </tbody>
 
             </table>
-<!--            <div class="clearfix">-->
-<!--                <ul class="pagination">-->
-<!--                    <li class="page-item disabled"><a href="#">Previous</a></li>-->
-<!--                    <li class="page-item"><a href="#" class="page-link">1</a></li>-->
-<!--                    <li class="page-item active"><a href="#" class="page-link">2</a></li>-->
-<!--                    <li class="page-item"><a href="#" class="page-link">3</a></li>-->
-<!--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
         </div>
     </div>
 </div>
@@ -418,16 +443,44 @@
 <div id="addEmployeeModal" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form th:action="@{/admin/lang/add}" method="post">
+            <form th:action="@{/admin/testCase/add}" method="post">
                 <div class="modal-header">
-                    <!--                                                                              Userni add qilish page-->
-                    <h4 class="modal-title">Add Subject</h4>
+                    <h4 class="modal-title">Add Task</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label>Title</label>
-                        <input type="text" class="form-control" name="title">
+                        <div class="form-group">
+                            <label class="control-label" >Test Case Name:</label>
+                            <input type="text"  name="testCaseName" class="form-control" placeholder="Enter Test Case Name" >
+
+
+                        </div>
+                        <div class="form-group">
+                            <label>firstParam</label>
+                            <br/>
+                            <input type="radio"  name="firstParam" value="String"><label >String</label>
+                            <input type="radio"  name="firstParam" value="int"><label >int</label>
+                            <input type="radio"  name="firstParam" value="double"><label >double</label>
+                        </div>
+                        <div class="form-group">
+                            <label>secondParam</label>
+                            <br/>
+                            <input type="radio"  name="secondParam" value="String"><label >String</label>
+                            <input type="radio"  name="secondParam" value="int"><label >int</label>
+                            <input type="radio"  name="secondParam" value="double"><label >double</label>
+                        </div>
+                        <div class="form-group">
+                            <label>result</label>
+                            <br/>
+
+                            <input type="radio"  name="result" value="String"><label >String</label>
+                            <input type="radio"  name="result" value="int"><label >int</label>
+                            <input type="radio" name="result" value="void"><label >void</label>
+                            <input type="radio"  name="result" value="double"><label>double</label>
+                        </div>
+                        <input type="hidden" name="taskId" th:value="${task.getId}">
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -440,15 +493,19 @@
 </div>
 
 <script>
-    function updateId(subjectId){
-        console.log(subjectId)
-        let var2 = document.getElementById("updateId").action="/admin/lang/update/"+subjectId;
-        // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
-        console.log(var2)
-    }
-    function deleteId(subjectId){
-        console.log(subjectId)
-        let var2 = document.getElementById("deleteId").action="/admin/lang/del/"+subjectId;
+      // let var2 = document.getElementById("updateId").action="/admin/testCase/update/"+testCaseId;
+        function updateId(testCaseId,testCaseName,result,firstParam,secondParam){
+            console.log(testCaseId,testCaseName,result,firstParam,secondParam)
+            document.getElementById("updateId").action ="/admin/testCase/update/"+testCaseId
+            document.getElementById("testCaseName").value=testCaseName;
+            document.getElementById("result").innerHTML=result;
+            document.getElementById("firstParam").innerHTML=firstParam;
+            document.getElementById("secondParam").innerHTML=secondParam;
+        }
+
+
+    function deleteId(testCaseId){
+        let var2 = document.getElementById("deleteId").action="/admin/testCase/del/"+testCaseId
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
         console.log(var2)
     }
