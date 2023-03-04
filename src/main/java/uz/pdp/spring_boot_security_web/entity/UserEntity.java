@@ -32,8 +32,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Column(name = "logo_url")
     private String logoUrl;
-    @OneToOne(cascade = CascadeType.ALL)
-    private RolePermissionEntity rolePermissionEntities;
+
+    @Column(name = "role_permission_id")
+    private Long rolePermissionId;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="role_permission_id", insertable = false, updatable = false, referencedColumnName = "id")
+    private RolePermissionEntity rolePermissionEntity;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TaskEntity> taskEntityList;
@@ -43,12 +47,12 @@ public class UserEntity extends BaseEntity implements UserDetails {
         this.username = username;
         this.logoUrl = logoUrl;
         this.password=password;
-        this.rolePermissionEntities = rolePermissionEntities;
+        this.rolePermissionEntity = rolePermissionEntities;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return rolePermissionEntities.getAuthority();
+        return rolePermissionEntity.getAuthority();
     }
 
     @Override
@@ -90,7 +94,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
                     .username(userRegisterDTO.getUsername())
                     .name(userRegisterDTO.getName())
                     .email(userRegisterDTO.getEmail())
-                    .rolePermissionEntities(rolePermission)
+                    .rolePermissionEntity(rolePermission)
                     .build();
         }
 
@@ -98,7 +102,7 @@ public class UserEntity extends BaseEntity implements UserDetails {
                 .username(userRegisterDTO.getUsername())
                 .name(userRegisterDTO.getName())
                 .email(userRegisterDTO.getEmail())
-                .rolePermissionEntities(new RolePermissionEntity(userRegisterDTO.getRole(),userRegisterDTO.getPermissions()))
+                .rolePermissionEntity(new RolePermissionEntity(userRegisterDTO.getRole(),userRegisterDTO.getPermissions()))
                 .build();
     }
 

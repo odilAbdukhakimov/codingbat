@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import uz.pdp.spring_boot_security_web.entity.UserEntity;
 
 import java.util.ArrayList;
 import java.util.List;
