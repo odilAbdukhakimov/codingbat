@@ -26,7 +26,7 @@ public class ImageService {
     private final AttachmentRepository attachmentRepository;
     private final AttachmentContentRepository attachmentContentRepository;
     private static final String getPath = "../static/";
-    private static final String uploadPath2 = "C:\\Users\\odila\\IdeaProjects\\codingbat\\src\\main\\resources\\static\\view\\img";
+    private static final String uploadPath2 = "C:/MY_PROJECTS/redis/codingbat/src/main/resources/static/view/img";
 
 
     @SneakyThrows

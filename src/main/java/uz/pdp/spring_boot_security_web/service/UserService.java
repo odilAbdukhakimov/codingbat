@@ -1,5 +1,6 @@
 package uz.pdp.spring_boot_security_web.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -92,6 +93,7 @@ public class UserService {
         userRepository.delete(userEntity);
     }
 
+    @Transactional
     public void updateAdmin(int adminId, AdminRequestDto adminRequestDto) {
         Optional<UserEntity> byId = userRepository.findById(adminId);
         if (byId.isEmpty())
@@ -103,17 +105,17 @@ public class UserService {
         if (adminRequestDto.getUsername() != null)
             userEntity.setUsername(adminRequestDto.getUsername());
         if (adminRequestDto.getPassword() != null)
-            userEntity.setPassword(adminRequestDto.getPassword());
-        if (adminRequestDto.getRoles() != null) {
-            rolePermission.setRoleEnum(
-                    Arrays.stream(adminRequestDto.getRoles().split(",")).toList()
-            );
-        }
-        if (adminRequestDto.getPermission() != null) {
-            rolePermission.setPermissionEnum(
-                    Arrays.stream(adminRequestDto.getRoles().split(",")).toList()
-            );
-        }
+            userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
+//        if (adminRequestDto.getRoles() != null) {
+//            rolePermission.setRoleEnum(
+//                    List.of(adminRequestDto.getRoles())
+//            );
+//        }
+//        if (adminRequestDto.getPermission() != null) {
+//            rolePermission.setPermissionEnum(
+//                    Arrays.stream(adminRequestDto.getPermission().split(",")).toList()
+//            );
+//        }
         userRepository.save(userEntity);
     }
 
