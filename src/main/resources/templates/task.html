@@ -314,18 +314,18 @@
 <div class="container-xl">
     <div class="table-responsive">
         <div class="table-wrapper">
-<!--            <div class="table-title">-->
-<!--                <div class="row">-->
-<!--&lt;!&ndash;                    <div class="col-sm-6">&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a th:href="@{/admin/allUsers}" class="btn btn-success">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <span>User Page</span></a>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <span>Topic Page</span></a>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <span>Question Page</span></a>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </div>&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
+            <!--            <div class="table-title">-->
+            <!--                <div class="row">-->
+            <!--&lt;!&ndash;                    <div class="col-sm-6">&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <a th:href="@{/admin/allUsers}" class="btn btn-success">&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <span>User Page</span></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <a th:href="@{/adminTopic/topics}" class="btn btn-success">&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <span>Topic Page</span></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                        <a th:href="@{/adminQuestion/questions}" class="btn btn-success">&ndash;&gt;-->
+            <!--&lt;!&ndash;                            <span>Question Page</span></a>&ndash;&gt;-->
+            <!--&lt;!&ndash;                    </div>&ndash;&gt;-->
+            <!--                </div>-->
+            <!--            </div>-->
             <div class="table-title">
                 <div class="row">
                     <div class="col-sm-6">
@@ -347,20 +347,20 @@
                 </thead>
                 <tbody th:each="task: ${taskList}">
                 <tr>
-                    <td> <a th:text="${task.getName()}"
-                            th:href="@{/case/task-id/{id}(id=${task.getId()})}"> </a></td>
-                    <td >
-                        <a type="button"  data-toggle="modal"
+                    <td><a th:text="${task.getName()}"
+                           th:href="@{/case/task-id/{id}(id=${task.getId()})}"> </a></td>
+                    <td>
+                        <a type="button" data-toggle="modal"
                            data-target="#myModal" th:attr="onclick=|updateId('${task.getId()}')|">
                             <i class="material-icons btn btn-primary">&#xE254;</i>
                         </a>
-                        <a type="button"  data-toggle="modal"
+                        <a type="button" data-toggle="modal"
                            data-target="#deleteCategory" th:attr="onclick=|deleteId('${task.getId()}')|">
                             <i class="material-icons btn btn-danger">&#xE872;</i>
                         </a>
                     </td>
 
-                    <div fragment="modal"  id="myModal"  class="modal" tabindex="-1" role="dialog">
+                    <div fragment="modal" id="myModal" class="modal" tabindex="-1" role="dialog">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -372,14 +372,53 @@
                                 <div class="modal-body">
                                     <form id="updateId" method="post">
                                         <div class="form-group">
-                                            <label class="control-label" >Task Name:</label>
-                                            <input type="text"  name="name"
-                                                   class="form-control" placeholder="Enter task new name" >
-                                            <label class="control-label" >Task Title:</label>
+                                            <label>Task Name</label>
+                                            <input type="text" class="form-control" placeholder="Enter task Name"
+                                                   name="name">
+                                            <label class="control-label">Task title :</label>
                                             <input type="text" name="title"
-                                                   class="form-control" placeholder="Enter task new title" >
+                                                   class="form-control" placeholder="Enter task title">
+                                            <label class="control-label">Example</label>
+                                            <input type="text" name="example"
+                                                   class="form-control" placeholder="Enter example">
+                                            <label class="control-label">Method name: </label>
+                                            <input type="text" name="methodName"
+                                                   class="form-control" placeholder="Enter method name">
+                                            <div class="form-group">
+                                                <label class="control-label">First param:</label> &nbsp
+                                                <input type="radio" name="firstParam"
+                                                       value="String"><label>String</label> &nbsp &nbsp
+                                                <input type="radio" name="firstParam" value="Integer"><label>int</label>
+                                                &nbsp &nbsp
+                                                <input type="radio" name="firstParam"
+                                                       value="Double"><label>double</label>
+                                                <p id="firstParamUpdate"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Second param:</label> &nbsp
+                                                <input type="radio" name="secondParam"
+                                                       value="String"><label>String</label> &nbsp &nbsp
+                                                <input type="radio" name="secondParam"
+                                                       value="Integer"><label>int</label> &nbsp &nbsp
+                                                <input type="radio" name="secondParam"
+                                                       value="Double"><label>double</label>
+                                                <p id="secondParamUpdate"></p>
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Return param:</label> &nbsp
+                                                <input type="radio" name="returnParam"
+                                                       value="String"><label>String</label> &nbsp &nbsp
+                                                <input type="radio" name="returnParam"
+                                                       value="Integer"><label>int</label> &nbsp &nbsp
+                                                <input type="radio" name="returnParam"
+                                                       value="void"><label>void</label><br>
+                                                <input type="radio" name="returnParam"
+                                                       value="Double"><label>double</label>
+                                                <p id="resultUpdate"></p>
+                                            </div>
                                         </div>
-                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                        <input type="button" class="btn btn-default" data-dismiss="modal"
+                                               value="Cancel">
                                         <button type="submit" class="btn btn-success">Submit</button>
                                     </form>
                                 </div>
@@ -394,15 +433,18 @@
                                 <form id="deleteId" method="get">
                                     <div class="modal-header">
                                         <h4 class="modal-title">Delete Task</h4>
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                            &times;
+                                        </button>
                                     </div>
                                     <div class="modal-body">
                                         <p>Are you sure you want to delete these Records?</p>
                                         <p class="text-warning"><small>This action cannot be undone.</small></p>
                                     </div>
                                     <div class="modal-footer">
-                                        <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-                                        <input  type="submit" class="btn btn-danger" value="Delete">
+                                        <input type="button" class="btn btn-default" data-dismiss="modal"
+                                               value="Cancel">
+                                        <input type="submit" class="btn btn-danger" value="Delete">
 
                                     </div>
                                 </form>
@@ -415,15 +457,15 @@
                 </tbody>
 
             </table>
-<!--            <div class="clearfix">-->
-<!--                <ul class="pagination">-->
-<!--                    <li class="page-item disabled"><a href="#">Previous</a></li>-->
-<!--                    <li class="page-item"><a href="#" class="page-link">1</a></li>-->
-<!--                    <li class="page-item active"><a href="#" class="page-link">2</a></li>-->
-<!--                    <li class="page-item"><a href="#" class="page-link">3</a></li>-->
-<!--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>-->
-<!--                </ul>-->
-<!--            </div>-->
+            <!--            <div class="clearfix">-->
+            <!--                <ul class="pagination">-->
+            <!--                    <li class="page-item disabled"><a href="#">Previous</a></li>-->
+            <!--                    <li class="page-item"><a href="#" class="page-link">1</a></li>-->
+            <!--                    <li class="page-item active"><a href="#" class="page-link">2</a></li>-->
+            <!--                    <li class="page-item"><a href="#" class="page-link">3</a></li>-->
+            <!--                    <li class="page-item"><a href="#" class="page-link">Next</a></li>-->
+            <!--                </ul>-->
+            <!--            </div>-->
         </div>
     </div>
 </div>
@@ -441,9 +483,38 @@
                     <div class="form-group">
                         <label>Task Name</label>
                         <input type="text" class="form-control" placeholder="Enter task Name" name="name">
-                        <label class="control-label" >Task title :</label>
+                        <label class="control-label">Task title :</label>
                         <input type="text" name="title"
-                               class="form-control" placeholder="Enter task title" >
+                               class="form-control" placeholder="Enter task title">
+                        <label class="control-label">Example</label>
+                        <input type="text" name="example"
+                               class="form-control" placeholder="Enter example">
+                        <label class="control-label">Method name: </label>
+                        <input type="text" name="methodName"
+                               class="form-control" placeholder="Enter method name">
+                        <div class="form-group">
+                            <label class="control-label">First param:</label> &nbsp
+                            <input type="radio" name="firstParam" value="String"><label>String</label> &nbsp &nbsp
+                            <input type="radio" name="firstParam" value="Integer"><label>int</label> &nbsp &nbsp
+                            <input type="radio" name="firstParam" value="Double"><label>double</label>
+                            <p id="firstParam"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Second param:</label> &nbsp
+                            <input type="radio" name="secondParam" value="String"><label>String</label> &nbsp &nbsp
+                            <input type="radio" name="secondParam" value="Integer"><label>int</label> &nbsp &nbsp
+                            <input type="radio" name="secondParam" value="Double"><label>double</label>
+                            <p id="secondParam"></p>
+                        </div>
+                        <div class="form-group">
+                            <label>Return param:</label> &nbsp
+                            <input type="radio" name="returnParam" value="String"><label>String</label> &nbsp &nbsp
+                            <input type="radio" name="returnParam" value="Integer"><label>int</label> &nbsp &nbsp
+                            <input type="radio" name="returnParam" value="void"><label>void</label><br>
+                            <input type="radio" name="returnParam" value="Double"><label>double</label>
+                            <p id="result"></p>
+                        </div>
+
                         <input type="hidden" name="topicId" th:value="${topic.getId()}">
 
                     </div>
@@ -458,16 +529,18 @@
 </div>
 
 <script>
-    function updateId(taskId){
-        let var2 = document.getElementById("updateId").action="/admin/task/update/"+taskId;
+    function updateId(taskId) {
+        let var2 = document.getElementById("updateId").action = "/admin/task/update/" + taskId;
         // let var21 = document.getElementById("myModal").action="/admin/lang/del/"+subjectId;
         console.log(var2)
     }
-    function deleteId(taskId){
-        let var2 = document.getElementById("deleteId").action="/admin/task/del/"+taskId
+
+    function deleteId(taskId) {
+        let var2 = document.getElementById("deleteId").action = "/admin/task/del/" + taskId
         // let var21 = document.getElementById("myModal").action="/admin/category/update/"+categoryId;
         console.log(var2)
     }
+
     $(document).ready(function () {
         // Activate tooltip
         $('[data-toggle="tooltip"]').tooltip();
