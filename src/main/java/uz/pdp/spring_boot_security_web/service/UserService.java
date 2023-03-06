@@ -63,8 +63,7 @@ public class UserService {
         List<UserEntity> userList = userRepository.findAll();
         List<UserEntity> adminList = new ArrayList<>();
         for (UserEntity userEntity : userList) {
-            if (userEntity.getRolePermissionEntities().getRoleEnum().contains("ADMIN")) {
-
+            if (userEntity.getRolePermissionEntity().getRoleEnum().contains("ADMIN")) {
                 adminList.add(userEntity);
             }
         }
@@ -91,26 +90,41 @@ public class UserService {
     @Transactional
     public void updateAdmin(int adminId, AdminRequestDto adminRequestDto) {
         Optional<UserEntity> byId = userRepository.findById(adminId);
+
         if (byId.isEmpty())
             throw new RecordNotFountException("This user not found");
-        UserEntity userEntity = byId.get();
-        RolePermissionEntity rolePermission = userEntity.getRolePermissionEntities();
+
+
+        UserRegisterDTO userRegisterDTO = UserRegisterDTO.builder()
+                .name(adminRequestDto.getName())
+                .username(adminRequestDto.getUsername())
+                .permissions(Arrays.stream(adminRequestDto.getPermission().split(",")).toList())
+                .role(Arrays.stream(adminRequestDto.getRoles().split(",")).toList())
+                .build();
+        UserEntity userEntity = UserEntity.of(userRegisterDTO);
+        userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
+        userEntity.setId(adminId);
+
+
+
+/*        UserEntity userEntity = byId.get();
+        RolePermissionEntity rolePermission = userEntity.getRolePermissionEntity();
         if (adminRequestDto.getName() != null)
             userEntity.setName(adminRequestDto.getName());
         if (adminRequestDto.getUsername() != null)
             userEntity.setUsername(adminRequestDto.getUsername());
         if (adminRequestDto.getPassword() != null)
             userEntity.setPassword(passwordEncoder.encode(adminRequestDto.getPassword()));
-//        if (adminRequestDto.getRoles() != null) {
-//            rolePermission.setRoleEnum(
-//                    List.of(adminRequestDto.getRoles())
-//            );
-//        }
-//        if (adminRequestDto.getPermission() != null) {
-//            rolePermission.setPermissionEnum(
-//                    Arrays.stream(adminRequestDto.getPermission().split(",")).toList()
-//            );
-//        }
+        if (adminRequestDto.getRoles() != null) {
+            rolePermission.setRoleEnum(
+                    List.of(adminRequestDto.getRoles())
+            );
+        }
+        if (adminRequestDto.getPermission() != null) {
+            rolePermission.setPermissionEnum(
+                    Arrays.stream(adminRequestDto.getPermission().split(",")).toList()
+            );
+        }*/
         userRepository.save(userEntity);
     }
 
@@ -139,11 +153,11 @@ public class UserService {
         }
         if (userRegisterDTO.getPermissions() != null) {
             rolePermission.setPermissionEnum(userRegisterDTO.getPermissions());
-            byUsername.setRolePermissionEntities(rolePermission);
+            byUsername.setRolePermissionEntity(rolePermission);
         }
         if (userRegisterDTO.getRole() != null) {
             rolePermission.setRoleEnum(userRegisterDTO.getRole());
-            byUsername.setRolePermissionEntities(rolePermission);
+            byUsername.setRolePermissionEntity(rolePermission);
         } else {
             rolePermission.setRoleEnum(List.of(RoleEnum.USER.name()));
         }
@@ -159,7 +173,7 @@ public class UserService {
     public void updateUserContextHolder(UserEntity currentUser) {
         RolePermissionEntity rolePermission = new RolePermissionEntity();
         rolePermission.setRoleEnum(List.of(RoleEnum.USER.name()));
-        currentUser.setRolePermissionEntities(rolePermission);
+        currentUser.setRolePermissionEntity(rolePermission);
         Authentication authToken =
                 new UsernamePasswordAuthenticationToken(
                         currentUser, SecurityContextHolder.getContext().getAuthentication().getCredentials(), currentUser.getAuthorities());
@@ -167,7 +181,7 @@ public class UserService {
     }
 
     public String getAdmin_In_Roles(UserEntity userEntity) {
-        List<String> roleEnum = userEntity.getRolePermissionEntities().getRoleEnum();
+        List<String> roleEnum = userEntity.getRolePermissionEntity().getRoleEnum();
         for (String admin : roleEnum) {
             if (admin.equals("ADMIN") || admin.equals("SUPER_ADMIN")) {
                 return admin;
