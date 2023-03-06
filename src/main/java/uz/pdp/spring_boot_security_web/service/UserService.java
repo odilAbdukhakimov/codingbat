@@ -6,16 +6,17 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 import uz.pdp.spring_boot_security_web.common.exception.RecordNotFountException;
 import uz.pdp.spring_boot_security_web.entity.UserEntity;
+import uz.pdp.spring_boot_security_web.entity.role.PermissionEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RoleEnum;
 import uz.pdp.spring_boot_security_web.entity.role.RolePermissionEntity;
 import uz.pdp.spring_boot_security_web.model.dto.AdminRequestDto;
 import uz.pdp.spring_boot_security_web.model.dto.receive.UserRegisterDTO;
 import uz.pdp.spring_boot_security_web.repository.UserRepository;
 
-import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -33,7 +34,6 @@ public class UserService {
             throw new IllegalArgumentException(String.format("username %s already exist", userRegisterDTO.getUsername()));
         }
         UserEntity userEntity = UserEntity.of(userRegisterDTO);
-        userEntity.setEmailCode(UUID.randomUUID().toString().substring(0, 4));
         userEntity.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         String url = imageService.uploadImage2(userRegisterDTO.getImage());
         userEntity.setLogoUrl(url);
@@ -76,13 +76,8 @@ public class UserService {
     }
 
     public UserEntity findByEmail(String email) {
-        //return userRepository.findByEmail(email).orElse(null);
         Optional<UserEntity> getUserByEmail = userRepository.findByEmail(email);
-        System.out.println(email.substring(0, email.lastIndexOf(".")));
-        if (getUserByEmail.isPresent()){
-            return  getUserByEmail.get();
-        }
-        return null;
+        return getUserByEmail.orElse(null);
     }
 
     public void delete(int id) {
@@ -155,7 +150,7 @@ public class UserService {
         if (userRegisterDTO.getUsername() != null && !userRegisterDTO.getUsername().equals("")) {
             byUsername.setUsername(userRegisterDTO.getUsername());
         }
-        if (userRegisterDTO.getImage()!=null){
+        if (userRegisterDTO.getImage() != null) {
             byUsername.setLogoUrl(imageService.updateImage(userRegisterDTO.getImage(), byUsername.getLogoUrl()));
         }
         return userRepository.save(byUsername);
@@ -180,4 +175,31 @@ public class UserService {
         }
         return "";
     }
+
+    public UserEntity getAuthenticationUser(Authentication authentication) {
+        try {
+            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
+            String email = token.getPrincipal().getAttribute("email");
+            String name = token.getPrincipal().getAttribute("name");
+            String logoUrl = token.getPrincipal().getAttribute("picture");
+
+            UserEntity byEmail = findByEmail(email);
+            if (byEmail != null)
+                return byEmail;
+            UserEntity userEntity = UserEntity.from(name, email);
+            String userPassword = UUID.randomUUID().toString().substring(0, 8);
+            userEntity.setPassword(passwordEncoder.encode(userPassword));
+            userEntity.setLogoUrl(logoUrl);
+            userEntity.setUsername(email);
+            userEntity.setRolePermissionEntities(new RolePermissionEntity(List.of(RoleEnum.USER.name()), List.of(PermissionEnum.READ.name())));
+            emailService.sendMessage(email, userPassword);
+            UserEntity save = userRepository.save(userEntity);
+            System.out.println(save.getEmail());
+        } catch (Exception e) {
+            if (!(authentication.getPrincipal() + "").equals("anonymousUser"))
+                return (UserEntity) authentication.getPrincipal();
+        }
+        return null;
+    }
+
 }

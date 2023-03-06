@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -16,6 +17,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import uz.pdp.spring_boot_security_web.service.AuthService;
 
@@ -24,10 +27,15 @@ import java.util.Properties;
 @Configuration
 @EnableMethodSecurity
 @EnableWebSecurity
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final AuthService authService;
+    @Lazy
+    public SecurityConfig(AuthService authService) {
+        this.authService = authService;
+    }
+
     private static final String[] WHITE_LIST = new String[]{
 //            "/login",
 //            "/register",
@@ -60,6 +68,16 @@ public class SecurityConfig {
                 .authenticated()
                 .and()
                 .formLogin()
+                .and()
+                .oauth2Login()
+                .successHandler((request, response, authentication) -> {
+                    System.out.println(request.getContextPath());
+                    DefaultOAuth2User principal =
+                            (DefaultOAuth2User) authentication.getPrincipal();
+                    authService.processOAuthPostLogin(principal);
+
+                    response.sendRedirect("/");
+                })
                 .defaultSuccessUrl("/")
                 .and()
                 .logout()

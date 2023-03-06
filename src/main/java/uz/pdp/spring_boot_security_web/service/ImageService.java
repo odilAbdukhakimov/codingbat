@@ -26,7 +26,7 @@ public class ImageService {
     private final AttachmentRepository attachmentRepository;
     private final AttachmentContentRepository attachmentContentRepository;
     private static final String getPath = "../static/";
-    private static final String uploadPath2 = "C:/MY_PROJECTS/redis/codingbat/src/main/resources/static/view/img";
+    private static final String uploadPath2 = "C:\\Users\\odila\\IdeaProjects\\codingbat\\src\\main\\resources\\static\\view\\img";
 
 
     @SneakyThrows
@@ -60,7 +60,7 @@ public class ImageService {
 
     private String makeRandomFileName(String originalFileName) {
         String[] split = originalFileName.split("\\.");
-        return UUID.randomUUID().toString() + "." + split[split.length - 1];
+        return UUID.randomUUID() + "." + split[split.length - 1];
     }
 
     @SneakyThrows

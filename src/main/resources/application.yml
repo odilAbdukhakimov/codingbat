@@ -1,0 +1,23 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: Iv1.c711fdfb0289aa92
+            clientSecret: c6887eea338f472af9cd5f88961d5c3433cf4cd7
+          google:
+            clientId: 1019889738547-7u4cu43ufbud2njr2v2s6gkbd2tnup0k.apps.googleusercontent.com
+            clientSecret: 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
+          scope:
+            - email
+            - profile
+spring.datasource:
+  driverClassName: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/postgres
+  username: postgres
+  password: 0887
+spring.jpa:
+  hibernate.ddl-auto: update
+  defer-datasource-initialization: true
+spring.sql.init.mode: embedded

@@ -3,6 +3,8 @@ package uz.pdp.spring_boot_security_web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,6 +14,7 @@ import uz.pdp.spring_boot_security_web.service.TopicService;
 import uz.pdp.spring_boot_security_web.service.UserService;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -35,9 +38,8 @@ public class HomeController {
         }
         modelAndView.setViewName("index");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity userEntity = null;
-        if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
-            userEntity = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getAuthenticationUser(authentication);
+        if (userEntity != null) {
             modelAndView.addObject("isUser", "yes");
             modelAndView.addObject("user", userEntity);
             modelAndView.addObject("ADMIN", userService.getAdmin_In_Roles(userEntity));
@@ -63,9 +65,8 @@ public class HomeController {
         }
         model.setViewName("index");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserEntity userEntity = null;
-        if (!(authentication.getPrincipal() + "").equals("anonymousUser")) {
-            userEntity = (UserEntity) authentication.getPrincipal();
+        UserEntity userEntity = userService.getAuthenticationUser(authentication);
+        if (userEntity != null) {
             model.addObject("isUser", "yes");
             model.addObject("user", userEntity);
             model.addObject("ADMIN", userService.getAdmin_In_Roles(userEntity));
@@ -74,4 +75,6 @@ public class HomeController {
         }
         return model;
     }
+
+
 }

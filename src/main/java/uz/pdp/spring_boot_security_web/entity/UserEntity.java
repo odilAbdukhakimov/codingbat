@@ -28,8 +28,6 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @Column(unique = true)
     private String email;
 
-    private String emailCode;
-
     @Column(name = "logo_url")
     private String logoUrl;
     @OneToOne(cascade = CascadeType.ALL)
@@ -38,11 +36,11 @@ public class UserEntity extends BaseEntity implements UserDetails {
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TaskEntity> taskEntityList;
 
-    public UserEntity(String name, String username,String password, String logoUrl, RolePermissionEntity rolePermissionEntities) {
+    public UserEntity(String name, String username, String password, String logoUrl, RolePermissionEntity rolePermissionEntities) {
         this.name = name;
         this.username = username;
         this.logoUrl = logoUrl;
-        this.password=password;
+        this.password = password;
         this.rolePermissionEntities = rolePermissionEntities;
     }
 
@@ -98,7 +96,14 @@ public class UserEntity extends BaseEntity implements UserDetails {
                 .username(userRegisterDTO.getUsername())
                 .name(userRegisterDTO.getName())
                 .email(userRegisterDTO.getEmail())
-                .rolePermissionEntities(new RolePermissionEntity(userRegisterDTO.getRole(),userRegisterDTO.getPermissions()))
+                .rolePermissionEntities(new RolePermissionEntity(userRegisterDTO.getRole(), userRegisterDTO.getPermissions()))
+                .build();
+    }
+
+    public static UserEntity from(String name, String email) {
+        return UserEntity.builder()
+                .name(name)
+                .email(email)
                 .build();
     }
 
